@@ -66,7 +66,17 @@ export async function GET(request: Request) {
     try {
         const { data, error } = await supabase
             .from("workouts")
-            .select("*, users(*)")
+            .select(
+                `*, users(id,
+                created_at,
+                username,
+                profile,
+                display_name,
+                avatar_id,
+                banner_id,
+                bio,
+                location)`
+            )
             .eq("owner", session?.user?.id);
         if (error) {
             return NextResponse.json({ success: false, error });

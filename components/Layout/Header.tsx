@@ -14,7 +14,7 @@ export default async function Header() {
 
     return (
         <>
-            <Navbar session={session} />
+            <Navbar />
             <CTABanner
                 text={"Alcançe o seu melhor desempenho com Gymn"}
                 cta={"Começar"}

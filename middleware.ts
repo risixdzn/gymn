@@ -5,6 +5,10 @@ import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 export async function middleware(req: NextRequest) {
     const res = NextResponse.next();
 
+    if (req.nextUrl.pathname === "/api/affiliates/verify") {
+        return res;
+    }
+
     //HANDLER NOTIFICAÇÃO DE CONTA VERIFICADA
     //o middleware vericica se o pathname é o de verificação
     if (req.nextUrl.pathname.startsWith("/dashboard/profile/verify")) {
