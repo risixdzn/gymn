@@ -3,11 +3,26 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { api } from "~/utils/api";
+import { useRef } from "react";
+import { useDisclosure } from "@chakra-ui/react";
 
-import { Button } from "@geist-ui/core";
+import {
+  Button,
+  Input,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from '@chakra-ui/react'
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const btnRef = useRef(null)
 
   return (
     <>
@@ -48,7 +63,33 @@ const Home: NextPage = () => {
           <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
-          <Button>GeistUI Test</Button>
+          {/* Chakra */}
+          <Button ref={btnRef} colorScheme='purple' onClick={onOpen}>
+            Drawer
+          </Button>
+          <Drawer
+            isOpen={isOpen}
+            placement='right'
+            onClose={onClose}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+              <DrawerHeader>Create your account</DrawerHeader>
+
+              <DrawerBody>
+                <Input colorScheme="purple" placeholder='Type here...' />
+              </DrawerBody>
+
+              <DrawerFooter>
+                <Button variant='outline' mr={3} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button colorScheme='purple'>Save</Button>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         </div>
       </main>
     </>
