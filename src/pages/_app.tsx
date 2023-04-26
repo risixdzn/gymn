@@ -1,5 +1,6 @@
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
+import { Analytics } from '@vercel/analytics/react';
 
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <GeistProvider themes={[themeType]} themeType={themeType.type == "Dark" ? "Dark" : "Light"}>     
       <CssBaseline/>
       <Component {...pageProps} switchThemes={switchThemes} themeType={themeType}/>
+      <Analytics/>
     </GeistProvider>    
   )
 };
