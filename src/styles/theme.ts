@@ -1,7 +1,7 @@
 import { Themes } from "@geist-ui/core";
 
 const GymnDarkTheme = Themes.createFromDark({
-    type: 'gymnTheme',
+    type: 'Dark',
     palette: {
       background: '#0d0d0d',
       success: '#8a2be2',
@@ -12,7 +12,7 @@ const GymnDarkTheme = Themes.createFromDark({
 })
 
 const GymnLightTheme = Themes.createFromLight({
-  type: 'gymnTheme',
+  type: 'Light',
   palette: {
     background: '#ededed',
     success: '#8a2be2',
