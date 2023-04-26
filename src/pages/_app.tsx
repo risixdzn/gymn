@@ -19,9 +19,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   }
 
   return (
-    <GeistProvider themes={[themeType]} themeType={"gymnTheme"}>     
+    <GeistProvider themes={[themeType]} themeType={themeType.type == "Dark" ? "Dark" : "Light"}>     
       <CssBaseline/>
-      <Component {...pageProps} switchThemes={switchThemes}/>
+      <Component {...pageProps} switchThemes={switchThemes} themeType={themeType}/>
     </GeistProvider>    
   )
 };
