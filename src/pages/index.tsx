@@ -6,10 +6,8 @@ import { useState } from "react";
 
 import { api } from "~/utils/api";
 
-import { Button, Drawer, Grid, Image, Display } from "@geist-ui/core";
+import { Button, Drawer, Grid, Image, User, Text } from "@geist-ui/core";
 import { useToasts} from "@geist-ui/core";
-
-
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -57,11 +55,10 @@ const Home: NextPage = () => {
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
 
-          <Grid.Container  justify="center">
+          <Grid.Container justify="center" >            
             <Button auto type="success" onClick={showToast}>Toast</Button>
             <Button auto type="secondary" onClick={() => setDrawerOpen(true)}>Drawer</Button>
-          </Grid.Container>
-          
+          </Grid.Container>          
 
           <Drawer visible={drawerOpen} onClose={() => setDrawerOpen(false)} placement="right">
             <Drawer.Title>Drawer</Drawer.Title>
@@ -71,6 +68,12 @@ const Home: NextPage = () => {
               <Button width={"100%"} onClick={() => setDrawerOpen(false)}>Close</Button>
             </Drawer.Content>
           </Drawer>
+          <div>
+            <User src="https://avatars.githubusercontent.com/u/102877738?v=4" name="Ricardo Amorim">
+              <User.Link href="https://github.com/risixdzn">@risixdzn</User.Link>
+            </User>
+          </div>
+          
         </div>
       </main>
     </>
