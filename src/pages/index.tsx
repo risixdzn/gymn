@@ -6,9 +6,8 @@ import { useState, type MouseEventHandler } from "react";
 
 import { api } from "~/utils/api";
 
-import { Button, Drawer, Grid, Image, User, Page } from "@geist-ui/core";
-import { useToasts} from "@geist-ui/core";
-import { useTheme } from '@geist-ui/core'
+import { Button, Drawer, Grid, Image, User  } from "@geist-ui/core";
+import { useToasts, useTheme } from "@geist-ui/core";
 
 interface HomeProps {
   switchThemes: MouseEventHandler<HTMLButtonElement>;
@@ -18,18 +17,14 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
-
-  const theme = useTheme()
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   const [drawerOpen, setDrawerOpen] = useState(false) 
 
   const { setToast } = useToasts()
   const showToast = () => setToast({ text: 'Hello, user!', delay: 2000 , type:"success"})
   
-  console.log(themeType)
+  const theme = useTheme();
 
-  
   return (
    
     <>
@@ -39,15 +34,15 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={themeType.type == "Dark" ? "dark" : ""}>
-        <main className={`flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#00000000] bg-purple-300 dark:bg-neutral-950` } color="">
+        <main className={`flex min-h-screen flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-950 dark:bg-gradient-to-b dark:from-[#2e026d] dark:to-[#00000000]` } color="">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <div className="container flex flex-col items-center justify-center h-14 lg:h-24">
-            <Image height="100%" src="/gymn_WhiteTextLogo.svg" alt=''/>
+            <Image height="100%" src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"} alt=''/>
           </div>
           
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
               <Link
-                className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-white/20 dark:bg-white/10"
                 href="https://create.t3.gg/en/usage/first-steps"
                 target="_blank"
               >
@@ -58,7 +53,7 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
                 </div>
               </Link>
               <Link
-                className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                className="lex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-white/20 dark:bg-white/10"
                 href="https://create.t3.gg/en/introduction"
                 target="_blank"
               >
@@ -69,13 +64,13 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
                 </div>
               </Link>
             </div>
-            <p className="text-2xl text-white">
+            <p className="text-2xl text-neutral-950 dark:text-white">
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
 
             <Grid.Container justify="center" >            
               <Button auto type="success" onClick={showToast}>Toast</Button>
-              <Button auto type="secondary" onClick={() => setDrawerOpen(true)}>Drawer</Button>
+              <Button auto type="secondary-light" onClick={() => setDrawerOpen(true)}>Drawer</Button>
             </Grid.Container>          
 
             <Drawer visible={drawerOpen} onClose={() => setDrawerOpen(false)} placement="right">
@@ -92,7 +87,7 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
               </User>
             </div>
 
-            <Button type='secondary' ghost auto scale={0.75} onClick={switchThemes}>Change Theme</Button>
+            <Button type='secondary-light' ghost auto scale={0.75} onClick={switchThemes}>{themeType.type == "Dark" ? "Light theme" : "Dark theme"}</Button>
             
           </div>
         </main>
