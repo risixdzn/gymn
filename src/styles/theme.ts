@@ -6,6 +6,7 @@ const GymnDarkTheme = Themes.createFromDark({
       background: '#0d0d0d',
       success: '#8a2be2',
       successLight: '#8f3ddb',
+      successDark: '#7122ba',
       purple: '#8a2be1',
       alert: '#8a2be3',      
     },
