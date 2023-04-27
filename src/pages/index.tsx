@@ -1,26 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/ban-types */
-import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import { type MouseEventHandler, useState} from "react";
+import { useState} from "react";
 
 import { api } from "~/utils/api";
 
 import { Button, Drawer, Grid, Image, Select, Text, Spacer} from "@geist-ui/core";
 import { useToasts } from "@geist-ui/core";
 import ThemeChanger from "~/components/ui/ThemeChanger";
+import { type ThemeChangerTypes } from "~/components/ui/ThemeChanger";
 
-type HomeProps = {
-  switchThemes: MouseEventHandler<HTMLButtonElement>;
-  themeType: {
-    type: string
-  };
-  theme: (val: string | string[]) => void; 
-}
-
-const Home: NextPage<HomeProps> = ({switchThemes, themeType}) => {
+const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [drawerOpen, setDrawerOpen] = useState(false)   
   const [selectedValue, setSelectedValue] = useState<string | string[]>("")

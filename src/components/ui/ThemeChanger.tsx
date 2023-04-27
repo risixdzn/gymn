@@ -3,7 +3,7 @@ import { Button } from '@geist-ui/core'
 import { Moon, Sun } from '@geist-ui/icons'
 import { type MouseEventHandler } from 'react'
 
-interface ThemeChangerTypes {
+export type ThemeChangerTypes = {
     switchThemes: MouseEventHandler<HTMLButtonElement>;
     themeType: {
       type: string
