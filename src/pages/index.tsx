@@ -4,29 +4,31 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import { useState, type MouseEventHandler} from "react";
+import { type MouseEventHandler, useState} from "react";
 
 import { api } from "~/utils/api";
 
-import { Button, Drawer, Grid, Image, User } from "@geist-ui/core";
-import { useToasts} from "@geist-ui/core";
-import { Moon, Sun } from "@geist-ui/icons";
+import { Button, Drawer, Grid, Image, Select, Text, Spacer} from "@geist-ui/core";
+import { useToasts } from "@geist-ui/core";
+import ThemeChanger from "~/components/ui/ThemeChanger";
 
-interface HomeProps {
-  switchThemes:  MouseEventHandler<HTMLButtonElement>;
+type HomeProps = {
+  switchThemes: MouseEventHandler<HTMLButtonElement>;
   themeType: {
     type: string
   };
   theme: (val: string | string[]) => void; 
 }
 
-const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
+const Home: NextPage<HomeProps> = ({switchThemes, themeType}) => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [drawerOpen, setDrawerOpen] = useState(false)   
+  const [selectedValue, setSelectedValue] = useState<string | string[]>("")
 
   const { setToast } = useToasts()
-  const showToast = () => setToast({ text: 'Hello, user!', delay: 2000 , type:"success"})
-  
+  const showToast = () => setToast({ text: 'Hello, user!', delay: 2000 , type:"success"}) 
+  const handler = (val: string | string[]) => setSelectedValue(val);
+ 
   return (   
     <>
       <Head>
@@ -82,15 +84,21 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
                 <Button width={"100%"} onClick={() => setDrawerOpen(false)}>Close</Button>
               </Drawer.Content>
             </Drawer>
-            <div>
-              <User src="https://avatars.githubusercontent.com/u/102877738?v=4" name="Ricardo Amorim">
-                <User.Link href="https://github.com/risixdzn">@risixdzn</User.Link>
-              </User>
-            </div>            
-                   
-            <span>
-              <Button width="25px" type="abort" shadow onClick={switchThemes} icon={themeType.type == "Dark" ? <Sun/> : <Moon/>}></Button>
-            </span>            
+
+            <Grid.Container justify="center">
+              <Select placeholder="Select" onChange={handler}>
+                <Select.Option value="Firebase">Firebase</Select.Option>
+                <Select.Option value="Supabase">Supabase</Select.Option>
+                <Select.Option value="MySql">MySql</Select.Option>
+              </Select>
+              <Spacer w={1}/>
+              <ThemeChanger switchThemes={switchThemes} themeType={themeType} scale={4/5}/>
+            </Grid.Container>   
+
+            <Text blockquote my={0} className={selectedValue !== "" ? "block" : "hidden"}>
+              Selected option: <b>{selectedValue}</b>
+            </Text>    
+            
           </div>
         </main>
       </div>      
