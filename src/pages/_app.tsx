@@ -15,7 +15,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   
   const [themeType, setThemeType] = useState(GymnDarkTheme)
 
-  const switchThemes = () => {
+  const switchThemes = () =>{    
     setThemeType(lastTheme => (lastTheme === GymnLightTheme ? GymnDarkTheme : GymnLightTheme))
   }
 

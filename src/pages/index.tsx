@@ -1,32 +1,33 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/ban-types */
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import { useState, type MouseEventHandler } from "react";
+import { useState, type MouseEventHandler} from "react";
 
 import { api } from "~/utils/api";
 
-import { Button, Drawer, Grid, Image, User  } from "@geist-ui/core";
-import { useToasts, useTheme } from "@geist-ui/core";
+import { Button, Drawer, Grid, Image, User, Text } from "@geist-ui/core";
+import { useToasts} from "@geist-ui/core";
+import { Moon, Sun } from "@geist-ui/icons";
 
 interface HomeProps {
-  switchThemes: MouseEventHandler<HTMLButtonElement>;
+  switchThemes:  MouseEventHandler<HTMLButtonElement>;
   themeType: {
     type: string
   };
+  theme: (val: string | string[]) => void; 
 }
 
 const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const [drawerOpen, setDrawerOpen] = useState(false) 
+  const [drawerOpen, setDrawerOpen] = useState(false)   
 
   const { setToast } = useToasts()
   const showToast = () => setToast({ text: 'Hello, user!', delay: 2000 , type:"success"})
   
-  const theme = useTheme();
-
-  return (
-   
+  return (   
     <>
       <Head>
         <title>Gymn</title>
@@ -85,10 +86,10 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
               <User src="https://avatars.githubusercontent.com/u/102877738?v=4" name="Ricardo Amorim">
                 <User.Link href="https://github.com/risixdzn">@risixdzn</User.Link>
               </User>
-            </div>
-
-            <Button type='secondary-light' ghost auto scale={0.75} onClick={switchThemes}>{themeType.type == "Dark" ? "Light theme" : "Dark theme"}</Button>
-            
+            </div>            
+            <span>
+              <Button width="auto" onClick={switchThemes} icon={themeType.type == "Dark" ? <Sun/> : <Moon/>}></Button>
+            </span>            
           </div>
         </main>
       </div>      
