@@ -8,7 +8,7 @@ import { useState, type MouseEventHandler} from "react";
 
 import { api } from "~/utils/api";
 
-import { Button, Drawer, Grid, Image, User, Text } from "@geist-ui/core";
+import { Button, Drawer, Grid, Image, User } from "@geist-ui/core";
 import { useToasts} from "@geist-ui/core";
 import { Moon, Sun } from "@geist-ui/icons";
 
@@ -43,7 +43,7 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
           
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
               <Link
-                className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-white/20 dark:bg-white/10"
+                className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
                 href="https://create.t3.gg/en/usage/first-steps"
                 target="_blank"
               >
@@ -54,7 +54,7 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
                 </div>
               </Link>
               <Link
-                className="lex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-white/20 dark:bg-white/10"
+                className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
                 href="https://create.t3.gg/en/introduction"
                 target="_blank"
               >
@@ -87,8 +87,9 @@ const Home: NextPage<HomeProps> = ({ switchThemes, themeType}) => {
                 <User.Link href="https://github.com/risixdzn">@risixdzn</User.Link>
               </User>
             </div>            
+                   
             <span>
-              <Button width="auto" onClick={switchThemes} icon={themeType.type == "Dark" ? <Sun/> : <Moon/>}></Button>
+              <Button width="25px" type="abort" shadow onClick={switchThemes} icon={themeType.type == "Dark" ? <Sun/> : <Moon/>}></Button>
             </span>            
           </div>
         </main>
