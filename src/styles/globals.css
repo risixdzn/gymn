@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body * {
-    @apply transition-colors duration-100;    
-}
-
 ::selection{
     background-color: #8a2be2 !important ;
 }
