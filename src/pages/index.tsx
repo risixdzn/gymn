@@ -31,8 +31,7 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <div className="container flex flex-col items-center justify-center h-14 lg:h-24">
             <Image height="100%" src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"} alt=''/>
-          </div>
-          
+          </div>          
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
               <Link
                 className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"

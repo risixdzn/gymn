@@ -2,16 +2,34 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
+
 datasource db {
-    provider = "mysql"
-    url = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Perfil {
+  Id          String    @id @default(uuid())
+  Tipo_perfil String    @db.VarChar(255)
+  Usuario     Usuario[]
+}
+
+model Usuario {
+  Id_Usuario String @id @default(uuid())
+  Nome       String @db.VarChar(100)
+  Email      String @db.VarChar(255)
+  Auth_token String @db.VarChar(255)
+  Perfil     Perfil @relation(fields: [ID_Perfil], references: [Id])
+  ID_Perfil  String  
+
+  @@index([ID_Perfil])
 }
