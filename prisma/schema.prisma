@@ -30,6 +30,6 @@ model Usuario {
   Auth_token String @db.VarChar(255)
   Perfil     Perfil @relation(fields: [ID_Perfil], references: [Id])
   ID_Perfil  String  
-
+  
   @@index([ID_Perfil])
 }

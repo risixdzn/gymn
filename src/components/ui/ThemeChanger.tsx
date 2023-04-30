@@ -8,7 +8,7 @@ export type ThemeChangerTypes = {
     themeType: {
       type: string
     };
-    scale: number;
+    scale?: number;
 }
 
 function ThemeChanger({switchThemes, themeType, scale}:ThemeChangerTypes) {
