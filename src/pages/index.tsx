@@ -9,6 +9,7 @@ import { Button, Drawer, Grid, Image, Select, Text, Spacer} from "@geist-ui/core
 import { useToasts } from "@geist-ui/core";
 import ThemeChanger from "~/components/ui/ThemeChanger";
 import { type ThemeChangerTypes } from "~/components/ui/ThemeChanger";
+import Navbar from "~/components/ui/Navbar";
 
 const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -27,11 +28,12 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={themeType.type == "Dark" ? "dark" : ""}>
+        <Navbar switchThemes={switchThemes} themeType={themeType}/>
         <main className={`flex min-h-screen flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-950 dark:bg-gradient-to-b dark:from-[#2e026d] dark:to-[#00000000]` } color="">
-          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <div className="container flex flex-col items-center justify-center h-14 lg:h-24">
-            <Image height="100%" src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"} alt=''/>
-          </div>          
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">            
+            <div className="container mt-20 flex flex-col items-center justify-center h-14 lg:h-24">
+              <Image height="100%" src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"} alt=''/>
+            </div>          
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
               <Link
                 className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
@@ -81,13 +83,14 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
                 <Select.Option value="MySql">MySql</Select.Option>
               </Select>
               <Spacer w={1}/>
-              <ThemeChanger switchThemes={switchThemes} themeType={themeType} scale={4/5}/>
+              <ThemeChanger themeType={themeType} switchThemes={switchThemes} scale={4/5}/>
             </Grid.Container>   
 
             <Text blockquote my={0} className={selectedValue !== "" ? "block" : "hidden"}>
               Selected option: <b>{selectedValue}</b>
             </Text>    
-            
+            <Spacer h={100}/>
+            <h4>There&apos;s nothing here.</h4>              
           </div>
         </main>
       </div>      
