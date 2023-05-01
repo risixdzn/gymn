@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Image, Button, Drawer } from '@geist-ui/core'
+import { Image, Button, Drawer, Tooltip } from '@geist-ui/core'
 import { Github, Menu } from '@geist-ui/icons'
 import { type ThemeChangerTypes } from './ThemeChanger'
 import ThemeChanger from './ThemeChanger'
@@ -18,13 +18,17 @@ function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
             <Image w={5} src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"}  alt=''/>
           </div>
           <div className='hidden md:flex md:gap-2'>
-            <a href='https://github.com/risixdzn/gymn' target='_blank'>
-              <Button iconRight={<Github/>} auto px={0.6} scale={3/5}/>
-            </a>
+            <Tooltip text={"Github repo."} placement='bottom' type="lite" scale={2/5}>
+              <a href='https://github.com/risixdzn/gymn' target='_blank'>                
+                <Button iconRight={<Github/>} auto px={0.6} scale={3/5}/>
+              </a>
+            </Tooltip>  
             <ThemeChanger switchThemes={switchThemes} themeType={themeType} scale={3/5}/>
           </div>   
           <div className='flex md:hidden'>
-            <Button iconRight={<Menu/>} auto px={0.6} scale={3/5} onClick={() => setMobileNavOpen(true)}/>
+            
+              <Button iconRight={<Menu/>} auto px={0.6} scale={3/5} onClick={() => setMobileNavOpen(true)}/>
+                     
           </div>
         </div>        
       </nav>   
