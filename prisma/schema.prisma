@@ -11,25 +11,93 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 model Perfil {
-  Id          String    @id @default(uuid())
+  ID_Perfil   String    @id @default(cuid())
   Tipo_perfil String    @db.VarChar(255)
   Usuario     Usuario[]
 }
 
 model Usuario {
-  Id_Usuario String @id @default(uuid())
-  Nome       String @db.VarChar(100)
-  Email      String @db.VarChar(255)
-  Auth_token String @db.VarChar(255)
-  Perfil     Perfil @relation(fields: [ID_Perfil], references: [Id])
-  ID_Perfil  String  
-  
+  ID_Usuario       String             @id @default(cuid())
+  Nome             String             @db.VarChar(100)
+  Email            String             @db.VarChar(255)
+  Auth_token       String             @db.VarChar(255)
+  Perfil           Perfil             @relation(fields: [ID_Perfil], references: [ID_Perfil])
+  ID_Perfil        String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Treino           Treino[]
+  ExercicioTreinos ExercicioTreinos[]
+  AcademiaAlunos   AcademiaAlunos[]
+
   @@index([ID_Perfil])
+}
+
+model Treino {
+  ID_Treino        String             @id @default(cuid())
+  Criador          Usuario            @relation(fields: [ID_Criador], references: [ID_Usuario])
+  ID_Criador       String
+  ExercicioTreinos ExercicioTreinos[]
+
+  @@index([ID_Criador])
+}
+
+model TipoExercicio {
+  ID_TipoExercicio String      @id @default(cuid())
+  Tipo             String      @db.VarChar(255)
+  Exercicio        Exercicio[]
+}
+
+model DificuldadeExercicio {
+  ID_Dificuldade String      @id @default(cuid())
+  Dificuldade    String
+  Exercicio      Exercicio[]
+}
+
+model Exercicio {
+  ID_Exercicio     String               @id @default(cuid())
+  TipoExercicio    TipoExercicio        @relation(fields: [ID_TipoExercicio], references: [ID_TipoExercicio])
+  ID_TipoExercicio String
+  Nome             String               @db.VarChar(255)
+  Url_Execucao     String
+  Dificuldade      DificuldadeExercicio @relation(fields: [ID_Dificuldade], references: [ID_Dificuldade])
+  ID_Dificuldade   String
+  ExercicioTreinos ExercicioTreinos[]
+
+  @@index([ID_TipoExercicio])
+  @@index([ID_Dificuldade])
+}
+
+model ExercicioTreinos {
+  ID_ExercicioTreino String    @id @default(cuid())
+  Criador            Usuario   @relation(fields: [ID_Criador], references: [ID_Usuario])
+  ID_Criador         String
+  Exercicio          Exercicio @relation(fields: [ID_Exercicio], references: [ID_Exercicio])
+  ID_Exercicio       String
+  Treino             Treino    @relation(fields: [ID_Treino], references: [ID_Treino])
+  ID_Treino          String
+  Repeticoes         Int
+  Series             Int
+
+  @@index([ID_Criador])
+  @@index([ID_Exercicio])
+  @@index([ID_Treino])
+}
+
+model Academia {
+  ID_Academia    String           @id @default(cuid())
+  Nome           String
+  Endereco       String
+  AcademiaAlunos AcademiaAlunos[]
+}
+
+model AcademiaAlunos {
+  ID_AcademiaAluno String   @id @default(cuid())
+  Aluno            Usuario  @relation(fields: [ID_Aluno], references: [ID_Usuario])
+  ID_Aluno         String
+  Academia         Academia @relation(fields: [ID_Academia], references: [ID_Academia])
+  ID_Academia      String
+
+  @@index([ID_Aluno])
+  @@index([ID_Academia])
 }
