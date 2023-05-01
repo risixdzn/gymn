@@ -48,15 +48,24 @@ model TipoExercicio {
   Exercicio        Exercicio[]
 }
 
+model DificuldadeExercicio {
+  ID_Dificuldade String      @id @default(cuid())
+  Dificuldade    String
+  Exercicio      Exercicio[]
+}
+
 model Exercicio {
-  ID_Exercicio     String             @id @default(cuid())
-  TipoExercicio    TipoExercicio      @relation(fields: [ID_TipoExercicio], references: [ID_TipoExercicio])
+  ID_Exercicio     String               @id @default(cuid())
+  TipoExercicio    TipoExercicio        @relation(fields: [ID_TipoExercicio], references: [ID_TipoExercicio])
   ID_TipoExercicio String
-  Nome             String             @db.VarChar(255)
+  Nome             String               @db.VarChar(255)
   Url_Execucao     String
+  Dificuldade      DificuldadeExercicio @relation(fields: [ID_Dificuldade], references: [ID_Dificuldade])
+  ID_Dificuldade   String
   ExercicioTreinos ExercicioTreinos[]
 
   @@index([ID_TipoExercicio])
+  @@index([ID_Dificuldade])
 }
 
 model ExercicioTreinos {
