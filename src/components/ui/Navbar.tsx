@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Image, Button, Drawer, Tooltip } from '@geist-ui/core'
+import { Image, Button, Drawer, Tooltip, Grid } from '@geist-ui/core'
 import { Github, Menu } from '@geist-ui/icons'
 import { type ThemeChangerTypes } from './ThemeChanger'
 import ThemeChanger from './ThemeChanger'
@@ -37,9 +37,11 @@ function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
           <Image w={5} src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"}  alt=''/>
         </Drawer.Title>
         <Drawer.Content>
-          <Button width={100} auto>Test1</Button>
-          <Button width={100} auto>Test2</Button>
-          <Button width={100} auto>Test3</Button>
+          <Grid.Container direction='column'>
+            <Button width="275px">Test1</Button>
+            <Button width="275px">Test2</Button>
+            <Button width="275px">Test3</Button>
+          </Grid.Container>          
         </Drawer.Content>
       </Drawer>
     </>

@@ -18,8 +18,8 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
 
   const { setToast } = useToasts()
   const showToast = () => setToast({ text: 'Hello, user!', delay: 2000 , type:"success"}) 
-  const handler = (val: string | string[]) => setSelectedValue(val);
- 
+  const handler = (val: string | string[]) => setSelectedValue(val);  
+
   return (   
     <>
       <Head>
@@ -28,13 +28,14 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={themeType.type == "Dark" ? "dark" : ""}>
+        <div></div>
         <Navbar switchThemes={switchThemes} themeType={themeType}/>
         <main className={`mt-[66px] flex min-h-screen flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-950 ` } color="">          
           <div className="flex flex-col items-center justify-center gap-12 z-10">
-            <div id='colored_gradient' className="relative flex flex-col items-center justify-center gap-12 w-screen py-14 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-blue-600 dark:bg-gradient-to-r dark:from-fuchsia-600/70 dark:via-purple-600/70 dark:to-blue-600/70 bg-neutral-950">                            
+            <div id='colored_gradient' className="relative flex flex-col items-center justify-center gap-12 w-screen py-14 bg-gradient-to-r from-[#0575E6] to-[#00F260] bg-neutral-950">                            
               <div className="container flex flex-col items-center justify-center h-14 lg:h-24 z-20">
                 <Image height="100%" src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_WhiteTextLogo.svg"} alt=''/>
-              </div>          
+              </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 z-20">
                 <Link
                   className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
@@ -64,21 +65,12 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
             
             <p className="text-2xl text-neutral-950 dark:text-white">
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-            </p>
+            </p>            
 
             <Grid.Container justify="center" >            
               <Button auto type="success" onClick={showToast}>Toast</Button>
               <Button auto type="secondary-light" onClick={() => setDrawerOpen(true)}>Drawer</Button>
-            </Grid.Container>          
-
-            <Drawer visible={drawerOpen} onClose={() => setDrawerOpen(false)} placement="right">
-              <Drawer.Title>Drawer</Drawer.Title>
-              <Drawer.Subtitle>This is a drawer</Drawer.Subtitle>
-              <Drawer.Content>
-                <p>Some content contained within the drawer.</p>
-                <Button width={"100%"} onClick={() => setDrawerOpen(false)}>Close</Button>
-              </Drawer.Content>
-            </Drawer>
+            </Grid.Container>  
 
             <Grid.Container justify="center">
               <Select placeholder="Select" onChange={handler}>
@@ -97,7 +89,7 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
             <h4>There&apos;s nothing here.</h4>              
           </div>
         </main>
-      </div>      
+      </div>  
     </>
   );
 };
