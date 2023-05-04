@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Image, Button, Drawer, Tooltip, Grid, Spacer, Collapse } from '@geist-ui/core'
+import { Image, Button, Tooltip,  Spacer, Collapse } from '@geist-ui/core'
 import { Github, Menu } from '@geist-ui/icons'
 import { type ThemeChangerTypes } from './ThemeChanger'
 import ThemeChanger from './ThemeChanger'
@@ -29,7 +29,11 @@ function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
         </div>        
         <div className="flex items-center justify-between mx-auto max-w-5xl w-[85%]">
           <div className='z-30'>
-            <Image w={5} src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_BlackTextLogo.svg"}  alt=''/>
+            <Image w={5} src={
+              themeType.type == "Dark"
+              ? "/gymn_WhiteTextLogo.svg"
+              : "/gymn_BlackTextLogo.svg"                
+            }  alt=''/>
           </div>
           <div className='hidden md:flex md:gap-2'>
             <Tooltip text={"Github repo."} placement='bottom' type="lite" scale={2/5}>
