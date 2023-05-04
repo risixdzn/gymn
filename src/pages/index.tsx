@@ -30,7 +30,7 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
       <div className={themeType.type == "Dark" ? "dark" : ""}>
         <div></div>
         <Navbar switchThemes={switchThemes} themeType={themeType}/>
-        <main className={`mt-[66px] flex min-h-screen flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-950 ` } color="">          
+        <main className={`mt-[82px] flex min-h-screen flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-950 ` } color="">          
           <div className="flex flex-col items-center justify-center gap-12 z-10">
             <div id='colored_gradient' className="relative flex flex-col items-center justify-center gap-12 w-screen py-14 bg-gradient-to-r from-[#0575E6] to-[#00F260] bg-neutral-950">                            
               <div className="container flex flex-col items-center justify-center h-14 lg:h-24 z-20">
