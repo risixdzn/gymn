@@ -4,16 +4,23 @@ import { Image, Button, Tooltip,  Spacer, Collapse } from '@geist-ui/core'
 import { Github, Menu } from '@geist-ui/icons'
 import { type ThemeChangerTypes } from './ThemeChanger'
 import ThemeChanger from './ThemeChanger'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+import { motion } from 'framer-motion';
 
 function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false) 
+
+  const opacityAnimation = {
+    opacity: mobileNavOpen ? 1 : 0,    
+    transition: { duration: 0.15 }
+  };
 
   return (
     <>       
       <nav className="fixed bottom top-0 z-50 w-full py-6 bg-neutral-50 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-70 border-b-2 border-neutral-400 border-opacity-20 
       dark:bg-neutral-950 dark:bg-clip-padding dark:backdrop-filter dark:backdrop-blur-sm dark:bg-opacity-70 dark:border-b-2 dark:border-neutral-700 dark:border-opacity-20">        
-        <div className={mobileNavOpen ? 'absolute px-4 flex flex-col mx-auto left-0 right-0 top-2 bg-neutral-100 dark:bg-neutral-950 w-[87%] h-auto md:hidden rounded-md py-5 border border-neutral-400 dark:border-neutral-700 border-opacity-40 shadow-xl transition-all' : 'hidden'}>          
+        <motion.div initial={{opacity:0}} animate={opacityAnimation} className={mobileNavOpen ? 'absolute px-4 flex flex-col mx-auto left-0 right-0 top-2 bg-neutral-100 dark:bg-neutral-950 w-[87%] h-auto md:hidden rounded-md py-5 border border-neutral-400 dark:border-neutral-700 border-opacity-40 shadow-xl transition-all' : 'hidden'}>          
           <Spacer h={2.5} w={100}></Spacer>
           <hr className='w-full'></hr>
           <div className='flex mt-4'>
@@ -26,7 +33,7 @@ function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
               </Collapse>
             </Collapse.Group>
           </div>
-        </div>        
+        </motion.div>        
         <div className="flex items-center justify-between mx-auto max-w-5xl w-[85%]">
           <div className='z-30'>
             <Image w={5} src={
