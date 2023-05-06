@@ -1,11 +1,10 @@
 import React from 'react'
 
-import { Image, Button, Tooltip,  Spacer, Collapse } from '@geist-ui/core'
+import { Image, Button, Tooltip,  Spacer, Collapse, Select, } from '@geist-ui/core'
 import { Github, Menu } from '@geist-ui/icons'
 import { type ThemeChangerTypes } from './ThemeChanger'
 import ThemeChanger from './ThemeChanger'
-import { useState, useEffect } from 'react'
-
+import { useState } from 'react'
 import { motion } from 'framer-motion';
 
 function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
@@ -49,6 +48,14 @@ function Navbar({switchThemes, themeType}:ThemeChangerTypes) {
               </a>
             </Tooltip>  
             <ThemeChanger switchThemes={switchThemes} themeType={themeType} scale={3/5}/>
+            <Select initialValue="English" scale={2/3} width="100px; min-width: 100px !important">
+              <Select.Option value="English">
+                English
+              </Select.Option>
+              <Select.Option value="Portugues">
+                Português
+              </Select.Option>
+            </Select>
           </div>   
           <div className='flex md:hidden'>            
               <Button iconRight={<Menu/>} auto px={0.6} scale={3/5} onClick={() => setMobileNavOpen(!mobileNavOpen)}/>                     

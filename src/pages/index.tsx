@@ -15,7 +15,7 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [drawerOpen, setDrawerOpen] = useState(false)   
   const [selectedValue, setSelectedValue] = useState<string | string[]>("")
-
+ 
   const { setToast } = useToasts()
   const showToast = () => setToast({ text: 'Hello, user!', delay: 2000 , type:"success"}) 
   const handler = (val: string | string[]) => setSelectedValue(val);  
