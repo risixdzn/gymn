@@ -36,9 +36,10 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
               <div className="container flex flex-col items-center justify-center h-14 lg:h-24 z-20">
                 <Image height="100%" src={themeType.type == "Dark" ? "/gymn_WhiteTextLogo.svg" : "/gymn_WhiteTextLogo.svg"} alt=''/>
               </div>
+              <p className="-mt-5 text-white z-20">Eficiencia para proprietários, resultados para alunos.</p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 z-20">
                 <Link
-                  className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
+                  className="transition-colors flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900/50 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
                   href="https://create.t3.gg/en/usage/first-steps"
                   target="_blank"
                 >
@@ -49,7 +50,7 @@ const Home = ({switchThemes, themeType}:ThemeChangerTypes) => {
                   </div>
                 </Link>
                 <Link
-                  className="flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
+                  className="transition-colors flex max-w-xs flex-col gap-4 rounded-xl bg-neutral-900/50 p-4 text-neutral-100 hover:bg-neutral-800 dark:hover:bg-white/20 dark:bg-white/10"
                   href="https://create.t3.gg/en/introduction"
                   target="_blank"
                 >
