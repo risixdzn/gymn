@@ -4,11 +4,11 @@ const GymnDarkTheme = Themes.createFromDark({
     type: 'Dark',
     palette: {
       background: '#0d0d0d',
-      success: '#8a2be2',
-      successLight: '#8f3ddb',
-      successDark: '#7122ba',
-      purple: '#8a2be1',
-      alert: '#8a2be3',      
+      success: '#0dd661',
+      successLight: '#5df095',
+      successDark: '#20c960',
+      purple: '#0dd661',
+      alert: '#0dd661',      
     },
 })
 
@@ -16,10 +16,11 @@ const GymnLightTheme = Themes.createFromLight({
   type: 'Light',
   palette: {
     background: '#ededed',
-    success: '#8a2be2',
-    successLight: '#8f3ddb',
-    purple: '#8a2be1',
-    alert: '#8a2be3',      
+    success: '#0dd661',
+    successLight: '#5df095',
+    successDark: '#20c960',
+    purple: '#0dd661',
+    alert: '#0dd661',      
   },
 })
 
