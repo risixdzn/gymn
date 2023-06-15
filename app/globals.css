@@ -34,6 +34,9 @@
     --ring: 215 20.2% 65.1%;
  
     --radius: 0.5rem;
+
+    --g_purple: 270 100% 63%;
+    --g_darkpurple: 270 76% 46%
   }
  
   .dark {
