@@ -8,7 +8,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Gymn',
-  description: 'Um aplicativo, duas perspectivas',
+  description: 'Um aplicativo, duas perspectivas',  
+  icons: {
+    icon: '../favicon.ico'
+  }
 }
 
 export default function RootLayout({
@@ -17,7 +20,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en">  
+      <head>
+        <link rel='icon' href='../favicon.ico'/>
+      </head>    
       <body className={inter.className}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <Navbar/>

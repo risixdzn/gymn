@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Gymn - Dashboard',
-  description: 'Um aplicativo, duas perspectivas',
+  description: 'Um aplicativo, duas perspectivas', 
 }
 
 export default function RootLayout({
