@@ -71,7 +71,7 @@ export default function Sidebar({ session }: { session: Session | null }) {
         <>
             <div
                 id='sidebar'
-                className={`fixed w-80 h-[100%] bg-background transition-all duration-300 border-border border-r-[1px] z-[3]
+                className={`fixed w-80 h-[100%] bg-background shadow-lg transition-all duration-300 border-border border-r-[1px] z-[3]
 flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-translate-x-80"}`}
             >
                 <div id='topsection' className='w-full h-auto px-5 pt-5 flex flex-col gap-6'>
