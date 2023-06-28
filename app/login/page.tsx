@@ -20,7 +20,7 @@ export default function Login(){
             <h1>Register</h1>
             <input type='email' placeholder="email" onChange={(e)=> setFormEmail(e.target.value)}></input>
             <input type='password' placeholder="password" onChange={(e)=> setFormPassword(e.target.value)}></input>
-            <Button onClick={signUp}>Sign up</Button>
+            <Button onClick={signUp} variant={"highlight"}>Sign up</Button>
         </main>
     )
 }
