@@ -25,12 +25,7 @@ export default function Hero(){
                     A ferramenta completa para <b>proprietários</b> de academias e <b>entusiastas</b> do mundo fitness.
                 </p>
                 <Link href='/login'>
-                    <button className="mt-3
-                        font-semibold text-white bg-gradient-to-b from-g_purple to-g_darkpurple px-[2.2rem] py-[0.7rem] rounded-lg text-lg transition-all                      
-                        hover:shadow-g_PrimaryGlow
-                        active:brightness-75
-                        lg:px-[3rem] lg:py-4 lg:text-xl lg:mt-6"
-                        >
+                    <button className="mt-3 g_xlPrimaryBtn">
                         Começar
                     </button>
                 </Link>                
