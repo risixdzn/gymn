@@ -76,6 +76,13 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      backgroundImage: {
+        'heroBGDark': "url(../public/heroBGDark.png)",
+        'heroBGWhite': "url(../public/heroBGWhite.png)"
+      },
+      boxShadow:{
+        'g_PrimaryGlow': '0px 0px 15px 0px rgba(161,67,255,0.75);'
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

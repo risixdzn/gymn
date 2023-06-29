@@ -1,7 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
+.g_xlPrimaryBtn{
+  @apply font-semibold text-white bg-gradient-to-b from-g_purple to-g_darkpurple px-[2.2rem] py-[0.7rem] rounded-lg text-lg transition-all                      
+  hover:shadow-g_PrimaryGlow
+  active:brightness-75
+  lg:px-[3rem] lg:py-4 lg:text-xl lg:mt-6
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -35,6 +42,7 @@
  
     --radius: 0.5rem;
 
+    --g_lightpurple: 270 100% 67%;
     --g_purple: 270 100% 63%;
     --g_darkpurple: 270 76% 46%
   }
