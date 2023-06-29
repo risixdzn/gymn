@@ -26,7 +26,7 @@ export default function Navbar(){
     return (
         <header>
             <div className="
-                fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-14
+                fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-10
                 bg-gray-100 border-gray-200
                 dark:bg-zinc-950 dark:border-zinc-900 dark:bg-opacity-20
                 w-full h-20 flex items-center justify-center border-b-2 "
