@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -35,6 +35,7 @@
  
     --radius: 0.5rem;
 
+    --g_lightpurple: 270 100% 67%;
     --g_purple: 270 100% 63%;
     --g_darkpurple: 270 76% 46%
   }

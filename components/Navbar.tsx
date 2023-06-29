@@ -1,7 +1,6 @@
 'use client'
 
 import Image from "next/image"
-import GymnLogo from '../public/gymn_BlackTextLogo.svg'
 import { ModeToggle } from "./ModeToggle"
 import { Button } from "./ui/button"
 import { Github } from "lucide-react"
@@ -11,6 +10,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import GymnLogo from "./GymnLogo"
 
 // import { 
 //     NavigationMenu,
@@ -32,7 +32,7 @@ export default function Navbar(){
                 w-full h-20 flex items-center justify-center border-b-2 "
             >
                 <div className="w-[100%] max-w-6xl h-20 flex items-center justify-between">
-                    <Image src={GymnLogo} alt='' width={90} className="dark:invert"/>
+                    <GymnLogo width={90} className="fill-slate-950 dark:fill-white"/>
 
                     {/* <NavigationMenu>
                         <NavigationMenuList>
