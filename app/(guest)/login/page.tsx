@@ -15,9 +15,10 @@ export default function Login(){
         })
         console.log(data)
     }
+
     return(
         <main className="flex min-h-screen flex-col items-center p-24 gap-4">
-            <h1>Register</h1>
+            <h1>Login</h1>
             <input type='email' placeholder="email" onChange={(e)=> setFormEmail(e.target.value)}></input>
             <input type='password' placeholder="password" onChange={(e)=> setFormPassword(e.target.value)}></input>
             <Button onClick={signUp} variant={"highlight"}>Sign up</Button>
