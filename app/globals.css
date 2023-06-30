@@ -9,6 +9,20 @@
   lg:px-[3rem] lg:py-4 lg:text-xl lg:mt-6
 }
 
+.g_NavOpen{
+  @apply fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-10
+  bg-gray-100 border-gray-300
+  dark:bg-zinc-950 dark:border-zinc-800 dark:bg-opacity-20
+  w-[calc(100vw-2rem)] mt-[1rem] h-20 flex rounded-t-lg items-center justify-center border-x-2 border-t-2 transition-all duration-300
+}
+
+.g_Nav{
+  @apply fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-10
+  bg-gray-100 border-gray-300
+  dark:bg-zinc-950 dark:border-zinc-900 dark:bg-opacity-20
+  w-full h-20 flex items-center justify-center border-b-2 transition-all duration-300
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -28,7 +28,7 @@ export default function Hero(){
                     <button className="mt-3 g_xlPrimaryBtn">
                         Começar
                     </button>
-                </Link>                
+                </Link>                             
             </div>
             <div id='blurrycircle' 
                 className="absolute w-56 aspect-square bg-violet-600/70 blur-3xl"
