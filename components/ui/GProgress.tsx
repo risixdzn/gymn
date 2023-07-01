@@ -1,14 +1,13 @@
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type ProgressProps = {
-    width: number
-    widthUnit: "percent" | "rem"
+    className: string
     steps: 3 | 4 | 5 | 6 | 7
     currentStep: number
     description?: string[]
 }
 
-export default function GProgress({ steps, currentStep, description, width, widthUnit}: ProgressProps){
+export default function GProgress({ steps, currentStep, description, className}: ProgressProps){
     function stepsElements(): JSX.Element[] {
         const stepsArray = Array.from({length: steps}, (_,index) => index);       
         if (description && description.length !== steps) {
@@ -64,8 +63,7 @@ export default function GProgress({ steps, currentStep, description, width, widt
     return(
         <>
             <div 
-                className={`h-2 bg-zinc-800 mt-10 relative flex items-center rounded-full`}
-                style={{ width: `${width + widthUnit}`, maxWidth: `75rem`}}
+                className={`${className} h-2 w-full bg-zinc-800 mt-10 relative flex items-center rounded-full `}
             >
                 <div className="w-[100%] h-2 absolute flex items-center justify-between">
                     {renderSteps()}
