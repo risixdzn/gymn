@@ -29,7 +29,7 @@ export default function Hero(){
                         Começar
                     </button>
                 </Link>
-                <GProgress steps={5} currentStep={4}/>  
+                <GProgress steps={3} currentStep={2} description={['Etapa 1','Etapa 2','Etapa 3']}/>  
             </div>
             <div id='blurrycircle' 
                 className="absolute w-56 aspect-square bg-violet-600/70 blur-3xl"

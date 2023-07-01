@@ -1,29 +1,43 @@
+import { ChevronDown, Check } from "lucide-react";
+
 type ProgressProps = {
     steps: 3 | 4 | 5 | 6 | 7,
     currentStep: number
+    description?: string[]
 }
 
-export default function GProgress({ steps, currentStep}: ProgressProps){
+export default function GProgress({ steps, currentStep, description}: ProgressProps){
     function stepsElements(): JSX.Element[] {
-        const stepsArray = Array.from({length: steps}, (_,index) => index);
+        const stepsArray = Array.from({length: steps}, (_,index) => index);       
+        if (description && description.length !== steps) {
+            throw new Error("The 'description' array must have the same number of elements as the 'steps' value.");
+        }
+
         return stepsArray.map((_,index) => {
-            return index === currentStep - 1?
+            return index === currentStep - 1 ?
             (
-                <div>
+                <div className="flex items-center justify-center">  
+                    <ChevronDown className="absolute -translate-y-5"/>                  
                     <div 
                         key={index} 
-                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full absolute`}
+                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full absolute`}
                     ></div>
                     <div                         
-                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full animate-ping`}
+                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full animate-ping`}
                     ></div>
+                    
+                    {description ? <p className="text-sm font-semibold text-slate-950 dark:text-zinc-100 absolute mt-10 whitespace-nowrap">{description[index]}</p> : <></>}
                 </div>
-            ):
+            ):            
             (
-                <div 
-                    key={index} 
-                    className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full`}
-                ></div>
+                <div className="flex items-center justify-center">
+                    <div 
+                        key={index} 
+                        className={`w-4 h-4  ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full`}
+                    ></div>
+                    {description ? <p className="text-xs text-slate-700 dark:text-zinc-400 absolute mt-10 whitespace-nowrap">{description[index]}</p> : <></>}
+                </div>
+                
             )
         })  
     }
