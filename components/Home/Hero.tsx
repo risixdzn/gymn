@@ -1,8 +1,8 @@
+
 import Link from "next/link";
-import { Button } from "../ui/button";
+import GProgress from "../ui/GProgress";
 
-
-export default function Hero(){
+export default function Hero(){    
     return(
         <section className='
             w-full h-screen flex items-center justify-center
@@ -28,7 +28,8 @@ export default function Hero(){
                     <button className="mt-3 g_xlPrimaryBtn">
                         Começar
                     </button>
-                </Link>                
+                </Link>
+                <GProgress steps={3} currentStep={2} description={['Etapa 1','Etapa 2','Etapa 3']}/>  
             </div>
             <div id='blurrycircle' 
                 className="absolute w-56 aspect-square bg-violet-600/70 blur-3xl"
