@@ -2,7 +2,7 @@
 
 import { ModeToggle } from "./ModeToggle"
 import { Button } from "./ui/button"
-import { Github, Menu } from "lucide-react"
+import { Github, Menu, X } from "lucide-react"
 import {
     Tooltip,
     TooltipContent,
@@ -51,7 +51,9 @@ export default function Navbar(){
                         </i>
 
                         <Button className="flex lg:hidden" variant={'outline'} size={'icon'} onClick={()=> setNavOpen(!navOpen)}>
-                            <Menu/>
+                            {navOpen?
+                            <X className={navOpen ? `rotate-0 scale-1` : `rotate-90 scale-0`}/>:
+                            <Menu className="rotate-45"/>}
                         </Button>
                     </div>
                 </div>                
@@ -68,7 +70,28 @@ export default function Navbar(){
                 bg-gray-100 border-gray-300
                 dark:bg-zinc-950 dark:border-zinc-800 dark:bg-opacity-0`
             }>
-                
+                <div className="w-full h-full flex items-center justify-center">
+                    <div className="flex items-center justify-center gap-2">
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild >
+                                    <a href='https://github.com/risixdzn/gymn' target="_blank">
+                                        <Button variant={"outline"} size={'icon'}>
+                                            <Github className="h-[1.2rem]"/>
+                                        </Button>
+                                    </a> 
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Github repo!</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                        <i className="">                            
+                            <ModeToggle/>
+                        </i>
+                    </div>
+                    
+                </div>
             </div>            
         </header>
     )
