@@ -6,9 +6,26 @@ type ProgressProps = {
 export default function GProgress({ steps, currentStep}: ProgressProps){
     function stepsElements(): JSX.Element[] {
         const stepsArray = Array.from({length: steps}, (_,index) => index);
-        return stepsArray.map((_,index) => (
-            <div key={index} className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full`}></div>
-        ))
+        return stepsArray.map((_,index) => {
+            return index === currentStep - 1?
+            (
+                <div>
+                    <div 
+                        key={index} 
+                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full absolute`}
+                    ></div>
+                    <div                         
+                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full animate-ping`}
+                    ></div>
+                </div>
+            ):
+            (
+                <div 
+                    key={index} 
+                    className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-600'} drop-shadow-lg rounded-full`}
+                ></div>
+            )
+        })  
     }
 
     const renderSteps = () =>{
