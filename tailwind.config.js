@@ -78,7 +78,9 @@ module.exports = {
       },
       backgroundImage: {
         'heroBGDark': "url(../public/heroBGDark.png)",
-        'heroBGWhite': "url(../public/heroBGWhite.png)"
+        'heroBGWhite': "url(../public/heroBGWhite.png)",
+        'loginBGDark': "url(../public/LoginBGDark.png)",
+        'loginBGWhite': "url(../public/LoginBGWhite.png)"
       },
       boxShadow:{
         'g_PrimaryGlow': '0px 0px 15px 0px rgba(161,67,255,0.75);'
