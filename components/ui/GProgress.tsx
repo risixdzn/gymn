@@ -21,12 +21,11 @@ export default function GProgress({ steps, currentStep, description, className}:
                     <ChevronDown className="absolute -translate-y-5"/>                  
                     <div 
                         key={index} 
-                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full absolute`}
+                        className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full transition-all absolute`}
                     ></div>
                     <div                         
                         className={`w-5 h-5 ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full animate-ping`}
-                    ></div>
-                    
+                    ></div>                    
                     {description ? <p className="text-sm font-semibold text-slate-950 dark:text-zinc-100 absolute mt-10 whitespace-nowrap">{description[index]}</p> : <></>}
                 </div>
             ):            
@@ -34,7 +33,7 @@ export default function GProgress({ steps, currentStep, description, className}:
                 <div className="flex items-center justify-center">
                     <div 
                         key={index} 
-                        className={`w-4 h-4  ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full`}
+                        className={`w-4 h-4  ${index > currentStep - 1 ? 'bg-zinc-700': 'bg-purple-500'} drop-shadow-lg rounded-full transition-all`}
                     ></div>
                     {description ? <p className="text-xs text-slate-700 dark:text-zinc-400 absolute mt-10 whitespace-nowrap">{description[index]}</p> : <></>}
                 </div>

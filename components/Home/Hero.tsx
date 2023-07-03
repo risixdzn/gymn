@@ -1,8 +1,11 @@
-
+'use client'
 import Link from "next/link";
 import GProgress from "../ui/GProgress";
+import { useState } from "react";
 
 export default function Hero(){    
+    const [currentStep, setCurrentStep] = useState<number>(1)
+
     return(
         <section className='
             w-full h-screen flex items-center justify-center
@@ -29,7 +32,9 @@ export default function Hero(){
                         Começar
                     </button>
                 </Link>
-                <GProgress className='w-96' steps={4} currentStep={2} description={['Etapa 1','Etapa 2','Etapa 3','Etapa 4']}/>  
+                <GProgress className='w-96' steps={6} currentStep={currentStep} description={['Etapa 1','Etapa 2','Etapa 3','Etapa 4','Etapa 5','Etapa 6']}/>  
+                <button className="mt-10" onClick={()=> setCurrentStep(currentStep + 1)}>Increase step</button>
+                <button className="mt-10" onClick={()=> setCurrentStep(currentStep - 1)}>Decrease step</button>
             </div>
             <div id='blurrycircle' 
                 className="absolute w-56 aspect-square bg-violet-600/70 blur-3xl"
