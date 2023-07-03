@@ -24,8 +24,8 @@ export default function Login(){
                     para utilizar o <b>Gymn.</b></p>
                 </div>
             </div>
-            <div className="bg-loginBGWhite dark:bg-loginBGDark lg:bg-none w-full flex items-center justify-center lg:w-[50%] h-[calc(100vh-5rem)] mt-[5rem]">
-
+            <div className="bg-loginBGWhite dark:bg-loginBGDark lg:bg-none lg:dark:bg-none w-full flex items-center justify-center lg:w-[50%] h-[calc(100vh-5rem)] mt-[5rem]">
+        
             </div>
         </main>
     )
