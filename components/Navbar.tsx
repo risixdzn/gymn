@@ -27,7 +27,7 @@ export default function Navbar(){
                     </Link>                   
 
                     <div className="flex items-center justify-center gap-2">            
-                        <Link href='/login' className="hidden lg:block">
+                        <Link href='/auth' className="hidden lg:block">
                             <Button className="w-28" variant={'outline'}>Entrar</Button>
                         </Link>            
 
