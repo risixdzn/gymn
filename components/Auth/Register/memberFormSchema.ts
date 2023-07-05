@@ -7,6 +7,7 @@ export const schema = z
             .string()
             .min(2, { message: "O nome de usuário deve ser maior." })
             .max(30, { message: "O nome de usuário deve ser menor." }),
+        firstName: z.string().max(60, { message: "O nome completo deve ser menor." }).optional(),
         password: z
             .string()
             .min(6, { message: "A senha deve conter 6 ou mais caracteres." })

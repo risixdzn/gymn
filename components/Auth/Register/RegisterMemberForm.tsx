@@ -8,8 +8,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { schema } from "./gymOwnerFormSchema";
+import { useState } from "react";
 
 export default function RegisterMemberForm() {
+    const [step, setStep] = useState<number>(1);
     const {
         register,
         handleSubmit,
@@ -34,9 +36,22 @@ export default function RegisterMemberForm() {
                 <p className='text-xs text-destructive mt-2'>{errors.email.message}</p>
             )}
 
+            <Label htmlFor='firstName'>Primeiro nome</Label>
+            <Input
+                placeholder='John'
+                id='firstName'
+                type='text'
+                className='mt-2'
+                {...register("firstName")}
+            ></Input>
+            <p className='text-xs text-muted-foreground mt-2'>Este nome não será publico</p>
+            {errors.firstName && (
+                <p className='text-xs text-destructive mt-2'>{errors.firstName.message}</p>
+            )}
+
             <Label htmlFor='username'>Nome de usuário</Label>
             <Input
-                placeholder='John Doe'
+                placeholder='John_Doe'
                 id='username'
                 type='text'
                 className='mt-2'

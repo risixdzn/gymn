@@ -34,6 +34,19 @@ export default function RegisterGymOwnerForm() {
                 <p className='text-xs text-destructive mt-2'>{errors.email.message}</p>
             )}
 
+            <Label htmlFor='firstName'>Primeiro nome</Label>
+            <Input
+                placeholder='John'
+                id='firstName'
+                type='text'
+                className='mt-2'
+                {...register("firstName")}
+            ></Input>
+            <p className='text-xs text-muted-foreground mt-2'>Este nome não será publico</p>
+            {errors.firstName && (
+                <p className='text-xs text-destructive mt-2'>{errors.firstName.message}</p>
+            )}
+
             <Label htmlFor='username'>Nome de usuário</Label>
             <Input
                 placeholder='John Doe'
