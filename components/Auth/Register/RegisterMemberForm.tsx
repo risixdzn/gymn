@@ -7,8 +7,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { schema } from "./gymOwnerFormSchema";
-import { useState } from "react";
+import { schema } from "./memberFormSchema";
+import { useEffect, useState } from "react";
 
 export default function RegisterMemberForm() {
     const [step, setStep] = useState<number>(1);
