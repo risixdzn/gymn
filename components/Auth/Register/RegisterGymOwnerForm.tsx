@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type RegisterGymOwnerForm = {
     firstName: string;
@@ -60,70 +61,74 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
             case 1:
                 return (
                     <>
-                        <Label htmlFor='firstName'>Primeiro nome</Label>
-                        <Input
-                            key={1}
-                            placeholder='John'
-                            id='firstName'
-                            type='text'
-                            className='mt-2'
-                            {...register("firstName", {
-                                required: "Preencha este campo.",
-                                minLength: {
-                                    value: 2,
-                                    message: "O nome não pode ser tão curto.",
-                                },
-                                maxLength: {
-                                    value: 30,
-                                    message: "O nome não pode ser tão longo.",
-                                },
-                                pattern: {
-                                    value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
-                                    message: "O nome não pode conter caracteres especiais.",
-                                },
-                            })}
-                        ></Input>
-                        <p className='text-xs text-muted-foreground mt-2'>
-                            Este nome não será publico
-                        </p>
-                        {errors.firstName && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.firstName.message}
+                        <div>
+                            <Label htmlFor='firstName'>Primeiro nome</Label>
+                            <Input
+                                key={1}
+                                placeholder='John'
+                                id='firstName'
+                                type='text'
+                                className='mt-2'
+                                {...register("firstName", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 2,
+                                        message: "O nome não pode ser tão curto.",
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: "O nome não pode ser tão longo.",
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
+                                        message: "O nome não pode conter caracteres especiais.",
+                                    },
+                                })}
+                            ></Input>
+                            <p className='text-xs text-muted-foreground mt-2'>
+                                Este nome não será publico
                             </p>
-                        )}
+                            {errors.firstName && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.firstName.message}
+                                </p>
+                            )}
+                        </div>
 
-                        <Label htmlFor='username'>Nome de usuário</Label>
-                        <Input
-                            key={2}
-                            placeholder='John Doe'
-                            id='username'
-                            type='text'
-                            className='mt-2'
-                            {...register("username", {
-                                required: "Preencha este campo.",
-                                minLength: {
-                                    value: 3,
-                                    message: "O nome não pode ser tão curto.",
-                                },
-                                maxLength: {
-                                    value: 30,
-                                    message: "O nome não pode ser tão longo.",
-                                },
-                                pattern: {
-                                    value: /^[a-zA-Z0-9]*$/,
-                                    message:
-                                        "O nome de usuário não pode conter caracteres especiais.",
-                                },
-                            })}
-                        ></Input>
-                        <p className='text-xs text-muted-foreground mt-2'>
-                            Este será seu nome de exibição
-                        </p>
-                        {errors.username && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.username.message}
+                        <div className='mt-2'>
+                            <Label htmlFor='username'>Nome de usuário</Label>
+                            <Input
+                                key={2}
+                                placeholder='John Doe'
+                                id='username'
+                                type='text'
+                                className='mt-2'
+                                {...register("username", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 3,
+                                        message: "O nome não pode ser tão curto.",
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: "O nome não pode ser tão longo.",
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9]*$/,
+                                        message:
+                                            "O nome de usuário não pode conter caracteres especiais.",
+                                    },
+                                })}
+                            ></Input>
+                            <p className='text-xs text-muted-foreground mt-2'>
+                                Este será seu nome de exibição
                             </p>
-                        )}
+                            {errors.username && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.username.message}
+                                </p>
+                            )}
+                        </div>
                     </>
                 );
                 break;
@@ -154,98 +159,152 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
             case 3:
                 return (
                     <>
-                        <Label htmlFor='password'>Senha</Label>
-                        <Input
-                            key={4}
-                            placeholder='••••••••'
-                            id='password'
-                            type='password'
-                            className='mt-2'
-                            {...register("password", {
-                                required: "Preencha este campo.",
-                                minLength: {
-                                    value: 6,
-                                    message: "A senha deve conter 6 ou mais caracteres.",
-                                },
-                                maxLength: {
-                                    value: 40,
-                                    message: "A senha deve ser menor.",
-                                },
-                                validate: {
-                                    lowerCase: (value: string) =>
-                                        /^(?=.*[a-z])/.test(value) ||
-                                        "A senha deve conter uma letra minúscula.",
-                                    upperCase: (value: string) =>
-                                        /^(?=.*[A-Z])/.test(value) ||
-                                        "A senha deve conter uma letra maiúscula.",
-                                    number: (value: string) =>
-                                        /^(?=.*[0-9])/.test(value) ||
-                                        "A senha deve conter um número.",
-                                },
-                            })}
-                        ></Input>
-                        {errors.password && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.password.message}
-                            </p>
-                        )}
+                        <div>
+                            <Label htmlFor='password'>Senha</Label>
+                            <TooltipProvider delayDuration={0}>
+                                <Tooltip defaultOpen>
+                                    <TooltipTrigger asChild>
+                                        <Input
+                                            key={4}
+                                            placeholder='••••••••'
+                                            id='password'
+                                            type='password'
+                                            className='mt-2'
+                                            {...register("password", {
+                                                required: "Preencha este campo.",
+                                                minLength: {
+                                                    value: 6,
+                                                    message:
+                                                        "A senha deve conter 6 ou mais caracteres.",
+                                                },
+                                                maxLength: {
+                                                    value: 40,
+                                                    message: "A senha deve ser menor.",
+                                                },
+                                                validate: {
+                                                    lowerCase: (value: string) =>
+                                                        /^(?=.*[a-z])/.test(value) ||
+                                                        "A syenha deve conter uma letra minúscula.",
+                                                    upperCase: (value: string) =>
+                                                        /^(?=.*[A-Z])/.test(value) ||
+                                                        "A senha deve conter uma letra maiúscula.",
+                                                    number: (value: string) =>
+                                                        /^(?=.*[0-9])/.test(value) ||
+                                                        "A senha deve conter um número.",
+                                                },
+                                            })}
+                                        ></Input>
+                                    </TooltipTrigger>
+                                    <TooltipContent side='bottom'>
+                                        <h4>Sua senha deve conter, ao menos:</h4>
+                                        <ul className='text-xs text-muted-foreground list-disc'>
+                                            <li className='list-inside'>Uma letra minúscula</li>
+                                            <li className='list-inside'>Uma letra maiúscula</li>
+                                            <li className='list-inside'>Um número</li>
+                                        </ul>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            {errors.password && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.password.message}
+                                </p>
+                            )}
+                        </div>
 
-                        <Label htmlFor='confirmPassword'>Confirme a senha</Label>
-                        <Input
-                            key={5}
-                            placeholder='••••••••'
-                            id='confirmPassword'
-                            type='password'
-                            className='mt-2'
-                            {...register("confirmPassword", {
-                                required: "Preencha este campo.",
-                                validate: (value: string) => {
-                                    if (watch("password") != value) {
-                                        return "As senhas não sao idênticas.";
-                                    }
-                                },
-                            })}
-                        ></Input>
-                        {errors.confirmPassword && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.confirmPassword.message}
-                            </p>
-                        )}
+                        <div className='mt-2'>
+                            <Label htmlFor='confirmPassword'>Confirme a senha</Label>
+                            <Input
+                                key={5}
+                                placeholder='••••••••'
+                                id='confirmPassword'
+                                type='password'
+                                className='mt-2'
+                                {...register("confirmPassword", {
+                                    required: "Preencha este campo.",
+                                    validate: (value: string) => {
+                                        if (watch("password") != value) {
+                                            return "As senhas não sao idênticas.";
+                                        }
+                                    },
+                                })}
+                            ></Input>
+                            {errors.confirmPassword && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.confirmPassword.message}
+                                </p>
+                            )}
+                        </div>
                     </>
                 );
                 break;
             case 4:
                 return (
                     <>
-                        <Label htmlFor='gymName'>Nome da academia</Label>
-                        <Input
-                            key={6}
-                            placeholder='Example Fitness'
-                            id='gymName'
-                            type='text'
-                            className='mt-2'
-                            {...register("gymName")}
-                        ></Input>
-                        {errors.gymName && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.gymName.message}
+                        <div>
+                            <Label htmlFor='gymName'>Nome da academia</Label>
+                            <Input
+                                key={6}
+                                placeholder='Example Fitness'
+                                id='gymName'
+                                type='text'
+                                className='mt-2'
+                                {...register("gymName", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 2,
+                                        message: "O nome não pode ser tão curto.",
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: "O nome não pode ser tão longo.",
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
+                                        message: "O nome não pode conter caracteres especiais.",
+                                    },
+                                })}
+                            ></Input>
+                            <p className='text-xs text-muted-foreground mt-2'>
+                                Esta é a academia que você administra.
                             </p>
-                        )}
+                            {errors.gymName && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.gymName.message}
+                                </p>
+                            )}
+                        </div>
 
-                        <Label htmlFor='gymAddress'>Endereço da academia</Label>
-                        <Input
-                            key={7}
-                            placeholder='Av. Paulista, 735'
-                            id='gymAddress'
-                            type='text'
-                            className='mt-2'
-                            {...register("gymAddress")}
-                        ></Input>
-                        {errors.gymAddress && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.gymAddress.message}
-                            </p>
-                        )}
+                        <div className='mt-2'>
+                            <Label htmlFor='gymAddress'>Endereço da academia</Label>
+                            <Input
+                                key={7}
+                                placeholder='Av. Paulista, 735'
+                                id='gymAddress'
+                                type='text'
+                                className='mt-2'
+                                {...register("gymAddress", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 2,
+                                        message: "O endereço não pode ser tão curto.",
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: "O nome não pode ser tão longo.",
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ#°,]*$/,
+                                        message: "O nome não pode conter caracteres especiais.",
+                                    },
+                                })}
+                            ></Input>
+                            {errors.gymAddress && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.gymAddress.message}
+                                </p>
+                            )}
+                        </div>
                     </>
                 );
                 break;
