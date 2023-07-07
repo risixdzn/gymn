@@ -8,7 +8,7 @@ import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type RegisterMemberForm = {
     email: string;
@@ -24,7 +24,6 @@ type RegisterMemberFormProps = {
 
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
-    const { toast } = useToast();
 
     const {
         register,
@@ -161,42 +160,50 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                     <>
                         <div>
                             <Label htmlFor='password'>Senha</Label>
-                            <Input
-                                key={4}
-                                placeholder='••••••••'
-                                id='password'
-                                type='password'
-                                className='mt-2'
-                                onFocus={() => {
-                                    toast({
-                                        title: "Sua senha deve conter:",
-                                        description:
-                                            "Uma letra minúscula, uma maiúscula e um número.",
-                                    });
-                                }}
-                                {...register("password", {
-                                    required: "Preencha este campo.",
-                                    minLength: {
-                                        value: 6,
-                                        message: "A senha deve conter 6 ou mais caracteres.",
-                                    },
-                                    maxLength: {
-                                        value: 40,
-                                        message: "A senha deve ser menor.",
-                                    },
-                                    validate: {
-                                        lowerCase: (value: string) =>
-                                            /^(?=.*[a-z])/.test(value) ||
-                                            "A senha deve conter uma letra minúscula.",
-                                        upperCase: (value: string) =>
-                                            /^(?=.*[A-Z])/.test(value) ||
-                                            "A senha deve conter uma letra maiúscula.",
-                                        number: (value: string) =>
-                                            /^(?=.*[0-9])/.test(value) ||
-                                            "A senha deve conter um número.",
-                                    },
-                                })}
-                            ></Input>
+                            <TooltipProvider delayDuration={0}>
+                                <Tooltip defaultOpen>
+                                    <TooltipTrigger asChild>
+                                        <Input
+                                            key={4}
+                                            placeholder='••••••••'
+                                            id='password'
+                                            type='password'
+                                            className='mt-2'
+                                            {...register("password", {
+                                                required: "Preencha este campo.",
+                                                minLength: {
+                                                    value: 6,
+                                                    message:
+                                                        "A senha deve conter 6 ou mais caracteres.",
+                                                },
+                                                maxLength: {
+                                                    value: 40,
+                                                    message: "A senha deve ser menor.",
+                                                },
+                                                validate: {
+                                                    lowerCase: (value: string) =>
+                                                        /^(?=.*[a-z])/.test(value) ||
+                                                        "A senha deve conter uma letra minúscula.",
+                                                    upperCase: (value: string) =>
+                                                        /^(?=.*[A-Z])/.test(value) ||
+                                                        "A senha deve conter uma letra maiúscula.",
+                                                    number: (value: string) =>
+                                                        /^(?=.*[0-9])/.test(value) ||
+                                                        "A senha deve conter um número.",
+                                                },
+                                            })}
+                                        ></Input>
+                                    </TooltipTrigger>
+                                    <TooltipContent side='bottom'>
+                                        <h4>Sua senha deve conter, ao menos:</h4>
+                                        <ul className='text-xs text-muted-foreground list-disc'>
+                                            <li className='list-inside'>Uma letra minúscula</li>
+                                            <li className='list-inside'>Uma letra maiúscula</li>
+                                            <li className='list-inside'>Um número</li>
+                                        </ul>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                             {errors.password && (
                                 <p className='text-xs text-destructive mt-2'>
                                     {errors.password.message}

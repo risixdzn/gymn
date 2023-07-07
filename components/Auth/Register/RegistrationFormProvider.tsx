@@ -26,8 +26,8 @@ export default function RegistrationFormProvider() {
                         Tipo de conta:
                     </h3>
                     <div
-                        className={`w-full mt-4 bg-neutral-900 py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-colors ${
-                            accountType == "member" ? "border-purple-600" : "border-neutral-900"
+                        className={`w-full mt-4 bg-background py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-colors ${
+                            accountType == "member" ? "border-purple-600" : "border-border"
                         }`}
                     >
                         <input
@@ -48,8 +48,8 @@ export default function RegistrationFormProvider() {
                         </div>
                     </div>
                     <div
-                        className={`w-full mt-4 bg-neutral-900 py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-color ${
-                            accountType == "gymOwner" ? "border-purple-600" : "border-neutral-900"
+                        className={`w-full mt-4 bg-background py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-color ${
+                            accountType == "gymOwner" ? "border-purple-600" : "border-border"
                         }`}
                     >
                         <input
