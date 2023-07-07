@@ -78,6 +78,10 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                                         value: 30,
                                         message: "O nome não pode ser tão longo.",
                                     },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
+                                        message: "O nome não pode conter caracteres especiais.",
+                                    },
                                 })}
                             ></Input>
                             <p className='text-xs text-muted-foreground mt-2'>
@@ -107,6 +111,11 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                                     maxLength: {
                                         value: 30,
                                         message: "O nome não pode ser tão longo.",
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9]*$/,
+                                        message:
+                                            "O nome de usuário não pode conter caracteres especiais.",
                                     },
                                 })}
                             ></Input>
@@ -269,7 +278,6 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
             </button>
             {renderForm()}
             {renderButton()}
-            <DevTool control={control} />
         </form>
     );
 }
