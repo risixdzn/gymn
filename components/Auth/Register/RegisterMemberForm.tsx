@@ -8,7 +8,6 @@ import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
-import { useToast } from "@/components/ui/use-toast";
 
 type RegisterMemberForm = {
     email: string;
@@ -24,7 +23,6 @@ type RegisterMemberFormProps = {
 
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
-    const { toast } = useToast();
 
     const {
         register,
@@ -167,13 +165,6 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                                 id='password'
                                 type='password'
                                 className='mt-2'
-                                onFocus={() => {
-                                    toast({
-                                        title: "Sua senha deve conter:",
-                                        description:
-                                            "Uma letra minúscula, uma maiúscula e um número.",
-                                    });
-                                }}
                                 {...register("password", {
                                     required: "Preencha este campo.",
                                     minLength: {
