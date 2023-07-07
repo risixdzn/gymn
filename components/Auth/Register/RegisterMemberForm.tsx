@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
-
+import { ChevronLeft } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 type RegisterMemberForm = {
     email: string;
@@ -24,6 +24,8 @@ type RegisterMemberFormProps = {
 
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
+    const { toast } = useToast();
+
     const {
         register,
         handleSubmit,
@@ -58,61 +60,65 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
             case 1:
                 return (
                     <>
-                        <Label htmlFor='firstName'>Primeiro nome</Label>
-                        <Input
-                            key={1}
-                            placeholder='John'
-                            id='firstName'
-                            type='text'
-                            className='mt-2'
-                            {...register("firstName", {
-                                required: "Preencha este campo.",
-                                minLength: {
-                                    value: 2,
-                                    message: "O nome não pode ser tão curto.",
-                                },
-                                maxLength: {
-                                    value: 30,
-                                    message: "O nome não pode ser tão longo.",
-                                },
-                            })}
-                        ></Input>
-                        <p className='text-xs text-muted-foreground mt-2'>
-                            Este nome não será publico
-                        </p>
-                        {errors.firstName && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.firstName.message}
+                        <div>
+                            <Label htmlFor='firstName'>Primeiro nome</Label>
+                            <Input
+                                key={1}
+                                placeholder='John'
+                                id='firstName'
+                                type='text'
+                                className='mt-2'
+                                {...register("firstName", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 2,
+                                        message: "O nome não pode ser tão curto.",
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: "O nome não pode ser tão longo.",
+                                    },
+                                })}
+                            ></Input>
+                            <p className='text-xs text-muted-foreground mt-2'>
+                                Este nome não será publico
                             </p>
-                        )}
+                            {errors.firstName && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.firstName.message}
+                                </p>
+                            )}
+                        </div>
 
-                        <Label htmlFor='username'>Nome de usuário</Label>
-                        <Input
-                            key={2}
-                            placeholder='John_Doe'
-                            id='username'
-                            type='text'
-                            className='mt-2'
-                            {...register("username", {
-                                required: "Preencha este campo.",
-                                minLength: {
-                                    value: 3,
-                                    message: "O nome não pode ser tão curto.",
-                                },
-                                maxLength: {
-                                    value: 30,
-                                    message: "O nome não pode ser tão longo.",
-                                },
-                            })}
-                        ></Input>
-                        <p className='text-xs text-muted-foreground mt-2'>
-                            Este será seu nome de exibição
-                        </p>
-                        {errors.username && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.username.message}
+                        <div className='mt-2'>
+                            <Label htmlFor='username'>Nome de usuário</Label>
+                            <Input
+                                key={2}
+                                placeholder='John_Doe'
+                                id='username'
+                                type='text'
+                                className='mt-2'
+                                {...register("username", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 3,
+                                        message: "O nome não pode ser tão curto.",
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: "O nome não pode ser tão longo.",
+                                    },
+                                })}
+                            ></Input>
+                            <p className='text-xs text-muted-foreground mt-2'>
+                                Este será seu nome de exibição
                             </p>
-                        )}
+                            {errors.username && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.username.message}
+                                </p>
+                            )}
+                        </div>
                     </>
                 );
 
@@ -144,63 +150,74 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
             case 3:
                 return (
                     <>
-                        <Label htmlFor='password'>Senha</Label>
-                        <Input
-                            key={4}
-                            placeholder='••••••••'
-                            id='password'
-                            type='password'
-                            className='mt-2'
-                            {...register("password", {
-                                required: "Preencha este campo.",
-                                minLength: {
-                                    value: 6,
-                                    message: "A senha deve conter 6 ou mais caracteres.",
-                                },
-                                maxLength: {
-                                    value: 40,
-                                    message: "A senha deve ser menor.",
-                                },
-                                validate: {
-                                    lowerCase: (value: string) =>
-                                        /^(?=.*[a-z])/.test(value) ||
-                                        "A senha deve conter uma letra minúscula.",
-                                    upperCase: (value: string) =>
-                                        /^(?=.*[A-Z])/.test(value) ||
-                                        "A senha deve conter uma letra maiúscula.",
-                                    number: (value: string) =>
-                                        /^(?=.*[0-9])/.test(value) ||
-                                        "A senha deve conter um número.",
-                                },
-                            })}
-                        ></Input>
-                        {errors.password && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.password.message}
-                            </p>
-                        )}
+                        <div>
+                            <Label htmlFor='password'>Senha</Label>
+                            <Input
+                                key={4}
+                                placeholder='••••••••'
+                                id='password'
+                                type='password'
+                                className='mt-2'
+                                onFocus={() => {
+                                    toast({
+                                        title: "Sua senha deve conter:",
+                                        description:
+                                            "Uma letra minúscula, uma maiúscula e um número.",
+                                    });
+                                }}
+                                {...register("password", {
+                                    required: "Preencha este campo.",
+                                    minLength: {
+                                        value: 6,
+                                        message: "A senha deve conter 6 ou mais caracteres.",
+                                    },
+                                    maxLength: {
+                                        value: 40,
+                                        message: "A senha deve ser menor.",
+                                    },
+                                    validate: {
+                                        lowerCase: (value: string) =>
+                                            /^(?=.*[a-z])/.test(value) ||
+                                            "A senha deve conter uma letra minúscula.",
+                                        upperCase: (value: string) =>
+                                            /^(?=.*[A-Z])/.test(value) ||
+                                            "A senha deve conter uma letra maiúscula.",
+                                        number: (value: string) =>
+                                            /^(?=.*[0-9])/.test(value) ||
+                                            "A senha deve conter um número.",
+                                    },
+                                })}
+                            ></Input>
+                            {errors.password && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.password.message}
+                                </p>
+                            )}
+                        </div>
 
-                        <Label htmlFor='confirmPassword'>Confirme a senha</Label>
-                        <Input
-                            key={5}
-                            placeholder='••••••••'
-                            id='confirmPassword'
-                            type='password'
-                            className='mt-2'
-                            {...register("confirmPassword", {
-                                required: "Preencha este campo.",
-                                validate: (value: string) => {
-                                    if (watch("password") != value) {
-                                        return "As senhas não sao idênticas.";
-                                    }
-                                },
-                            })}
-                        ></Input>
-                        {errors.confirmPassword && (
-                            <p className='text-xs text-destructive mt-2'>
-                                {errors.confirmPassword.message}
-                            </p>
-                        )}
+                        <div className='mt-2'>
+                            <Label htmlFor='confirmPassword'>Confirme a senha</Label>
+                            <Input
+                                key={5}
+                                placeholder='••••••••'
+                                id='confirmPassword'
+                                type='password'
+                                className='mt-2'
+                                {...register("confirmPassword", {
+                                    required: "Preencha este campo.",
+                                    validate: (value: string) => {
+                                        if (watch("password") != value) {
+                                            return "As senhas não sao idênticas.";
+                                        }
+                                    },
+                                })}
+                            ></Input>
+                            {errors.confirmPassword && (
+                                <p className='text-xs text-destructive mt-2'>
+                                    {errors.confirmPassword.message}
+                                </p>
+                            )}
+                        </div>
                     </>
                 );
                 break;
@@ -242,9 +259,13 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
     };
 
     return (
-        <form onSubmit={handleSubmit(submitData)} noValidate>
-            <button className='block mb-4' onClick={handleGoBack}>
-                <ArrowLeft className='inline-block' /> Voltar
+        <form className='-mt-4' onSubmit={handleSubmit(submitData)} noValidate>
+            <button
+                className='mb-1 text-xs text-muted-foreground -ml-1 flex items-center'
+                onClick={handleGoBack}
+            >
+                <ChevronLeft className='inline-block scale-75' />
+                Etapa {step} de 3
             </button>
             {renderForm()}
             {renderButton()}
