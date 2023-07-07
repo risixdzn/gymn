@@ -75,8 +75,12 @@ export default function RegistrationFormProvider() {
                     </Button>
                 </>
             )}
-            {showForm && accountType === "gymOwner" && <RegisterGymOwnerForm />}
-            {showForm && accountType === "member" && <RegisterMemberForm />}
+            {showForm && accountType === "gymOwner" && (
+                <RegisterGymOwnerForm setShowForm={setShowForm} />
+            )}
+            {showForm && accountType === "member" && (
+                <RegisterMemberForm setShowForm={setShowForm} />
+            )}
         </>
     );
 }
