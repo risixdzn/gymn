@@ -260,7 +260,7 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
                                         message: "O nome não pode ser tão longo.",
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
+                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ ]*$/,
                                         message: "O nome não pode conter caracteres especiais.",
                                     },
                                 })}
@@ -294,7 +294,7 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
                                         message: "O nome não pode ser tão longo.",
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ#°,]*$/,
+                                        value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ#°, ]*$/,
                                         message: "O nome não pode conter caracteres especiais.",
                                     },
                                 })}
