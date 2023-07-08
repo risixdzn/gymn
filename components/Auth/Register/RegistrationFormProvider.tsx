@@ -57,9 +57,7 @@ export default function RegistrationFormProvider() {
                             className='inline-block w-15'
                         />{" "}
                         <div>
-                            <label htmlFor='gymOwner' className='font-semibold tracking-tight'>
-                                Membro
-                            </label>
+                            <h3 className='font-semibold tracking-tight'>Membro</h3>
                             <p className='max-w-[15rem] text-xs lg:text-sm text-muted-foreground'>
                                 <Balancer>Acompanhe seus treinos de forma eficiente.</Balancer>
                             </p>
@@ -90,9 +88,7 @@ export default function RegistrationFormProvider() {
                             onChange={() => setAccountType("gymOwner")}
                         />
                         <div>
-                            <label htmlFor='gymOwner' className='font-semibold tracking-tight'>
-                                Dono de academia
-                            </label>
+                            <h3 className='font-semibold tracking-tight'>Dono de academia</h3>
                             <p className='max-w-[15rem] text-xs lg:text-sm text-muted-foreground'>
                                 <Balancer>
                                     Gerencie seus alunos e seus treinos com facilidade.
