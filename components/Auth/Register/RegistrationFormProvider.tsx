@@ -26,8 +26,11 @@ export default function RegistrationFormProvider() {
                         Tipo de conta:
                     </h3>
                     <div
-                        className={`w-full mt-4 bg-background py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-colors ${
-                            accountType == "member" ? "border-purple-600" : "border-border"
+                        onClick={() => setAccountType("member")}
+                        className={`w-full mt-4 bg-background py-5 px-7 flex gap-7 rounded-lg border-[3px] cursor-pointer transition-colors ${
+                            accountType == "member"
+                                ? "border-purple-600 bg-purple-600/10"
+                                : "border-border bg-background"
                         }`}
                     >
                         <input
@@ -48,8 +51,11 @@ export default function RegistrationFormProvider() {
                         </div>
                     </div>
                     <div
-                        className={`w-full mt-4 bg-background py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-color ${
-                            accountType == "gymOwner" ? "border-purple-600" : "border-border"
+                        onClick={() => setAccountType("gymOwner")}
+                        className={`w-full mt-4 py-5 px-7 flex gap-7 rounded-lg border-[3px] transition-colors cursor-pointer ${
+                            accountType == "gymOwner"
+                                ? "border-purple-600 bg-purple-600/10"
+                                : "border-border bg-background"
                         }`}
                     >
                         <input
