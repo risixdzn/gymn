@@ -1,98 +1,146 @@
-'use client'
+"use client";
 
-import { ModeToggle } from "./ModeToggle"
-import { Button } from "./ui/button"
-import { Github, Menu, X } from "lucide-react"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
-import GymnLogo from "./GymnLogo"
-import Link from "next/link"
-import { useState } from "react"
+import { ModeToggle } from "./ModeToggle";
+import { Button } from "./ui/button";
+import { Github, Menu, X } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import GymnLogo from "./GymnLogo";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
-export default function Navbar(){
-    const [ navOpen , setNavOpen ] = useState<boolean>(false)
-    
+export default function Navbar() {
+    const [navOpen, setNavOpen] = useState<boolean>(false);
+    const pathname = usePathname();
+
+    useEffect(() => {
+        setNavOpen(false);
+    }, [pathname]);
+
     return (
-        <header className="flex justify-center">
-            <div className={
-                navOpen ? `g_NavOpen` : `g_Nav`
-            }>
-                <div className="w-[100%] max-w-6xl h-20 flex items-center justify-between">
-                    <Link href='/'>                        
-                        <GymnLogo width={90} className="fill-slate-950 dark:fill-white"/>
-                    </Link>                   
+        <header className='flex justify-center'>
+            <div
+                className={
+                    navOpen
+                        ? `fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm  px-10
+                        bg-background/80 border-border
+                        w-[calc(100vw-2rem)] mt-[1rem] h-20 flex rounded-t-lg items-center justify-center border-x-2 border-t-2 transition-all duration-300`
+                        : `fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm  px-10
+                        bg-background/20 border-border
+                        w-full h-20 flex items-center justify-center border-b-2 transition-all duration-300`
+                }
+            >
+                <div className='w-[100%] max-w-6xl h-20 flex items-center justify-between'>
+                    <Link href='/'>
+                        <GymnLogo width={90} className='fill-slate-950 dark:fill-white' />
+                    </Link>
 
-                    <div className="flex items-center justify-center gap-2">            
-                        <Link href='/auth' className="hidden lg:block">
-                            <Button className="w-28" variant={'outline'}>Entrar</Button>
-                        </Link>            
+                    <div className='flex items-center justify-center gap-2'>
+                        <Link href='/auth' className='hidden lg:block'>
+                            <Button className='w-28' variant={"outline"}>
+                                Entrar
+                            </Button>
+                        </Link>
 
                         <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild className="hidden lg:block">
-                                    <a href='https://github.com/risixdzn/gymn' target="_blank">
-                                        <Button variant={"outline"} size={'icon'}>
-                                            <Github className="h-[1.2rem]"/>
+                            <Tooltip delayDuration={0}>
+                                <TooltipTrigger asChild className='hidden lg:block'>
+                                    <a href='https://github.com/risixdzn/gymn' target='_blank'>
+                                        <Button variant={"outline"} size={"icon"}>
+                                            <Github className='h-[1.2rem]' />
                                         </Button>
-                                    </a> 
+                                    </a>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Github repo!</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-                        
-                        <i className="hidden lg:block">                            
-                            <ModeToggle/>
+
+                        <i className='hidden lg:block'>
+                            <ModeToggle />
                         </i>
 
-                        <Button className="flex lg:hidden" variant={'outline'} size={'icon'} onClick={()=> setNavOpen(!navOpen)}>
-                            {navOpen?
-                            <X className={navOpen ? `rotate-0 scale-1` : `rotate-90 scale-0`}/>:
-                            <Menu className="rotate-45"/>}
+                        <Button
+                            className='flex lg:hidden'
+                            variant={"outline"}
+                            size={"icon"}
+                            onClick={() => setNavOpen(!navOpen)}
+                        >
+                            <div
+                                className={`block w-5 absolute transform transition duration-500 ${
+                                    navOpen ? "-translate-y-1.5" : ""
+                                }`}
+                            >
+                                <span
+                                    className={`block absolute h-0.5 w-5 bg-current transform transition -translate-y-1.5 duration-500 ease-in-out 
+                                ${navOpen ? "rotate-45 translate-y-1.5" : ""}`}
+                                ></span>
+                                <span
+                                    className={`block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out 
+                                ${navOpen ? "opacity-0" : ""}`}
+                                ></span>
+                                <span
+                                    className={`block absolute h-0.5 w-5 bg-current transform transition translate-y-1.5 duration-500 ease-in-out 
+                                ${navOpen ? "-rotate-45 -translate-y-1.5" : ""}`}
+                                ></span>
+                            </div>
                         </Button>
                     </div>
-                </div>                
+                </div>
             </div>
-            <div className={
-                navOpen? 
-                `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[calc(100vh-(6rem+1rem))] transition-all duration-300
-                border-x-2 border-b-2 rounded-x-lg rounded-b-lg
-                bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-10
-                bg-gray-100 border-gray-300
-                dark:bg-zinc-950 dark:border-zinc-800 dark:bg-opacity-20`
-                : `absolute z-40 w-full h-20 transition-all duration-300
-                bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-10
-                bg-gray-100 border-gray-300
-                dark:bg-zinc-950 dark:border-zinc-800 dark:bg-opacity-0`
-            }>
-                <div className="w-full h-full flex items-center justify-center">
-                    <div className="flex items-center justify-center gap-2">
+            <div
+                className={
+                    navOpen
+                        ? `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[calc(100vh-(6rem+1rem))] transition-all duration-300
+                    border-x-2 border-b-2 rounded-x-lg rounded-b-lg
+                    bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-5
+                    bg-background/80 border-border`
+                        : `absolute z-40 w-full h-20 transition-all duration-300
+                    bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-5 
+                    bg-background/0 border-border
+                    `
+                }
+            >
+                <div
+                    id='mobileNavContent'
+                    className={`w-full h-full items-center flex justify-center transition-all duration-300 ${
+                        navOpen
+                            ? "flex opacity-100 pointer-events-auto"
+                            : "opacity-0 pointer-events-none"
+                    } `}
+                >
+                    <div
+                        id='mobileNavFooter'
+                        className='w-full h-[5rem] self-end flex items-center justify-end gap-2'
+                    >
                         <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild >
-                                    <a href='https://github.com/risixdzn/gymn' target="_blank">
-                                        <Button variant={"outline"} size={'icon'}>
-                                            <Github className="h-[1.2rem]"/>
+                            <Tooltip delayDuration={0}>
+                                <TooltipTrigger asChild>
+                                    <a href='https://github.com/risixdzn/gymn' target='_blank'>
+                                        <Button variant={"outline"} size={"icon"}>
+                                            <Github className='h-[1.2rem]' />
                                         </Button>
-                                    </a> 
+                                    </a>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Github repo!</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-                        <i className="">                            
-                            <ModeToggle/>
+
+                        <i>
+                            <ModeToggle />
                         </i>
+
+                        <Link href='/auth'>
+                            <Button className='w-28' variant={"outline"}>
+                                Entrar
+                            </Button>
+                        </Link>
                     </div>
-                    
                 </div>
-            </div>            
+            </div>
         </header>
-    )
+    );
 }
