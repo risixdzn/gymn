@@ -1,7 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -21,6 +19,10 @@ export type RegisterMemberForm = {
 
 type RegisterMemberFormProps = {
     setShowForm: Dispatch<SetStateAction<boolean>>;
+};
+
+type ComponentsMap = {
+    [key: number]: JSX.Element;
 };
 
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
@@ -55,58 +57,41 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
     };
 
     const renderForm = () => {
-        switch (step) {
-            case 1:
-                return <RegisterStep1 formType='member' register={register} errors={errors} />;
-                break;
-            case 2:
-                return <RegisterStep2 formType='member' register={register} errors={errors} />;
-                break;
-            case 3:
-                return (
-                    <RegisterStep3
-                        formType='member'
-                        register={register}
-                        errors={errors}
-                        watch={watch}
-                    />
-                );
-                break;
-
-            default:
-                break;
-        }
+        const formComponents: ComponentsMap = {
+            1: <RegisterStep1 formType='member' register={register} errors={errors} />,
+            2: <RegisterStep2 formType='member' register={register} errors={errors} />,
+            3: (
+                <RegisterStep3
+                    formType='member'
+                    register={register}
+                    errors={errors}
+                    watch={watch}
+                />
+            ),
+        };
+        return formComponents[step];
     };
 
     const renderButton = () => {
-        switch (step) {
-            case 1:
-            case 2:
-                return (
-                    <>
-                        <Button
-                            className='w-full mt-5'
-                            type='button'
-                            onClick={() => setStep(step + 1)}
-                            disabled={!isValid}
-                        >
-                            Próximo
-                        </Button>
-                    </>
-                );
-                break;
-            case 3:
-                return (
-                    <>
-                        <Button className='w-full mt-5' type='submit' disabled={!isValid}>
-                            Cadastrar
-                        </Button>
-                    </>
-                );
-                break;
-            default:
-                break;
-        }
+        const buttonComponents: ComponentsMap = {
+            1: (
+                <Button
+                    className='w-full mt-5'
+                    type='button'
+                    onClick={() => setStep(step + 1)}
+                    disabled={!isValid}
+                >
+                    Próximo
+                </Button>
+            ),
+            3: (
+                <Button className='w-full mt-5' type='submit' disabled={!isValid}>
+                    Cadastrar
+                </Button>
+            ),
+        };
+
+        return buttonComponents[step] || buttonComponents[1];
     };
 
     return (

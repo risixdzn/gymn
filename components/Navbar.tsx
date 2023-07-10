@@ -2,7 +2,7 @@
 
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
-import { Github, Menu, X } from "lucide-react";
+import { Github, LogIn } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import GymnLogo from "./GymnLogo";
 import Link from "next/link";
@@ -20,15 +20,12 @@ export default function Navbar() {
     return (
         <header className='flex justify-center'>
             <div
-                className={
+                className={`fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm px-10 border-border/50 transition-all duration-300
+                ${
                     navOpen
-                        ? `fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm  px-10
-                        bg-background/80 border-border
-                        w-[calc(100vw-2rem)] mt-[1rem] h-20 flex rounded-t-lg items-center justify-center border-x-2 border-t-2 transition-all duration-300`
-                        : `fixed z-50 bg-clip-padding backdrop-filter backdrop-blur-sm  px-10
-                        bg-background/20 border-border
-                        w-full h-20 flex items-center justify-center border-b-2 transition-all duration-300`
-                }
+                        ? "w-[calc(100vw-2rem)] mt-[1rem] h-20 bg-background/80 flex rounded-t-lg items-center justify-center border-x-2 border-t-2 "
+                        : "w-full h-20 flex items-center bg-background/40 justify-center border-b-2"
+                }`}
             >
                 <div className='w-[100%] max-w-6xl h-20 flex items-center justify-between'>
                     <Link href='/'>
@@ -38,7 +35,7 @@ export default function Navbar() {
                     <div className='flex items-center justify-center gap-2'>
                         <Link href='/auth' className='hidden lg:block'>
                             <Button className='w-28' variant={"outline"}>
-                                Entrar
+                                Entrar <LogIn className='mx-1' width={20} />
                             </Button>
                         </Link>
 
@@ -135,7 +132,7 @@ export default function Navbar() {
 
                         <Link href='/auth'>
                             <Button className='w-28' variant={"outline"}>
-                                Entrar
+                                Entrar <LogIn className='mx-1' width={20} />
                             </Button>
                         </Link>
                     </div>
