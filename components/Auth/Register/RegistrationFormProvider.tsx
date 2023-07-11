@@ -11,6 +11,8 @@ import OwnerActive from "../../../public/BenchPress_Active.svg";
 import OwnerMuted from "../../../public/BenchPress_Muted.svg";
 import MemberActive from "../../../public/WeightLift_Active.svg";
 import MemberMuted from "../../../public/WeightLift_Muted.svg";
+import BenchPress from "@/components/ui/Icons/BenchPress";
+import WeightLift from "@/components/ui/Icons/WeightLift";
 
 type AccountTypes = "member" | "gymOwner" | "";
 
@@ -49,13 +51,10 @@ export default function RegistrationFormProvider() {
                             checked={accountType === "member"}
                             onChange={() => setAccountType("member")}
                         />
-                        <Image
-                            src={accountType == "member" ? MemberActive : MemberMuted}
-                            width={70}
-                            height={70}
-                            alt=''
-                            className='inline-block w-15'
-                        />{" "}
+                        <WeightLift
+                            className='w-[70px]'
+                            color={accountType == "member" ? "#9333ea" : "hsl(217, 0%, 18%)"}
+                        />
                         <div>
                             <h3 className='font-semibold tracking-tight'>Membro</h3>
                             <p className='max-w-[15rem] text-xs lg:text-sm text-muted-foreground'>
@@ -71,13 +70,10 @@ export default function RegistrationFormProvider() {
                                 : "border-border bg-background"
                         }`}
                     >
-                        <Image
-                            src={accountType == "gymOwner" ? OwnerActive : OwnerMuted}
-                            width={70}
-                            height={70}
-                            alt=''
-                            className='inline-block w-15'
-                        />{" "}
+                        <BenchPress
+                            className='w-[70px]'
+                            color={accountType == "gymOwner" ? "#9333ea" : "hsl(217, 0%, 18%)"}
+                        />
                         <input
                             key={2}
                             type='radio'

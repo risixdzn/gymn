@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ArrowUp, ChevronLeft } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";

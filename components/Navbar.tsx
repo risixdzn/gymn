@@ -4,7 +4,7 @@ import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
 import { Github, LogIn } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import GymnLogo from "./GymnLogo";
+import GymnLogo from "./ui/Icons/GymnLogo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
