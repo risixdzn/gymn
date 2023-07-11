@@ -1,9 +1,16 @@
 import { type RegisterMemberForm } from "@/components/Auth/Register/RegisterMemberForm";
 //import { type RegisterGymOwnerForm } from "@/components/Auth/Register/RegisterGymOwnerForm";
+import { Dispatch, SetStateAction } from "react";
 
 import { supabase } from "../supabase";
 
-export async function signUpMember(userData: RegisterMemberForm) {
+type MemberSignUpProps = {
+    userData: RegisterMemberForm;
+    setLoading: Dispatch<SetStateAction<boolean>>;
+};
+
+export async function memberSignUp({ userData, setLoading }: MemberSignUpProps) {
+    setLoading(true);
     const { data, error } = await supabase.auth.signUp({
         email: userData.email,
         password: userData.password,
@@ -15,6 +22,8 @@ export async function signUpMember(userData: RegisterMemberForm) {
             },
         },
     });
+
+    setLoading(false);
 
     if (error?.message) {
         console.log(error, data);

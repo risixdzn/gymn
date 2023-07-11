@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 
-import { signUpMember } from "@/lib/auth/signUp";
+import { memberSignUp } from "@/lib/auth/signUp";
 
 export type RegisterMemberForm = {
     email: string;
@@ -29,6 +29,7 @@ type ComponentsMap = {
 
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const {
         register,
@@ -47,7 +48,7 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
     });
 
     const submitData = async (userData: RegisterMemberForm) => {
-        signUpMember(userData);
+        memberSignUp({ userData, setLoading });
         console.log("This is the user data", userData);
     };
 
@@ -88,7 +89,10 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                 </Button>
             ),
             3: (
-                <Button className='w-full mt-5' type='submit' disabled={!isValid}>
+                <Button className='w-full mt-5' type='submit' disabled={!isValid || loading}>
+                    <Loader2
+                        className={`${loading ? "block" : "hidden"} mr-2 h-4 w-4 animate-spin`}
+                    />
                     Cadastrar
                 </Button>
             ),
