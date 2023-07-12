@@ -3,11 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { ArrowUp, ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
+
+import { signUpMember } from "@/lib/auth/signUp";
 
 export type RegisterMemberForm = {
     email: string;
@@ -44,8 +46,9 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
         },
     });
 
-    const submitData = (data: RegisterMemberForm) => {
-        console.log("This is the user data", data);
+    const submitData = async (userData: RegisterMemberForm) => {
+        signUpMember(userData);
+        console.log("This is the user data", userData);
     };
 
     const handleGoBack = () => {
