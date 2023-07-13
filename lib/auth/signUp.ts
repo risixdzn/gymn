@@ -1,9 +1,19 @@
+"use client";
+
 import { type RegisterMemberForm } from "@/components/Auth/Register/RegisterMemberForm";
-//import { type RegisterGymOwnerForm } from "@/components/Auth/Register/RegisterGymOwnerForm";
+import { Dispatch, SetStateAction } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 import { supabase } from "../supabase";
 
-export async function signUpMember(userData: RegisterMemberForm) {
+type MemberSignUpProps = {
+    userData: RegisterMemberForm;
+    setLoading: Dispatch<SetStateAction<boolean>>;
+    toast: any; //i gave up trying to type this, if you wa
+};
+
+export async function MemberSignUp({ userData, setLoading, toast }: MemberSignUpProps) {
+    setLoading(true);
     const { data, error } = await supabase.auth.signUp({
         email: userData.email,
         password: userData.password,
@@ -16,8 +26,14 @@ export async function signUpMember(userData: RegisterMemberForm) {
         },
     });
 
+    setLoading(false);
+
     if (error?.message) {
-        console.log(error, data);
+        toast({
+            variant: "destructive",
+            title: error.name,
+            description: error.message,
+        });
     } else {
         console.log(data);
     }
