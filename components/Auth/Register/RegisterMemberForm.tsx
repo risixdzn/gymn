@@ -9,7 +9,8 @@ import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 
-import { memberSignUp } from "@/lib/auth/signUp";
+import { MemberSignUp } from "@/lib/auth/signUp";
+import { useToast } from "@/components/ui/use-toast";
 
 export type RegisterMemberForm = {
     email: string;
@@ -30,6 +31,7 @@ type ComponentsMap = {
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
+    const { toast } = useToast();
 
     const {
         register,
@@ -48,7 +50,7 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
     });
 
     const submitData = async (userData: RegisterMemberForm) => {
-        memberSignUp({ userData, setLoading });
+        await MemberSignUp({ userData, setLoading, toast });
         console.log("This is the user data", userData);
     };
 
