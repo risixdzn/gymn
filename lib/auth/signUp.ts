@@ -2,39 +2,53 @@
 
 import { type RegisterMemberForm } from "@/components/Auth/Register/RegisterMemberForm";
 import { Dispatch, SetStateAction } from "react";
-import { useToast } from "@/components/ui/use-toast";
 
 import { supabase } from "../supabase";
+import { toast } from "@/components/ui/use-toast";
 
 type MemberSignUpProps = {
     userData: RegisterMemberForm;
     setLoading: Dispatch<SetStateAction<boolean>>;
-    toast: any; //i gave up trying to type this, if you wa
 };
 
-export async function MemberSignUp({ userData, setLoading, toast }: MemberSignUpProps) {
+export async function MemberSignUp({ userData, setLoading }: MemberSignUpProps) {
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
-        options: {
-            data: {
-                username: userData.username,
-                first_name: userData.firstName,
-                profile: "Member",
-            },
-        },
+    const { data, error } = await supabase.rpc("check_email_exists", {
+        email_param: userData.email.toLowerCase(),
     });
 
-    setLoading(false);
-
-    if (error?.message) {
-        toast({
-            variant: "destructive",
-            title: error.name,
-            description: error.message,
+    if (data === false) {
+        const signUpResult = await supabase.auth.signUp({
+            email: userData.email,
+            password: userData.password,
+            options: {
+                data: {
+                    username: userData.username,
+                    first_name: userData.firstName,
+                    profile: "Member",
+                },
+            },
         });
+
+        if (signUpResult.error?.message) {
+            toast({
+                title: signUpResult.error.name,
+                description: signUpResult.error.message,
+                variant: "destructive",
+            });
+        } else {
+            toast({
+                title: "Parabéns! Você registrou o seguinte usuário:",
+                description: signUpResult.data.user?.email,
+            });
+            console.log(signUpResult.data);
+        }
     } else {
-        console.log(data);
+        toast({
+            title: "Este usuário ja existe.",
+            description: "Tente usar outro email, ou entre na página de login.",
+        });
     }
+
+    setLoading(false);
 }

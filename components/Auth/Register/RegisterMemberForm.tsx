@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import RegisterStep1 from "./Steps/RegisterStep1";
@@ -10,7 +10,6 @@ import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 
 import { MemberSignUp } from "@/lib/auth/signUp";
-import { useToast } from "@/components/ui/use-toast";
 
 export type RegisterMemberForm = {
     email: string;
@@ -31,7 +30,6 @@ type ComponentsMap = {
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
-    const { toast } = useToast();
 
     const {
         register,
@@ -49,8 +47,8 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
         },
     });
 
-    const submitData = async (userData: RegisterMemberForm) => {
-        await MemberSignUp({ userData, setLoading, toast });
+    const submitData = (userData: RegisterMemberForm) => {
+        MemberSignUp({ userData, setLoading });
         console.log("This is the user data", userData);
     };
 
@@ -108,6 +106,7 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
             <button
                 className='mb-1 text-xs text-muted-foreground -ml-1 flex items-center'
                 onClick={handleGoBack}
+                type='button'
             >
                 <ChevronLeft className='inline-block scale-75' />
                 Etapa {step} de 3
