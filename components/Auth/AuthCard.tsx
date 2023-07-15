@@ -4,11 +4,12 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/card";
 import RegisterGymOwnerForm from "./Register/RegisterGymOwnerForm";
 import RegistrationFormProvider from "./Register/RegistrationFormProvider";
+import LoginForm from "./Login/LoginForm";
 
 export type AuthState = "login" | "register";
 
 export default function AuthCard() {
-    const [authState, setAuthState] = useState<AuthState>("register");
+    const [authState, setAuthState] = useState<AuthState>("login");
 
     return (
         <Card>
@@ -21,7 +22,9 @@ export default function AuthCard() {
                 </CardDescription>
                 <div className='w-full h-[1px] bg-muted-foreground/20'></div>
             </CardHeader>
-            <CardContent>{authState == "login" ? <></> : <RegistrationFormProvider />}</CardContent>
+            <CardContent>
+                {authState == "login" ? <LoginForm /> : <RegistrationFormProvider />}
+            </CardContent>
             <CardFooter>
                 <p className='text-sm text-muted-foreground'>
                     {authState == "login"
