@@ -5,9 +5,15 @@ import { Dispatch, SetStateAction } from "react";
 
 import { supabase } from "../supabase";
 import { toast } from "@/components/ui/use-toast";
+import { type RegisterGymOwnerForm } from "@/components/Auth/Register/RegisterGymOwnerForm";
 
 type MemberSignUpProps = {
     userData: RegisterMemberForm;
+    setLoading: Dispatch<SetStateAction<boolean>>;
+};
+
+type GymOwnerSignUpProps = {
+    userData: RegisterGymOwnerForm;
     setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -26,6 +32,50 @@ export async function MemberSignUp({ userData, setLoading }: MemberSignUpProps) 
                     username: userData.username,
                     first_name: userData.firstName,
                     profile: "Member",
+                },
+            },
+        });
+
+        if (signUpResult.error?.message) {
+            toast({
+                title: signUpResult.error.name,
+                description: signUpResult.error.message,
+                variant: "destructive",
+            });
+        } else {
+            toast({
+                title: "Parabéns! Você registrou o seguinte usuário:",
+                description: signUpResult.data.user?.email,
+            });
+            console.log(signUpResult.data);
+        }
+    } else {
+        toast({
+            title: "Este usuário ja existe.",
+            description: "Tente usar outro email, ou entre na página de login.",
+        });
+    }
+
+    setLoading(false);
+}
+
+export async function GymOwnerSignUp({ userData, setLoading }: GymOwnerSignUpProps) {
+    setLoading(true);
+    const { data, error } = await supabase.rpc("check_email_exists", {
+        email_param: userData.email.toLowerCase(),
+    });
+
+    if (data === false) {
+        const signUpResult = await supabase.auth.signUp({
+            email: userData.email,
+            password: userData.password,
+            options: {
+                data: {
+                    username: userData.username,
+                    first_name: userData.firstName,
+                    gym_name: userData.gymName,
+                    gym_address: userData.gymAddress,
+                    profile: "GymOwner",
                 },
             },
         });
