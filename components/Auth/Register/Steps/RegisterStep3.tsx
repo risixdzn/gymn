@@ -14,16 +14,18 @@ type StepProps = {} & (
           register: UseFormRegister<RegisterMemberForm>;
           errors: FieldErrors<RegisterMemberForm>;
           watch: UseFormWatch<RegisterMemberForm>;
+          loading: boolean;
       }
     | {
           formType: "gymOwner";
           register: UseFormRegister<RegisterGymOwnerForm>;
           errors: FieldErrors<RegisterGymOwnerForm>;
           watch: UseFormWatch<RegisterGymOwnerForm>;
+          loading: boolean;
       }
 );
 
-export default function RegisterStep3({ register, errors, watch }: StepProps) {
+export default function RegisterStep3({ register, errors, watch, loading }: StepProps) {
     //definindo o tipo da função register
     //em um operador ternario que verifica se a
     //propriedade formtype = "member" utilizando extends
@@ -49,6 +51,7 @@ export default function RegisterStep3({ register, errors, watch }: StepProps) {
                     <Tooltip defaultOpen>
                         <TooltipTrigger asChild>
                             <Input
+                                disabled={loading}
                                 key={4}
                                 placeholder='••••••••'
                                 id='password'
@@ -96,6 +99,7 @@ export default function RegisterStep3({ register, errors, watch }: StepProps) {
             <div className='mt-2'>
                 <Label htmlFor='confirmPassword'>Confirme a senha</Label>
                 <Input
+                    disabled={loading}
                     key={5}
                     placeholder='••••••••'
                     id='confirmPassword'

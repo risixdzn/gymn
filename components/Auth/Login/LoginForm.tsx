@@ -36,6 +36,7 @@ export default function LoginForm() {
             <>
                 <Label htmlFor='email'>Email</Label>
                 <Input
+                    disabled={loading}
                     key={1}
                     placeholder='exemplo@email.com'
                     id='email'
@@ -55,6 +56,7 @@ export default function LoginForm() {
                 <div className='mt-2'>
                     <Label htmlFor='password'>Senha</Label>
                     <Input
+                        disabled={loading}
                         key={2}
                         placeholder='••••••••'
                         id='password'
