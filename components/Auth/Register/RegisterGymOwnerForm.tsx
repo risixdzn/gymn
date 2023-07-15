@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 import RegisterStep4 from "./Steps/RegisterStep4";
+import { GymOwnerSignUp } from "@/lib/auth/signUp";
 
 export type RegisterGymOwnerForm = {
     firstName: string;
@@ -30,6 +31,7 @@ type ComponentsMap = {
 
 export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const {
         register,
@@ -49,8 +51,9 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
         },
     });
 
-    const submitData = (data: RegisterGymOwnerForm) => {
-        console.log("This is the user data", data);
+    const submitData = (userData: RegisterGymOwnerForm) => {
+        GymOwnerSignUp({ userData, setLoading });
+        console.log("This is the user data", userData);
     };
 
     const handleGoBack = () => {
@@ -92,7 +95,10 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
                 </Button>
             ),
             4: (
-                <Button className='w-full mt-5' type='submit' disabled={!isValid}>
+                <Button className='w-full mt-5' type='submit' disabled={!isValid || loading}>
+                    <Loader2
+                        className={`${loading ? "block" : "hidden"} mr-2 h-4 w-4 animate-spin`}
+                    />
                     Cadastrar
                 </Button>
             ),
