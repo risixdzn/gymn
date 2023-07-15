@@ -11,15 +11,17 @@ type StepProps = {} & (
           formType: "member";
           register: UseFormRegister<RegisterMemberForm>;
           errors: FieldErrors<RegisterMemberForm>;
+          loading: boolean;
       }
     | {
           formType: "gymOwner";
           register: UseFormRegister<RegisterGymOwnerForm>;
           errors: FieldErrors<RegisterGymOwnerForm>;
+          loading: boolean;
       }
 );
 
-export default function RegisterStep2({ register, errors }: StepProps) {
+export default function RegisterStep2({ register, errors, loading }: StepProps) {
     //definindo o tipo da função register
     //em um operador ternario que verifica se a
     //propriedade formtype = "member" utilizando extends
@@ -34,6 +36,7 @@ export default function RegisterStep2({ register, errors }: StepProps) {
         <>
             <Label htmlFor='email'>Email</Label>
             <Input
+                disabled={loading}
                 key={3}
                 placeholder='exemplo@email.com'
                 id='email'

@@ -62,14 +62,29 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
 
     const renderForm = () => {
         const formComponents: ComponentsMap = {
-            1: <RegisterStep1 formType='member' register={register} errors={errors} />,
-            2: <RegisterStep2 formType='member' register={register} errors={errors} />,
+            1: (
+                <RegisterStep1
+                    formType='member'
+                    register={register}
+                    errors={errors}
+                    loading={loading}
+                />
+            ),
+            2: (
+                <RegisterStep2
+                    formType='member'
+                    register={register}
+                    errors={errors}
+                    loading={loading}
+                />
+            ),
             3: (
                 <RegisterStep3
                     formType='member'
                     register={register}
                     errors={errors}
                     watch={watch}
+                    loading={loading}
                 />
             ),
         };
