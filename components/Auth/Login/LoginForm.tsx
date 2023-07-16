@@ -6,14 +6,20 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { LogIn } from "@/lib/auth/signIn";
+import { useRouter } from "next/navigation";
+import SubmitButton from "../Register/anim/SubmitButton";
+import Check from "../Register/anim/Check";
 
-type LoginForm = {
+export type LoginForm = {
     email: string;
     password: string;
 };
 
 export default function LoginForm() {
     const [loading, setLoading] = useState<boolean>(false);
+    const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
+    const router = useRouter();
 
     const {
         register,
@@ -28,7 +34,8 @@ export default function LoginForm() {
     });
 
     const submitData = (userData: LoginForm) => {
-        //
+        LogIn({ userData, setLoading, router });
+        console.log("This is the user data", userData);
     };
 
     const renderForm = () => {
@@ -88,6 +95,11 @@ export default function LoginForm() {
         <form className='-mt-4' onSubmit={handleSubmit(submitData)} noValidate>
             {renderForm()}
             {renderButton()}
+            <button onClick={() => setLoading(!loading)}>load </button>
+            <button onClick={() => setSignUpSuccess(!signUpSuccess)}>success</button>
+            <div className='flex justify-center'>
+                <SubmitButton text={"Cadastrar"} loading={loading} signUpSuccess={signUpSuccess} />
+            </div>
         </form>
     );
 }
