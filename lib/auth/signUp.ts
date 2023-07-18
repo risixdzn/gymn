@@ -62,7 +62,11 @@ export async function MemberSignUp({ userData, setLoading, setSignUpSuccess }: M
     setLoading(false);
 }
 
-export async function GymOwnerSignUp({ userData, setLoading }: GymOwnerSignUpProps) {
+export async function GymOwnerSignUp({
+    userData,
+    setLoading,
+    setSignUpSuccess,
+}: GymOwnerSignUpProps) {
     setLoading(true);
     const { data, error } = await supabase.rpc("check_email_exists", {
         email_param: userData.email.toLowerCase(),
@@ -90,6 +94,7 @@ export async function GymOwnerSignUp({ userData, setLoading }: GymOwnerSignUpPro
                 variant: "destructive",
             });
         } else {
+            setSignUpSuccess(true);
             toast({
                 title: "Parabéns! Você registrou o seguinte usuário:",
                 description: signUpResult.data.user?.email,

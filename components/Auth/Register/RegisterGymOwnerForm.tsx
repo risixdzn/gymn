@@ -10,6 +10,8 @@ import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 import RegisterStep4 from "./Steps/RegisterStep4";
 import { GymOwnerSignUp } from "@/lib/auth/signUp";
+import VerifyYourEmail from "./anim/VerifyYourEmail";
+import SubmitButton from "./anim/SubmitButton";
 
 export type RegisterGymOwnerForm = {
     firstName: string;
@@ -32,11 +34,13 @@ type ComponentsMap = {
 export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
+    const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
 
     const {
         register,
         handleSubmit,
         watch,
+        getValues,
         formState: { errors, isValid },
     } = useForm<RegisterGymOwnerForm>({
         mode: "all",
@@ -51,8 +55,10 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
         },
     });
 
+    const values = getValues();
+
     const submitData = (userData: RegisterGymOwnerForm) => {
-        GymOwnerSignUp({ userData, setLoading });
+        GymOwnerSignUp({ userData, setLoading, setSignUpSuccess });
         console.log("This is the user data", userData);
     };
 
@@ -117,12 +123,14 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
                 </Button>
             ),
             4: (
-                <Button className='w-full mt-5' type='submit' disabled={!isValid || loading}>
-                    <Loader2
-                        className={`${loading ? "block" : "hidden"} mr-2 h-4 w-4 animate-spin`}
-                    />
-                    Cadastrar
-                </Button>
+                <SubmitButton
+                    type='submit'
+                    className='mt-5'
+                    disabled={!isValid}
+                    loading={loading}
+                    text={"Cadastrar-se"}
+                    signUpSuccess={signUpSuccess}
+                />
             ),
         };
 
@@ -130,17 +138,30 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
     };
 
     return (
-        <form className='-mt-4' onSubmit={handleSubmit(submitData)} noValidate>
-            <button
-                className='mb-1 text-xs text-muted-foreground -ml-1 flex items-center'
-                type='button'
-                onClick={handleGoBack}
+        <form className='-mt-4 relative w-full' onSubmit={handleSubmit(submitData)} noValidate>
+            <div
+                className={`absolute w-full h-full ${
+                    signUpSuccess ? "opacity-100" : "opacity-0 pointer-events-none"
+                } transition-all delay-2000 flex flex-row z-10 bg-card`}
             >
-                <ChevronLeft className='inline-block scale-75' />
-                Etapa {step} de 4
-            </button>
-            {renderForm()}
-            {renderButton()}
+                <VerifyYourEmail values={values} />
+            </div>
+            <div
+                className={`${
+                    signUpSuccess ? "opacity-0" : "opacity-100"
+                } transition-all delay-2000`}
+            >
+                <button
+                    className='mb-1 text-xs text-muted-foreground -ml-1 flex items-center'
+                    onClick={handleGoBack}
+                    type='button'
+                >
+                    <ChevronLeft className='inline-block scale-75' />
+                    Etapa {step} de 4
+                </button>
+                {renderForm()}
+                {renderButton()}
+            </div>
         </form>
     );
 }
