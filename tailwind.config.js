@@ -85,6 +85,9 @@ module.exports = {
             boxShadow: {
                 g_PrimaryGlow: "0px 0px 15px 0px rgba(161,67,255,0.75);",
             },
+            transitionDelay: {
+                2000: "2000ms",
+            },
         },
     },
     plugins: [require("tailwindcss-animate")],

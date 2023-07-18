@@ -2,14 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { ChevronLeft } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 
 import { MemberSignUp } from "@/lib/auth/signUp";
+import SubmitButton from "./anim/SubmitButton";
+import VerifyYourEmail from "./anim/VerifyYourEmail";
 
 export type RegisterMemberForm = {
     email: string;
@@ -30,11 +32,13 @@ type ComponentsMap = {
 export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormProps) {
     const [step, setStep] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
+    const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
 
     const {
         register,
         handleSubmit,
         watch,
+        getValues,
         formState: { errors, isValid },
     } = useForm<RegisterMemberForm>({
         mode: "all",
@@ -47,8 +51,10 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
         },
     });
 
+    const values = getValues();
+
     const submitData = (userData: RegisterMemberForm) => {
-        MemberSignUp({ userData, setLoading });
+        MemberSignUp({ userData, setLoading, setSignUpSuccess });
         console.log("This is the user data", userData);
     };
 
@@ -104,12 +110,14 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                 </Button>
             ),
             3: (
-                <Button className='w-full mt-5' type='submit' disabled={!isValid || loading}>
-                    <Loader2
-                        className={`${loading ? "block" : "hidden"} mr-2 h-4 w-4 animate-spin`}
-                    />
-                    Cadastrar
-                </Button>
+                <SubmitButton
+                    type='submit'
+                    className='mt-5'
+                    disabled={!isValid}
+                    loading={loading}
+                    text={"Cadastrar-se"}
+                    signUpSuccess={signUpSuccess}
+                />
             ),
         };
 
@@ -117,17 +125,30 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
     };
 
     return (
-        <form className='-mt-4' onSubmit={handleSubmit(submitData)} noValidate>
-            <button
-                className='mb-1 text-xs text-muted-foreground -ml-1 flex items-center'
-                onClick={handleGoBack}
-                type='button'
+        <form className='-mt-4 relative w-full' onSubmit={handleSubmit(submitData)} noValidate>
+            <div
+                className={`absolute w-full h-full ${
+                    signUpSuccess ? "opacity-100" : "opacity-0 pointer-events-none"
+                } transition-all delay-2000 flex flex-row z-10 bg-card`}
             >
-                <ChevronLeft className='inline-block scale-75' />
-                Etapa {step} de 3
-            </button>
-            {renderForm()}
-            {renderButton()}
+                <VerifyYourEmail values={values} />
+            </div>
+            <div
+                className={`${
+                    signUpSuccess ? "opacity-0" : "opacity-100"
+                } transition-all delay-2000`}
+            >
+                <button
+                    className='mb-1 text-xs text-muted-foreground -ml-1 flex items-center'
+                    onClick={handleGoBack}
+                    type='button'
+                >
+                    <ChevronLeft className='inline-block scale-75' />
+                    Etapa {step} de 3
+                </button>
+                {renderForm()}
+                {renderButton()}
+            </div>
         </form>
     );
 }
