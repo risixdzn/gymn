@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
@@ -12,6 +12,7 @@ import RegisterStep4 from "./Steps/RegisterStep4";
 import { GymOwnerSignUp } from "@/lib/auth/signUp";
 import VerifyYourEmail from "./anim/VerifyYourEmail";
 import SubmitButton from "./anim/SubmitButton";
+import { AuthState } from "../AuthCard";
 
 export type RegisterGymOwnerForm = {
     firstName: string;
@@ -144,7 +145,7 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
                     signUpSuccess ? "opacity-100" : "opacity-0 pointer-events-none"
                 } transition-all delay-2000 flex flex-row z-10 bg-card`}
             >
-                <VerifyYourEmail values={values} />
+                <VerifyYourEmail values={values} setSignUpSuccess={setSignUpSuccess} />
             </div>
             <div
                 className={`${

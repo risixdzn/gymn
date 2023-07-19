@@ -1,14 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { MailCheck, ShieldCheck } from "lucide-react";
+import { Dispatch, SetStateAction, useContext } from "react";
+import { AuthCardContext, AuthCardContextType } from "../../AuthCard";
 
 type Props = {
     values: {
         email: string;
         username: string;
     };
+    setSignUpSuccess: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function VerifyYourEmail({ values }: Props) {
+export default function VerifyYourEmail({ values, setSignUpSuccess }: Props) {
+    const { setAuthState } = useContext<AuthCardContextType>(AuthCardContext);
     return (
         <div className='flex flex-col'>
             <div className='w-full h-32 bg-purple-600/20 flex items-center justify-center rounded-lg'>
@@ -22,16 +26,18 @@ export default function VerifyYourEmail({ values }: Props) {
                     Verifique a sua conta
                 </h3>
                 <p className='text-muted-foreground text-sm mt-2'>
-                    Parabéns,
-                    <b className='text-card-foreground'> {values.username}</b>! A sua conta foi
-                    criada com sucesso.
+                    Para verificar, entre no link enviado para:
+                    <b className='text-card-foreground'> {values.email}</b>.
                 </p>
-                <p className='text-muted-foreground text-sm'>
-                    Um link de verificação foi enviado para
-                    <b className='text-card-foreground'> {values.email} </b>
-                </p>
-                <Button type='button' className='bg-purple-600 mt-3 w-full text-white'>
-                    Continuar
+                <Button
+                    type='button'
+                    className='bg-purple-600 hover:bg-purple-600/70 mt-3 w-full text-white'
+                    onClick={() => {
+                        setSignUpSuccess(false);
+                        setAuthState("login");
+                    }}
+                >
+                    Verifiquei minha conta
                 </Button>
             </div>
         </div>

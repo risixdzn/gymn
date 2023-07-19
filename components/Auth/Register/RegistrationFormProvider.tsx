@@ -1,18 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import RegisterGymOwnerForm from "./RegisterGymOwnerForm";
 import RegisterMemberForm from "./RegisterMemberForm";
 import { Button } from "@/components/ui/button";
 import { Balancer } from "react-wrap-balancer";
 
-import OwnerActive from "../../../public/BenchPress_Active.svg";
-import OwnerMuted from "../../../public/BenchPress_Muted.svg";
-import MemberActive from "../../../public/WeightLift_Active.svg";
-import MemberMuted from "../../../public/WeightLift_Muted.svg";
 import BenchPress from "@/components/ui/Icons/BenchPress";
 import WeightLift from "@/components/ui/Icons/WeightLift";
+import { AuthState } from "../AuthCard";
 
 type AccountTypes = "member" | "gymOwner" | "";
 
