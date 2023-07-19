@@ -8,10 +8,10 @@ import { Dispatch, SetStateAction } from "react";
 import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
-
 import { MemberSignUp } from "@/lib/auth/signUp";
 import SubmitButton from "./anim/SubmitButton";
 import VerifyYourEmail from "./anim/VerifyYourEmail";
+import { AuthState } from "../AuthCard";
 
 export type RegisterMemberForm = {
     email: string;
@@ -131,7 +131,7 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
                     signUpSuccess ? "opacity-100" : "opacity-0 pointer-events-none"
                 } transition-all delay-2000 flex flex-row z-10 bg-card`}
             >
-                <VerifyYourEmail values={values} />
+                <VerifyYourEmail values={values} setSignUpSuccess={setSignUpSuccess} />
             </div>
             <div
                 className={`${
