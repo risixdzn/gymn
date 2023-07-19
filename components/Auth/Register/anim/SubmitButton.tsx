@@ -5,14 +5,26 @@ type ButtonProps = {
     text: string;
     loading: boolean;
     signUpSuccess: boolean;
+    className: string;
+    type: "button" | "submit";
+    disabled: boolean;
 };
 
-export default function SubmitButton({ text, loading, signUpSuccess }: ButtonProps) {
+export default function SubmitButton({
+    text,
+    loading,
+    signUpSuccess,
+    className,
+    disabled,
+    type,
+}: ButtonProps) {
     return (
         <button
-            className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background
+            type={type}
+            disabled={disabled}
+            className={`${className}  inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
-        disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 transition-all
+        disabled:pointer-events-none disabled:opacity-50 h-10 transition-all
         px-4 py-2  mt-5
         ${
             signUpSuccess

@@ -10,14 +10,16 @@ import { type RegisterGymOwnerForm } from "@/components/Auth/Register/RegisterGy
 type MemberSignUpProps = {
     userData: RegisterMemberForm;
     setLoading: Dispatch<SetStateAction<boolean>>;
+    setSignUpSuccess: Dispatch<SetStateAction<boolean>>;
 };
 
 type GymOwnerSignUpProps = {
     userData: RegisterGymOwnerForm;
     setLoading: Dispatch<SetStateAction<boolean>>;
+    setSignUpSuccess: Dispatch<SetStateAction<boolean>>;
 };
 
-export async function MemberSignUp({ userData, setLoading }: MemberSignUpProps) {
+export async function MemberSignUp({ userData, setLoading, setSignUpSuccess }: MemberSignUpProps) {
     setLoading(true);
     const { data, error } = await supabase.rpc("check_email_exists", {
         email_param: userData.email.toLowerCase(),
@@ -43,6 +45,7 @@ export async function MemberSignUp({ userData, setLoading }: MemberSignUpProps) 
                 variant: "destructive",
             });
         } else {
+            setSignUpSuccess(true);
             toast({
                 title: "Parabéns! Você registrou o seguinte usuário:",
                 description: signUpResult.data.user?.email,
@@ -59,7 +62,11 @@ export async function MemberSignUp({ userData, setLoading }: MemberSignUpProps) 
     setLoading(false);
 }
 
-export async function GymOwnerSignUp({ userData, setLoading }: GymOwnerSignUpProps) {
+export async function GymOwnerSignUp({
+    userData,
+    setLoading,
+    setSignUpSuccess,
+}: GymOwnerSignUpProps) {
     setLoading(true);
     const { data, error } = await supabase.rpc("check_email_exists", {
         email_param: userData.email.toLowerCase(),
@@ -87,6 +94,7 @@ export async function GymOwnerSignUp({ userData, setLoading }: GymOwnerSignUpPro
                 variant: "destructive",
             });
         } else {
+            setSignUpSuccess(true);
             toast({
                 title: "Parabéns! Você registrou o seguinte usuário:",
                 description: signUpResult.data.user?.email,
