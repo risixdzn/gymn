@@ -12,6 +12,8 @@ export type AuthCardContextType = {
     setAuthState: Dispatch<SetStateAction<AuthState>>;
 };
 
+//esse contexto é exportado aqui para ser utilizado no componente de registro, onde o redirect para login é feito através do authstate
+//criar um contexto evita prop drilling e tem impactos positivos em perfomance
 export const AuthCardContext = createContext<AuthCardContextType>({
     authState: "login",
     setAuthState: () => {},

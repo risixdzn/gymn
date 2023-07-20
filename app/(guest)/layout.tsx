@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
-
+import VerficationSuccessAlert from "@/components/Auth/Register/ui/VerificationSuccessAlert";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Navbar />
                     {children}
                     <Toaster />
+                    <VerficationSuccessAlert openState={true} />
                 </ThemeProvider>
             </body>
         </html>
