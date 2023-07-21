@@ -9,8 +9,8 @@ import RegisterStep1 from "./Steps/RegisterStep1";
 import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 import { MemberSignUp } from "@/lib/auth/signUp";
-import SubmitButton from "./anim/SubmitButton";
-import VerifyYourEmail from "./anim/VerifyYourEmail";
+import SubmitButton from "./ui/SubmitButton";
+import VerifyYourEmail from "./ui/VerifyYourEmail";
 import { AuthState } from "../AuthCard";
 
 export type RegisterMemberForm = {

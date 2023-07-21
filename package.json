@@ -11,6 +11,8 @@
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.1.1",
+    "@radix-ui/react-alert-dialog": "^1.0.4",
+    "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-navigation-menu": "^1.1.3",

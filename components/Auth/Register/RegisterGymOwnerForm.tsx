@@ -10,8 +10,8 @@ import RegisterStep2 from "./Steps/RegisterStep2";
 import RegisterStep3 from "./Steps/RegisterStep3";
 import RegisterStep4 from "./Steps/RegisterStep4";
 import { GymOwnerSignUp } from "@/lib/auth/signUp";
-import VerifyYourEmail from "./anim/VerifyYourEmail";
-import SubmitButton from "./anim/SubmitButton";
+import VerifyYourEmail from "./ui/VerifyYourEmail";
+import SubmitButton from "./ui/SubmitButton";
 import { AuthState } from "../AuthCard";
 
 export type RegisterGymOwnerForm = {
