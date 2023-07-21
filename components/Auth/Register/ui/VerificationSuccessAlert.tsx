@@ -15,10 +15,7 @@ import GymnLogo from "@/components/ui/Icons/GymnLogo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-type VerificationSuccessAlertProps = {
-    openState: boolean;
-};
-export default function VerficationSuccessAlert({ openState }: VerificationSuccessAlertProps) {
+export default function VerficationSuccessAlert() {
     // This terrible hack is needed to prevent hydration errors.
     // The Radix Dialog is not rendered correctly server side, so we need to prevent it from rendering until the client side hydration is complete (and `useEffect` is run).
     // The issue is reported here: https://github.com/radix-ui/primitives/issues/1386
@@ -26,8 +23,20 @@ export default function VerficationSuccessAlert({ openState }: VerificationSucce
     const [open, setOpen] = useState<boolean>(false); //this needs to be false, so the component is not rendered on the server
 
     useEffect(() => {
-        setOpen(openState); //then its set to whatever on the component mount
-    }, [openState, setOpen]);
+        //extrai os cookies, separando-os
+        const cookies = document.cookie.split("; ");
+        const verificationSuccessAlertOpenCookie = cookies.find(
+            (cookie) => cookie.startsWith("VerificationSuccessAlertOpen=") // acha o cookie de alerta de verificação
+        );
+        //seta o estado open como o estado do cookie
+        const verificationSuccessAlertOpen = verificationSuccessAlertOpenCookie
+            ? verificationSuccessAlertOpenCookie.split("=")[1] === "true"
+            : false;
+        setOpen(verificationSuccessAlertOpen); //then its set to whatever on the component mount
+
+        //deleta o cookie nao usado
+        document.cookie = "VerificationSuccessAlertOpen=false; Max-Age=0";
+    }, [setOpen]);
 
     return (
         <>

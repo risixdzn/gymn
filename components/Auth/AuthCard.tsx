@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, Dispatch, SetStateAction } from "react";
+import { createContext, useState, Dispatch, SetStateAction } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/card";
 import RegistrationFormProvider from "./Register/RegistrationFormProvider";
 import LoginForm from "./Login/LoginForm";
