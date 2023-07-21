@@ -41,20 +41,20 @@ export default function VerficationSuccessAlert() {
     return (
         <>
             <AlertDialog open={open}>
-                <AlertDialogContent className='py-10 px-10 rlea justify-center flex-col'>
+                <AlertDialogContent className='py-10 px-6 lg:py-10 lg:px-10 justify-center flex-col'>
                     <div className='w-full h-28 rounded-lg bg-purple-600/20 mx-auto flex items-center justify-center'>
                         <Check className='w-20 h-20' />
                     </div>
                     <AlertDialogHeader className='mt-2'>
                         <AlertDialogTitle>
-                            <h1 className='text-3xl text-center tracking-tighter'>
+                            <h1 className='text-2xl lg:text-3xl text-center tracking-tighter'>
                                 Boas vindas ao{" "}
-                                <GymnLogo className='w-24 mx-1 mt-2 inline-block fill-card-foreground' />
+                                <GymnLogo className='w-16 lg:w-24 mx-1 mt-1 lg:mt-2 inline-block fill-card-foreground' />
                                 !
                             </h1>
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            <h3 className='text-center  text-card-foreground/80'>
+                            <h3 className='text-center text-card-foreground/80'>
                                 🎉 Parabéns! Sua conta foi verificada com sucesso! 🎉
                             </h3>
                             <span className='flex items-center justify-center flex-col'>
