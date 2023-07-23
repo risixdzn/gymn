@@ -2,7 +2,7 @@
 
 import { LoginForm } from "@/components/Auth/Login/LoginForm";
 import { Dispatch, SetStateAction } from "react";
-import { supabase } from "../supabase";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -13,6 +13,8 @@ type LoginProps = {
 };
 export async function LogIn({ userData, setLoading, router }: LoginProps) {
     setLoading(true);
+
+    const supabase = createClientComponentClient();
 
     const { data, error } = await supabase.auth.signInWithPassword({
         email: userData.email,
