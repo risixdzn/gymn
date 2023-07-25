@@ -1,6 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { SignOut } from "@/lib/auth/signOut";
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 import { useCallback, useState, useEffect } from "react";
 
 type User = {
@@ -14,6 +17,7 @@ export default function Profile({ session }: { session: Session | null }) {
     const supabase = createClientComponentClient();
     const [loading, setLoading] = useState<boolean>(false);
     const user = session?.user;
+    const router = useRouter();
 
     const [displayUser, setDisplayUser] = useState<User>({
         created_at: "",
@@ -63,6 +67,7 @@ export default function Profile({ session }: { session: Session | null }) {
                     <h3>{displayUser.profile}</h3>
                     <p>{displayUser.created_at}</p>
                     <p>{displayUser.first_name}</p>
+                    <Button onClick={() => SignOut({ router })}>Sign out</Button>
                 </div>
             ) : (
                 <span>Loading...</span>
