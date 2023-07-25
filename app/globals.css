@@ -166,3 +166,7 @@
 #successAnimation.animated #successAnimationResult {
     animation: 0.3s linear 0.9s both fadeIn;
 }
+
+.translatez10 {
+    transform: translateZ(10px);
+}
