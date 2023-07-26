@@ -19,26 +19,21 @@ export default async function Account() {
     }
 
     return (
-        <div className='flex'>
-            <Sidebar>
-                <div className='w-full h-auto'>
-                    <Profile session={session} />
-                    <div>
-                        A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                        <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>
-                    </div>
-                </div>
-            </Sidebar>
-        </div>
+        <>
+            <Profile session={session} />
+            <div>
+                A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
+                <br></br>A<br></br>A<br></br>A<br></br>
+            </div>
+        </>
     );
 }
