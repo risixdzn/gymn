@@ -68,7 +68,11 @@ export default function VerficationSuccessAlert() {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <Link href='/auth' className='w-full' onClick={() => setOpen(false)}>
+                        <Link
+                            href='/dashboard/account'
+                            className='w-full'
+                            onClick={() => setOpen(false)}
+                        >
                             <AlertDialogAction className='w-full mt-3 bg-purple-600 hover:bg-purple-600/70 text-white'>
                                 Começar
                             </AlertDialogAction>

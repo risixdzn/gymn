@@ -35,7 +35,7 @@ export async function LogIn({ userData, setLoading, router }: LoginProps) {
 
         setTimeout(() => {
             router.push("/dashboard/account");
-        }, 1000);
+        }, 500);
     }
 
     setLoading(false);
