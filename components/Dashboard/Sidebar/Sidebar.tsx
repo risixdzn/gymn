@@ -6,21 +6,25 @@ import { Menu, Home, LogOut } from "lucide-react";
 import { useRef, ReactNode, useEffect, useState } from "react";
 
 export default function Sidebar({ children }: { children: ReactNode }) {
-    const [screenWidth, setScreenWidth] = useState(getCurrentDimension());
+    const isClient = typeof window !== "undefined";
+
+    const [screenWidth, setScreenWidth] = useState<number>(isClient ? getCurrentDimension() : 0);
     function getCurrentDimension() {
         return window.innerWidth;
     }
 
     useEffect(() => {
-        const updateDimension = () => {
-            setScreenWidth(getCurrentDimension());
-        };
-        window.addEventListener("resize", updateDimension);
+        if (isClient) {
+            const updateDimension = () => {
+                setScreenWidth(getCurrentDimension());
+            };
+            window.addEventListener("resize", updateDimension);
 
-        return () => {
-            window.removeEventListener("resize", updateDimension);
-        };
-    }, [screenWidth]);
+            return () => {
+                window.removeEventListener("resize", updateDimension);
+            };
+        }
+    }, [screenWidth, isClient]);
 
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
