@@ -1,7 +1,7 @@
 import "../globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
-
+import PagesContainer from "@/components/Dashboard/PagesContainer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 
@@ -17,8 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang='en'>
             <body className={inter.className}>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-                    <Sidebar>{children}</Sidebar>
+                    <Sidebar />
                     <Toaster />
+                    <PagesContainer>{children}</PagesContainer>
                 </ThemeProvider>
             </body>
         </html>
