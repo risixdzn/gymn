@@ -34,7 +34,7 @@ export default function SearchCommand() {
                 className='flex justify-between text-muted-foreground bg-accent/30'
             >
                 <span className='flex items-center'>
-                    <Search className='inline-block scale-75 mr-2' />
+                    <Search className='inline-block scale-75 mr-4' width={25} />
                     Procurar
                 </span>
                 <kbd className='pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-accent px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>

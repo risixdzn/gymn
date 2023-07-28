@@ -1,12 +1,14 @@
 "use client";
 
-import { ModeToggle } from "@/components/ModeToggle";
-import { Button } from "@/components/ui/button";
-import { Menu, Home, Search } from "lucide-react";
-import Image from "next/image";
+import { Compass, Home, Menu, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 import GymnIcon from "../../../public/g_SquareIcon.png";
+import Image from "next/image";
 import Link from "next/link";
+import LinkButton from "./LinkButton";
+import { ModeToggle } from "@/components/ModeToggle";
 import SearchCommand from "./SearchCommand";
 
 export default function Sidebar() {
@@ -62,6 +64,15 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                         </div>
                     </div>
                     <SearchCommand />
+                    <div className='flex flex-col gap-2'>
+                        <LinkButton
+                            icon={<Compass />}
+                            href='/explore'
+                            text='Descobrir'
+                            command='1'
+                        />
+                        <LinkButton icon={<Compass />} href='/account' text='Account' command='2' />
+                    </div>
                 </div>
 
                 <div
