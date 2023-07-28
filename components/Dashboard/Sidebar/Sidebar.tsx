@@ -1,6 +1,18 @@
 "use client";
 
-import { Compass, Home, Menu, Search } from "lucide-react";
+import {
+    Bell,
+    Compass,
+    Home,
+    Layers,
+    Menu,
+    User,
+    Activity,
+    Dumbbell,
+    Warehouse,
+    Settings,
+    BadgeHelp,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -47,7 +59,7 @@ export default function Sidebar() {
                 className={`fixed w-80 h-screen bg-background transition-all duration-300 border-border border-r-[1px] z-[2]
 flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-translate-x-80"}`}
             >
-                <div id='topsection' className='w-full h-16 px-5 pt-5 flex flex-col gap-6'>
+                <div id='topsection' className='w-full h-auto px-5 pt-5 flex flex-col gap-6'>
                     <div className='flex items-center w-full h-10 gap-4'>
                         <div className='w-10 h-10 bg-card rounded-lg'>
                             <Image
@@ -64,20 +76,56 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                         </div>
                     </div>
                     <SearchCommand />
-                    <div className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-1 -mt-2'>
                         <LinkButton
                             icon={<Compass />}
                             href='/explore'
                             text='Descobrir'
-                            command='1'
+                            command='d'
                         />
-                        <LinkButton icon={<Compass />} href='/account' text='Account' command='2' />
+                        <LinkButton icon={<Layers />} href='/inbox' text='Inbox' command='i' />
+
+                        <LinkButton
+                            icon={<Bell />}
+                            href='/notifications'
+                            text='Notificações'
+                            command='n'
+                        />
+
+                        <LinkButton icon={<User />} href='/account' text='Conta' command='c' />
+                    </div>
+                    <hr className='-mt-2'></hr>
+                </div>
+
+                <div
+                    id='middlesection'
+                    className=' w-full h-[100%] flex flex-col justify-between px-5 py-4'
+                >
+                    <div>
+                        <p className='text-muted-foreground text-xs ml-5 mb-3'>Fitness</p>
+                        <LinkButton icon={<Dumbbell />} href='/workouts' text='Treinos' />
+                        <LinkButton icon={<Activity />} href='/exercises' text='Exercícios' />
+                        <LinkButton icon={<Warehouse />} href='/gym' text='Sua academia' />
+                    </div>
+                    <div>
+                        <LinkButton
+                            icon={<Settings />}
+                            href='/setting'
+                            text='Configurações'
+                            variant='muted'
+                        />
+                        <LinkButton
+                            icon={<BadgeHelp />}
+                            href='/about'
+                            text={"Sobre"}
+                            variant='muted'
+                        />
                     </div>
                 </div>
 
                 <div
                     id='bottomsection'
-                    className='w-full h-20 border-t-[1px] border-border flex items-center justify-between px-5'
+                    className='w-full h-auto border-t-[1px] border-border flex items-center justify-between py-5 px-5'
                 >
                     <div className='flex flex-row items-center gap-4'>
                         <div className='w-11 h-11 bg-card rounded-md'></div>
