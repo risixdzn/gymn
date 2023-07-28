@@ -2,8 +2,12 @@
 
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Loader2 } from "lucide-react";
+import { Menu, Home, Search } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import GymnIcon from "../../../public/g_SquareIcon.png";
+import Link from "next/link";
+import SearchCommand from "./SearchCommand";
 
 export default function Sidebar() {
     const [isClient, setIsClient] = useState(false);
@@ -41,14 +45,31 @@ export default function Sidebar() {
                 className={`fixed w-80 h-screen bg-background transition-all duration-300 border-border border-r-[1px] z-[2]
 flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-translate-x-80"}`}
             >
-                <div id='topsection' className='w-full h-16 bg-red-600'></div>
+                <div id='topsection' className='w-full h-16 px-5 pt-5 flex flex-col gap-6'>
+                    <div className='flex items-center w-full h-10 gap-4'>
+                        <div className='w-10 h-10 bg-card rounded-lg'>
+                            <Image
+                                className='rounded-md'
+                                width={40}
+                                height={40}
+                                src={GymnIcon}
+                                alt=''
+                            />
+                        </div>
+                        <div>
+                            <h3 className='text-sm font-semibold'>Gymn</h3>
+                            <h3 className='text-sm text-muted-foreground'>Plano Membro</h3>
+                        </div>
+                    </div>
+                    <SearchCommand />
+                </div>
 
                 <div
                     id='bottomsection'
                     className='w-full h-20 border-t-[1px] border-border flex items-center justify-between px-5'
                 >
                     <div className='flex flex-row items-center gap-4'>
-                        <div className='w-12 h-12 bg-card rounded-md'></div>
+                        <div className='w-11 h-11 bg-card rounded-md'></div>
                         <div>
                             <h3 className='text-sm'>Nome de Usuário</h3>
                             <h3 className='text-sm text-muted-foreground'>email@abc.com</h3>
@@ -65,11 +86,9 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                         }`}
                         size={"icon"}
                         variant={"ghost"}
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
                     >
-                        <Menu
-                            className='absolute z-50'
-                            onClick={() => setSidebarOpen(!sidebarOpen)}
-                        />
+                        <Menu className='absolute z-50' />
                     </Button>
                     <div
                         id={"header"}
@@ -77,28 +96,6 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                     >
                         <div className='w-full h-full flex items-center justify-center text-sm'>
                             <h4>Profile</h4>
-                        </div>
-                    </div>
-
-                    <div
-                        id='sidebar'
-                        className={`fixed w-80 h-screen bg-background transition-all duration-300 border-border border-r-[1px] z-[2]
-                        flex justify-between flex-col ${sidebarOpen ? "" : "-translate-x-80"}`}
-                    >
-                        <div id='topsection' className='w-full h-16 bg-red-600'></div>
-
-                        <div
-                            id='bottomsection'
-                            className='w-full h-20 border-t-[1px] border-border flex items-center justify-between px-5'
-                        >
-                            <div className='flex flex-row items-center gap-4'>
-                                <div className='w-12 h-12 bg-card rounded-md'></div>
-                                <div>
-                                    <h3 className='text-sm'>Nome de Usuário</h3>
-                                    <h3 className='text-sm text-muted-foreground'>email@abc.com</h3>
-                                </div>
-                            </div>
-                            <ModeToggle />
                         </div>
                     </div>
 
