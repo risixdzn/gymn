@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='en'>
-            <body className={inter.className}>
+            <body className={`${inter.className} select-none`}>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     <Sidebar />
                     <Toaster />
