@@ -128,11 +128,8 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                     </div>
                 </div>
 
-                <div
-                    id='bottomsection'
-                    className='w-full h-auto border-t-[1px] border-border flex items-center justify-between py-5 px-5'
-                >
-                    <UserProfileCard displayUser={displayUser} />
+                <div id='bottomsection' className='w-full h-auto border-t-[1px] border-border'>
+                    <UserProfileCard displayUser={displayUser} screenWidth={screenWidth} />
                 </div>
             </div>
             {screenWidth < 1024 ? (
