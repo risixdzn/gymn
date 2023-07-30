@@ -19,13 +19,18 @@ import { Button } from "@/components/ui/button";
 import GymnIcon from "../../../public/g_SquareIcon.png";
 import Image from "next/image";
 import Link from "next/link";
-import LinkButton from "./LinkButton";
+import LinkButton from "./ui/LinkButton";
 import { ModeToggle } from "@/components/ModeToggle";
-import SearchCommand from "./SearchCommand";
+import SearchCommand from "./ui/SearchCommand";
+import { Session } from "@supabase/auth-helpers-nextjs";
+import { useGetProfile } from "@/lib/supabase/useGetProfile";
+import UserProfileCard from "./ui/UserProfileCard";
 
-export default function Sidebar() {
+export default function Sidebar({ session }: { session: Session | null }) {
     const [isClient, setIsClient] = useState(false);
     const [screenWidth, setScreenWidth] = useState<number>(0); // Inicializa com 0
+
+    const { loading, displayUser } = useGetProfile({ session });
 
     function getCurrentDimension() {
         return window.innerWidth;
@@ -123,18 +128,8 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                     </div>
                 </div>
 
-                <div
-                    id='bottomsection'
-                    className='w-full h-auto border-t-[1px] border-border flex items-center justify-between py-5 px-5'
-                >
-                    <div className='flex flex-row items-center gap-4'>
-                        <div className='w-11 h-11 bg-card rounded-md'></div>
-                        <div>
-                            <h3 className='text-sm'>Nome de Usuário</h3>
-                            <h3 className='text-sm text-muted-foreground'>email@abc.com</h3>
-                        </div>
-                    </div>
-                    <ModeToggle />
+                <div id='bottomsection' className='w-full h-auto border-t-[1px] border-border'>
+                    <UserProfileCard displayUser={displayUser} screenWidth={screenWidth} />
                 </div>
             </div>
             {screenWidth < 1024 ? (
