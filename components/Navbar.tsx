@@ -2,14 +2,15 @@
 
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
-import { Github, LogIn } from "lucide-react";
+import { Github, LogIn, User } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import GymnLogo from "./ui/Icons/GymnLogo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { Session } from "@supabase/auth-helpers-nextjs";
 
-export default function Navbar() {
+export default function Navbar({ session }: { session: Session | null }) {
     const [navOpen, setNavOpen] = useState<boolean>(false);
     const pathname = usePathname();
 
@@ -33,11 +34,24 @@ export default function Navbar() {
                     </Link>
 
                     <div className='flex items-center justify-center gap-2'>
-                        <Link href='/auth' className='hidden lg:block'>
-                            <Button className='w-28' variant={"outline"}>
-                                Entrar <LogIn className='mx-1' width={20} />
-                            </Button>
-                        </Link>
+                        {session ? (
+                            <Link href='/dashboard/account' className='hidden lg:block'>
+                                <Button variant={"outline"} className='relative'>
+                                    {session.user.user_metadata.username}{" "}
+                                    <User className='ml-1' width={20} />
+                                    <div className='absolute top-0 left-[calc(100%-0.75rem)]'>
+                                        <div className='absolute w-3 h-3 rounded-full bg-g_purple animate-ping'></div>
+                                        <div className='absolute w-3 h-3 rounded-full bg-g_purple'></div>
+                                    </div>
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link href='/auth' className='hidden lg:block'>
+                                <Button className='w-28' variant={"outline"}>
+                                    Entrar <LogIn className='mx-1' width={20} />
+                                </Button>
+                            </Link>
+                        )}
 
                         <TooltipProvider>
                             <Tooltip delayDuration={0}>
