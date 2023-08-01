@@ -103,7 +103,7 @@ export default function Navbar({ session }: { session: Session | null }) {
             <div
                 className={
                     navOpen
-                        ? `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[calc(100vh-(6rem+1rem))] transition-all duration-300
+                        ? `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[calc(100%-(6rem+1rem))] transition-all duration-300
                     border-x-2 border-b-2 rounded-x-lg rounded-b-lg
                     bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-5
                     bg-background/80 border-border`
