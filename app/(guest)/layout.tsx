@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <head>
                 <link rel='icon' href='../favicon.ico' />
             </head>
-            <body className={inter.className}>
+            <body className={`${inter.className} min-h-screen`}>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     <Header />
                     {children}
