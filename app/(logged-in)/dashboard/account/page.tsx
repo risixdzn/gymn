@@ -18,22 +18,5 @@ export default async function Account() {
         redirect("/auth");
     }
 
-    return (
-        <>
-            <Profile session={session} />
-            <div>
-                A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A<br></br>A
-                <br></br>A<br></br>A<br></br>A<br></br>
-            </div>
-        </>
-    );
+    return <Profile session={session} />;
 }
