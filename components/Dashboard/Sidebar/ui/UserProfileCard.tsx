@@ -29,7 +29,7 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                             <div className='w-11 h-11 bg-card rounded-md'></div>
                             <div>
                                 <h3 className='text-sm'>{displayUser?.username}</h3>
-                                <h3 className='text-sm text-muted-foreground'>
+                                <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
                                     {displayUser?.email}
                                 </h3>
                             </div>
