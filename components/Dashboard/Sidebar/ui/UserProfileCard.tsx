@@ -2,13 +2,12 @@ import { ModeToggle } from "@/components/ModeToggle";
 import { UserProfile } from "@/lib/supabase/useGetProfile";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CalendarDays, LogOut, Settings } from "lucide-react";
-import Link from "next/link";
-import { SignOut } from "@/lib/auth/signOut";
+import { CalendarDays } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { useState } from "react";
+import UserLogo from "../../../../public/user.png";
+import Image from "next/image";
 
 type UserProfileCardProps = {
     displayUser: UserProfile | null;
@@ -26,7 +25,15 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                 <HoverCardTrigger>
                     <div className='flex items-center justify-between py-5 px-5'>
                         <div className='flex flex-row items-center gap-4'>
-                            <div className='w-11 h-11 bg-card rounded-md'></div>
+                            <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
+                                <Image
+                                    width={100}
+                                    height={100}
+                                    alt=''
+                                    className='w-full h-full'
+                                    src={UserLogo}
+                                />
+                            </div>
                             <div>
                                 <h3 className='text-sm'>{displayUser?.username}</h3>
                                 <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
@@ -93,8 +100,16 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                     </div>
                     <div
                         id='pfp'
-                        className='w-14 h-14 bg-card mt-7 border-border border-[1px] absolute z-[1] rounded-xl'
-                    ></div>
+                        className='w-14 h-14 bg-card mt-7 border-border border-[1px] absolute z-[1] rounded-xl overflow-hidden'
+                    >
+                        <Image
+                            width={100}
+                            height={100}
+                            alt=''
+                            className='w-full h-full'
+                            src={UserLogo}
+                        />
+                    </div>
                 </HoverCardContent>
             </HoverCard>
         </>
