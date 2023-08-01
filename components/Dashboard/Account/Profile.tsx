@@ -7,7 +7,7 @@ import { Session, createClientComponentClient } from "@supabase/auth-helpers-nex
 import { useRouter } from "next/navigation";
 import { useCallback, useState, useEffect } from "react";
 import Image from "next/image";
-import gLogo from "../../../public/g_SquareIcon.png";
+import UserLogo from "../../../public/user.png";
 import { Edit, LogOut } from "lucide-react";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { CalendarDays } from "lucide-react";
@@ -81,7 +81,13 @@ export default function Profile({ session }: { session: Session | null }) {
                         <Edit className='scale-150 drop-shadow-lg pointer-events-none' />
                         <p className='text-sm drop-shadow-lg  pointer-events-none'>Alterar</p>
                     </div>
-                    <Image width={100} height={100} alt='' className='w-full h-full' src={gLogo} />
+                    <Image
+                        width={300}
+                        height={300}
+                        alt=''
+                        className='w-full h-full'
+                        src={UserLogo}
+                    />
                 </div>
                 <div
                     id='actions'
