@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Session } from "@supabase/auth-helpers-nextjs";
+import GymnIcon from "./ui/Icons/GymnIcon";
 
 export default function Navbar({ session }: { session: Session | null }) {
     const [navOpen, setNavOpen] = useState<boolean>(false);
@@ -30,12 +31,20 @@ export default function Navbar({ session }: { session: Session | null }) {
             >
                 <div className='w-[100%] max-w-6xl h-20 flex items-center justify-between'>
                     <Link href='/'>
-                        <GymnLogo width={90} className='fill-slate-950 dark:fill-white' />
+                        <GymnLogo
+                            width={90}
+                            className='fill-slate-950 dark:fill-white lg:block hidden'
+                        />
+                        <GymnIcon
+                            width={30}
+                            height={30}
+                            className='fill-slate-950 dark:fill-white lg:hidden block'
+                        />
                     </Link>
 
                     <div className='flex items-center justify-center gap-2'>
                         {session ? (
-                            <Link href='/dashboard/account' className='hidden lg:block'>
+                            <Link href='/dashboard/account' className=''>
                                 <Button variant={"outline"} className='relative'>
                                     {session.user.user_metadata.username}{" "}
                                     <User className='ml-1' width={20} />
@@ -46,7 +55,7 @@ export default function Navbar({ session }: { session: Session | null }) {
                                 </Button>
                             </Link>
                         ) : (
-                            <Link href='/auth' className='hidden lg:block'>
+                            <Link href='/auth' className=''>
                                 <Button className='w-28' variant={"outline"}>
                                     Entrar <LogIn className='mx-1' width={20} />
                                 </Button>
@@ -69,7 +78,7 @@ export default function Navbar({ session }: { session: Session | null }) {
                         </TooltipProvider>
 
                         <i className='hidden lg:block'>
-                            <ModeToggle />
+                            <ModeToggle side='top' />
                         </i>
 
                         <Button
@@ -103,7 +112,7 @@ export default function Navbar({ session }: { session: Session | null }) {
             <div
                 className={
                     navOpen
-                        ? `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[calc(100%-(6rem+1rem))] transition-all duration-300
+                        ? `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[25rem] transition-all duration-300
                     border-x-2 border-b-2 rounded-x-lg rounded-b-lg
                     bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-5
                     bg-background/80 border-border`
@@ -140,9 +149,7 @@ export default function Navbar({ session }: { session: Session | null }) {
                             </Tooltip>
                         </TooltipProvider>
 
-                        <i>
-                            <ModeToggle />
-                        </i>
+                        <ModeToggle side='top' />
 
                         <Link href='/auth'>
                             <Button className='w-28' variant={"outline"}>

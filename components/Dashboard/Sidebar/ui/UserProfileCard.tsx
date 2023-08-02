@@ -41,7 +41,7 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                                 </h3>
                             </div>
                         </div>
-                        <ModeToggle />
+                        <ModeToggle side='top' />
                     </div>
                 </HoverCardTrigger>
                 <HoverCardContent
