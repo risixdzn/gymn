@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
     title: "Gymn - Dashboard",
     description: "Um aplicativo, duas perspectivas",
+    manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
