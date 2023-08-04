@@ -1,10 +1,10 @@
 import "../globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import VerficationSuccessAlert from "@/components/Auth/Register/ui/VerificationSuccessAlert";
 import Header from "@/components/Header";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Header />
                     {children}
                     <Toaster />
+                    <Analytics />
                     <VerficationSuccessAlert />
                 </ThemeProvider>
             </body>
