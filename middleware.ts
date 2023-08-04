@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
 
     //HANDLER NOTIFICAÇÃO DE CONTA VERIFICADA
     //o middleware vericica se o pathname é o de verificação
-    if (req.nextUrl.pathname.startsWith("/dashboard/account/verify")) {
+    if (req.nextUrl.pathname.startsWith("/dashboard/profile/verify")) {
         //envia o redirect para a home
         const response = NextResponse.rewrite(new URL("/", req.url));
         //seta um cookie que será consumido pelo alerta de verificação, e em seguida deletado.

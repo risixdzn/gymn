@@ -34,7 +34,7 @@ export async function LogIn({ userData, setLoading, router }: LoginProps) {
         });
 
         setTimeout(() => {
-            router.push("/dashboard/account");
+            router.push("/dashboard/profile");
         }, 500);
     }
 
