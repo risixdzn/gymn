@@ -69,7 +69,7 @@ export default function VerficationSuccessAlert() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <Link
-                            href='/dashboard/account'
+                            href='/dashboard/profile'
                             className='w-full'
                             onClick={() => setOpen(false)}
                         >

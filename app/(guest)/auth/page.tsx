@@ -4,7 +4,7 @@ import { Triangle } from "lucide-react";
 export default function Login() {
     return (
         <main className='flex min-h-[100%] flex-row justify-between relative'>
-            <div className='hidden lg:flex items-center justify-center bg-loginBGWhite dark:bg-loginBGDark w-[50%] h-[100%] p-20 bg-no-repeat bg-cover'>
+            <div className='hidden lg:flex items-center justify-center bg-loginBGWhite dark:bg-loginBGDark w-[50%] h-[100vh] p-20 bg-no-repeat bg-cover'>
                 <div
                     className='
                     flex justify-center flex-col lg:px-14 xl:px-20 2xl:px-24 3xl:px-28 

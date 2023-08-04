@@ -44,7 +44,7 @@ export default function Navbar({ session }: { session: Session | null }) {
 
                     <div className='flex items-center justify-center gap-2'>
                         {session ? (
-                            <Link href='/dashboard/account' className=''>
+                            <Link href='/dashboard/profile' className=''>
                                 <Button variant={"outline"} className='relative'>
                                     {session.user.user_metadata.username}{" "}
                                     <User className='ml-1' width={20} />
