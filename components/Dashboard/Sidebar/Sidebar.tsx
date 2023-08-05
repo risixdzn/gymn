@@ -23,14 +23,14 @@ import LinkButton from "./ui/LinkButton";
 import { ModeToggle } from "@/components/ModeToggle";
 import SearchCommand from "./ui/SearchCommand";
 import { Session } from "@supabase/auth-helpers-nextjs";
-import { useGetProfile } from "@/lib/supabase/useGetProfile";
+import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UserProfileCard from "./ui/UserProfileCard";
 
 export default function Sidebar({ session }: { session: Session | null }) {
     const [isClient, setIsClient] = useState(false);
     const [screenWidth, setScreenWidth] = useState<number>(0); // Inicializa com 0
 
-    const { loading, displayUser } = useGetProfile({ session });
+    const { loading, displayUser } = useGetCurrentProfile({ session });
 
     function getCurrentDimension() {
         return window.innerWidth;

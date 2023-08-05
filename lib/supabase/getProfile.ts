@@ -1,7 +1,7 @@
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 
-type useGetProfileProps = {
+type useGetCurrentProfileProps = {
     session: Session | null;
 };
 
@@ -13,7 +13,7 @@ export type UserProfile = {
     email: string;
 };
 
-export function useGetProfile({ session }: useGetProfileProps) {
+export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
     const [loading, setLoading] = useState(false);
     const [displayUser, setDisplayUser] = useState<UserProfile | null>(null);
 
