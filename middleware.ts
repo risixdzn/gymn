@@ -18,14 +18,14 @@ export async function middleware(req: NextRequest) {
         return response;
     }
 
-    //HANDLER PROTECTED ROUTES
+    //Fetch Session
     const supabase = createMiddlewareClient({ req, res });
-
     const {
         data: { session },
         error,
     } = await supabase.auth.getSession();
 
+    //HANDLER PROTECTED ROUTES
     if (!session) {
         return NextResponse.redirect(new URL("/auth", req.url));
     }

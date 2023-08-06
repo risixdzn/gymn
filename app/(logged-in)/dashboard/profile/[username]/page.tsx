@@ -16,5 +16,5 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         error,
     } = await supabase.auth.getSession();
 
-    return <Profile session={session} username={params.username} type={"personal"} />;
+    return <Profile session={session} username={params.username} type={"foreign"} />;
 }

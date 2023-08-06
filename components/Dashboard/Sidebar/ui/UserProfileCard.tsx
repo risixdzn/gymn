@@ -1,5 +1,5 @@
 import { ModeToggle } from "@/components/ModeToggle";
-import { UserProfile } from "@/lib/supabase/useGetProfile";
+import { UserProfile } from "@/lib/supabase/getProfile";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays } from "lucide-react";
