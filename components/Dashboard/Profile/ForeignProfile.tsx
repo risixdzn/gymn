@@ -1,29 +1,26 @@
-"use client";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { SignOut } from "@/lib/auth/signOut";
-import { Session } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import { UserProfile } from "@/lib/supabase/getProfile";
+import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
 import Image from "next/image";
 import UserLogo from "../../../public/user.png";
-import { Edit, Loader2, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import { SignOut } from "@/lib/auth/signOut";
+import { Badge } from "@/components/ui/badge";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
-import { CalendarDays } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import useGetProfile from "@/lib/supabase/getProfile";
-import { useEffect } from "react";
+import { Session } from "@supabase/supabase-js";
+import UnexistentProfile from "./UnexistentProfile";
+import { useGetProfile } from "@/lib/supabase/getProfile";
 
-type ProfileProps = {
-    session: Session | null;
+type PersonalProfileProps = {
+    router: AppRouterInstance;
     username: string;
+    session: Session | null;
 };
 
-export default function Profile({ session, username }: ProfileProps) {
-    const router = useRouter();
+export default function ForeignProfile({ router, username, session }: PersonalProfileProps) {
     const { loading, displayUser, unexistent } = useGetProfile({ username });
-    const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
 
+    const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
     return (
         <>
             {!loading && !unexistent ? (
@@ -86,29 +83,7 @@ export default function Profile({ session, username }: ProfileProps) {
                     </div>
                 </div>
             ) : unexistent ? (
-                <div>
-                    <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'></div>
-                    <div
-                        id='pfp'
-                        className='absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-accent
-                        -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden'
-                    ></div>
-                    <div
-                        id='topinfo'
-                        className='w-full h-auto flex flex-col pl-2 lg:mt-0 mt-10 lg:pl-[calc(12rem+(2.5rem*2))] py-5 lg:py-7 gap-1'
-                    >
-                        <h1 className='lg:mt-4 text-xl lg:text-3xl tracking-tight font-bold'>
-                            O usuário{" "}
-                            <span className='inline-block font-normal text-muted-foreground'>
-                                @{username}
-                            </span>{" "}
-                            não existe.
-                        </h1>
-                        <span className='text-sm text-muted-foreground'>
-                            Tente buscar outro (a).
-                        </span>
-                    </div>
-                </div>
+                <UnexistentProfile username={username} />
             ) : (
                 <div className='w-full flex justify-center'>
                     <Loader2 className='w-10 h-10 animate-spin' />

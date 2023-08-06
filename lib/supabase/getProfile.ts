@@ -60,7 +60,7 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
     return { loading, displayUser };
 }
 
-export default function useGetProfile({ username }: useGetForeignProfileProps) {
+export function useGetProfile({ username }: useGetForeignProfileProps) {
     const [loading, setLoading] = useState(false);
     const [displayUser, setDisplayUser] = useState<UserProfile | null>(null);
     const [unexistent, setUnexistent] = useState(false);
