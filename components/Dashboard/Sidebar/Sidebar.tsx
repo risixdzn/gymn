@@ -12,6 +12,7 @@ import {
     Warehouse,
     Settings,
     BadgeHelp,
+    Search,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -28,6 +29,7 @@ import UserProfileCard from "./ui/UserProfileCard";
 import { usePathname } from "next/navigation";
 import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
 import { useTranslateAppRoutes } from "@/lib/hooks/useTranslateAppRoutes";
+import BottomNav from "./ui/BottomNav";
 
 export default function Sidebar({ session }: { session: Session | null }) {
     const [isClient, setIsClient] = useState(false);
@@ -161,15 +163,7 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                         </div>
                     </div>
 
-                    <div
-                        id='bottomnav'
-                        className='w-full h-20 fixed z-[2] top-full -translate-y-20 bg-card rounded-t-3xl flex items-center justify-around'
-                    >
-                        <Home />
-                        <Home />
-                        <Home />
-                        <Home />
-                    </div>
+                    <BottomNav pathname={pathname} />
                 </>
             ) : (
                 <></>
