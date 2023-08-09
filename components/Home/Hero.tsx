@@ -36,7 +36,7 @@ export default function Hero() {
                     A ferramenta completa para <b>proprietários</b> de academias e{" "}
                     <b>entusiastas</b> do mundo fitness.
                 </p>
-                <Link href='/login'>
+                <Link href='/auth'>
                     <button className='mt-3 g_xlPrimaryBtn'>Começar</button>
                 </Link>
             </div>

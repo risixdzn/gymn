@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { Session } from "@supabase/supabase-js";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
+import UploadUI from "./UploadUI";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -24,23 +26,33 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
             {!loading ? (
                 <div>
                     <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'></div>
-                    <div
-                        id='pfp'
-                        className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
+                    <Dialog>
+                        <DialogTrigger className='absolute'>
+                            <div
+                                id='pfp'
+                                className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
                     -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden'
-                    >
-                        <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center'>
-                            <Edit className='lg:scale-150 drop-shadow-lg pointer-events-none' />
-                            <p className='text-sm drop-shadow-lg  pointer-events-none'>Alterar</p>
-                        </div>
-                        <Image
-                            width={300}
-                            height={300}
-                            alt=''
-                            className='w-full h-full'
-                            src={UserLogo}
-                        />
-                    </div>
+                            >
+                                <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center'>
+                                    <Edit className='lg:scale-150 drop-shadow-lg pointer-events-none' />
+                                    <p className='text-sm drop-shadow-lg  pointer-events-none'>
+                                        Alterar
+                                    </p>
+                                </div>
+                                <Image
+                                    width={300}
+                                    height={300}
+                                    alt=''
+                                    className='w-full h-full'
+                                    src={UserLogo}
+                                />
+                            </div>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <UploadUI displayUser={displayUser} />
+                        </DialogContent>
+                    </Dialog>
+
                     <div
                         id='actions'
                         className='absolute w-[calc(100%-2.5rem)] lg:w-[calc(100%-5rem)] mt-3 lg:mt-7 h-10 flex gap-2 justify-end'

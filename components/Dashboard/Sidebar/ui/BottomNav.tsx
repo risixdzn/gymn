@@ -33,7 +33,10 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                     currentRoute == "explore" ? "text-g_purple" : "text-muted-foreground"
                 }`}
             >
-                <Search />
+                <Search
+                    strokeWidth={currentRoute == "explore" ? 3 : 2}
+                    className='transition-all'
+                />
                 <p className='text-xs'>Explorar</p>
             </Link>
             <Link
@@ -42,7 +45,10 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                     currentRoute == "workouts" ? "text-g_purple" : "text-muted-foreground"
                 }`}
             >
-                <Dumbbell />
+                <Dumbbell
+                    strokeWidth={currentRoute == "workouts" ? 3 : 2}
+                    className='transition-all'
+                />
                 <p className='text-xs'>Treinos</p>
             </Link>
             <Link
