@@ -1,3 +1,7 @@
+import { HomeIcon } from "@/components/ui/Icons/Home/Home";
+import { SolidHomeIcon } from "@/components/ui/Icons/Home/SolidHome";
+import { SolidUserIcon } from "@/components/ui/Icons/User/SolidUser";
+import { UserIcon } from "@/components/ui/Icons/User/User";
 import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
 import { Home, Search, Dumbbell, User } from "lucide-react";
 import Link from "next/link";
@@ -16,7 +20,11 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                     currentRoute == "home" ? "text-g_purple" : "text-muted-foreground"
                 }`}
             >
-                <Home />
+                {currentRoute == "home" ? (
+                    <SolidHomeIcon className='fill-g_purple' width={24} height={24} />
+                ) : (
+                    <HomeIcon className='fill-muted-foreground' width={24} height={24} />
+                )}
                 <p className='text-xs'>Home</p>
             </Link>
             <Link
@@ -25,16 +33,22 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                     currentRoute == "explore" ? "text-g_purple" : "text-muted-foreground"
                 }`}
             >
-                <Search />
+                <Search
+                    strokeWidth={currentRoute == "explore" ? 3 : 2}
+                    className='transition-all'
+                />
                 <p className='text-xs'>Explorar</p>
             </Link>
             <Link
-                href='/dashboard/explore'
+                href='/dashboard/workouts'
                 className={`transition-all flex flex-col items-center gap-1 ${
                     currentRoute == "workouts" ? "text-g_purple" : "text-muted-foreground"
                 }`}
             >
-                <Dumbbell />
+                <Dumbbell
+                    strokeWidth={currentRoute == "workouts" ? 3 : 2}
+                    className='transition-all'
+                />
                 <p className='text-xs'>Treinos</p>
             </Link>
             <Link
@@ -45,7 +59,15 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                         : "text-muted-foreground"
                 }`}
             >
-                <User />
+                {currentRoute == "profile" ? (
+                    <SolidUserIcon className='fill-g_purple' width={24} height={24} />
+                ) : (
+                    <UserIcon
+                        className='stroke-muted-foreground fill-none'
+                        width={24}
+                        height={24}
+                    />
+                )}
                 <p className='text-xs'>Perfil</p>
             </Link>
         </div>

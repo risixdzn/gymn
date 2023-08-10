@@ -107,7 +107,7 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                             command='n'
                         />
 
-                        <LinkButton icon={<User />} href='/account' text='Conta' command='c' />
+                        <LinkButton icon={<User />} href='/profile' text='Conta' command='c' />
                     </div>
                     <hr className='-mt-2'></hr>
                 </div>
