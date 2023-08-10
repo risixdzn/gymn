@@ -9,8 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { Session } from "@supabase/supabase-js";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
-import UploadUI from "./UploadUI";
+import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -20,13 +21,14 @@ type PersonalProfileProps = {
 export default function PersonalProfile({ router, session }: PersonalProfileProps) {
     const { loading, displayUser } = useGetCurrentProfile({ session });
     const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
         <>
             {!loading ? (
                 <div>
                     <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'></div>
-                    <Dialog>
+                    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                         <DialogTrigger className='absolute'>
                             <div
                                 id='pfp'
@@ -49,7 +51,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                             </div>
                         </DialogTrigger>
                         <DialogContent>
-                            <UploadUI displayUser={displayUser} />
+                            <UploadUI displayUser={displayUser} setDialogOpen={setDialogOpen} />
                         </DialogContent>
                     </Dialog>
 

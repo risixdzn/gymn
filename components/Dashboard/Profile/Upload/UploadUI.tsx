@@ -4,18 +4,20 @@ import { Button } from "@/components/ui/button";
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState, Dispatch, SetStateAction } from "react";
 import { useDropzone } from "react-dropzone";
-import { ChevronLeft, PlusCircle, UploadCloud } from "lucide-react";
+import { Loader2, PlusCircle, UploadCloud } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { UserProfile } from "@/lib/supabase/getProfile";
 import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { uploadPicture } from "@/lib/supabase/uploadPicture";
 
 type UploadStages = "selectpic" | "reviewpic";
 
 type UploadUiProps = {
     setFiles: Dispatch<SetStateAction<any>>;
-    files: any;
+    files: File[];
     setUploadStage: Dispatch<SetStateAction<UploadStages>>;
     displayUser: UserProfile | null;
 };
@@ -34,7 +36,12 @@ function DropArea({ setFiles, setUploadStage }: UploadUiProps) {
     });
 
     function acceptedFile(acceptedFiles: any) {
-        setFiles(acceptedFiles.map((file: any) => URL.createObjectURL(file)));
+        setFiles(
+            acceptedFiles.map((file: any) => ({
+                url: URL.createObjectURL(file),
+                file: file,
+            }))
+        );
         setUploadStage("reviewpic");
     }
 
@@ -94,13 +101,13 @@ function ReviewPic({ files, displayUser }: UploadUiProps) {
                     className='z-[1] absolute w-28 h-28 rounded-full bg-card 
                 -translate-y-[50%] ml-0 border-background border-[5px] overflow-hidden object-cover'
                 >
-                    {files.map((file: any) => (
+                    {files.map((file: any, index: number) => (
                         <Image
                             width={300}
                             height={300}
-                            src={file}
+                            src={file.url}
                             alt=''
-                            key={file}
+                            key={index}
                             className='w-full h-full object-cover'
                         />
                     ))}
@@ -132,9 +139,17 @@ function ReviewPic({ files, displayUser }: UploadUiProps) {
     );
 }
 
-export default function UploadUI({ displayUser }: { displayUser: UserProfile | null }) {
+export default function UploadUI({
+    displayUser,
+    setDialogOpen,
+}: {
+    displayUser: UserProfile | null;
+    setDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) {
     const [uploadStage, setUploadStage] = useState<UploadStages>("selectpic");
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState<File[]>([]);
+    const [loading, setLoading] = useState(false);
+    const supabase = createClientComponentClient();
 
     function handleBackstage() {
         setFiles([]);
@@ -155,29 +170,49 @@ export default function UploadUI({ displayUser }: { displayUser: UserProfile | n
                         : "Se a prévia do perfil atingiu as suas expectativas, clique em salvar."}
                 </DialogDescription>
             </DialogHeader>
-            {uploadStage == "selectpic" ? (
-                <DropArea
-                    setFiles={setFiles}
-                    files={files}
-                    setUploadStage={setUploadStage}
-                    displayUser={displayUser}
-                />
+            {!loading ? (
+                uploadStage == "selectpic" ? (
+                    <DropArea
+                        setFiles={setFiles}
+                        files={files}
+                        setUploadStage={setUploadStage}
+                        displayUser={displayUser}
+                    />
+                ) : (
+                    <ReviewPic
+                        setFiles={setFiles}
+                        files={files}
+                        setUploadStage={setUploadStage}
+                        displayUser={displayUser}
+                    />
+                )
             ) : (
-                <ReviewPic
-                    setFiles={setFiles}
-                    files={files}
-                    setUploadStage={setUploadStage}
-                    displayUser={displayUser}
-                />
+                <div className='w-full h-64 flex items-center justify-center border-border border-[1px] rounded-lg bg-gradient-to-b from-transparent to-border/20'>
+                    <Loader2 className='animate-spin w-10 h-10' />
+                </div>
             )}
-
             <DialogFooter>
-                {uploadStage == "reviewpic" ? (
-                    <Button variant={"ghost"} onClick={() => handleBackstage()}>
-                        Escolher outra foto
-                    </Button>
-                ) : null}
-                <Button type='submit'>Salvar alterações</Button>
+                {uploadStage == "reviewpic" && (
+                    <>
+                        <Button variant={"ghost"} onClick={() => handleBackstage()}>
+                            Escolher outra foto
+                        </Button>
+                        <Button
+                            type='submit'
+                            onClick={() =>
+                                uploadPicture(
+                                    files,
+                                    displayUser?.username,
+                                    setFiles,
+                                    setDialogOpen,
+                                    setLoading
+                                )
+                            }
+                        >
+                            Salvar alterações
+                        </Button>
+                    </>
+                )}
             </DialogFooter>
         </>
     );
