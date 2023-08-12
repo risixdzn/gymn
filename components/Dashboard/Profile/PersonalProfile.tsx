@@ -11,7 +11,8 @@ import { Session } from "@supabase/supabase-js";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+import { useState, Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -19,7 +20,7 @@ type PersonalProfileProps = {
 };
 
 export default function PersonalProfile({ router, session }: PersonalProfileProps) {
-    const { loading, displayUser } = useGetCurrentProfile({ session });
+    const { loading, displayUser, refetchUser } = useGetCurrentProfile({ session });
     const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -33,7 +34,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                             <div
                                 id='pfp'
                                 className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
-                    -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden'
+                    -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden object-cover'
                             >
                                 <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center'>
                                     <Edit className='lg:scale-150 drop-shadow-lg pointer-events-none' />
@@ -41,17 +42,27 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                         Alterar
                                     </p>
                                 </div>
-                                <Image
-                                    width={300}
-                                    height={300}
-                                    alt=''
-                                    className='w-full h-full'
-                                    src={UserLogo}
-                                />
+                                {displayUser && (
+                                    <Suspense
+                                        fallback={<Loader2 className='w-8 h-8 animate-spin' />}
+                                    >
+                                        <Image
+                                            width={300}
+                                            height={300}
+                                            alt=''
+                                            className='w-full h-full object-cover'
+                                            src={`${displayUser.avatar_url}?v=${Date.now()}`}
+                                        />
+                                    </Suspense>
+                                )}
                             </div>
                         </DialogTrigger>
                         <DialogContent>
-                            <UploadUI displayUser={displayUser} setDialogOpen={setDialogOpen} />
+                            <UploadUI
+                                displayUser={displayUser}
+                                setDialogOpen={setDialogOpen}
+                                refetchUser={refetchUser}
+                            />
                         </DialogContent>
                     </Dialog>
 

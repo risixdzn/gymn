@@ -1,4 +1,5 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { Dispatch, SetStateAction } from "react";
 
 export const uploadPicture = async (
@@ -6,7 +7,9 @@ export const uploadPicture = async (
     username: string | undefined, //para fazer o select com o username
     setFiles: Dispatch<SetStateAction<any>>, //para resetar os arquivos ao terminar
     setDialogOpen: Dispatch<SetStateAction<boolean>>, //para fechar o dialog no sucesso
-    setLoading: Dispatch<SetStateAction<boolean>>
+    setLoading: Dispatch<SetStateAction<boolean>>,
+    router: AppRouterInstance,
+    refetchUser: Function
 ) => {
     const picture = files[0];
     const supabase = createClientComponentClient();
@@ -29,6 +32,7 @@ export const uploadPicture = async (
                 setDialogOpen(false);
             }
             setFiles([]);
+            refetchUser();
         } else {
             //atualize a foto existente
             const { data, error } = await supabase.storage
@@ -41,6 +45,7 @@ export const uploadPicture = async (
                 setDialogOpen(false);
             }
             setFiles([]);
+            refetchUser();
         }
     } finally {
         setLoading(false);
