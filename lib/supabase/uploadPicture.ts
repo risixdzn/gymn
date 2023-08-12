@@ -15,13 +15,13 @@ export const uploadPicture = async (
         setLoading(true);
 
         //tentar baixar a foto com o username
-        const { data, error } = await supabase.storage.from("avatars").download(`${username}.png`);
+        const { data, error } = await supabase.storage.from("avatars").download(`${username}`);
         //se ocorrer um erro (foto nao existe)
         if (error) {
             //crie uma foto nova
             const { data, error } = await supabase.storage
                 .from("avatars")
-                .upload(`${username}.png`, picture.file);
+                .upload(`${username}`, picture.file);
             if (error) {
                 console.log(error);
             } else {
@@ -33,7 +33,7 @@ export const uploadPicture = async (
             //atualize a foto existente
             const { data, error } = await supabase.storage
                 .from("avatars")
-                .update(`${username}.png`, picture.file);
+                .update(`${username}`, picture.file);
             if (error) {
                 console.log(error);
             } else {

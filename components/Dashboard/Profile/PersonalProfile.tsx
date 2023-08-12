@@ -11,7 +11,7 @@ import { Session } from "@supabase/supabase-js";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
