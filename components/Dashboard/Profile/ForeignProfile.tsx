@@ -8,6 +8,7 @@ import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { Session } from "@supabase/supabase-js";
 import UnexistentProfile from "./UnexistentProfile";
 import { useGetProfile } from "@/lib/supabase/getProfile";
+import SkeletonProfile from "./SkeletonProfile";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -93,9 +94,7 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
             ) : unexistent ? (
                 <UnexistentProfile username={username} />
             ) : (
-                <div className='w-full flex justify-center'>
-                    <Loader2 className='w-10 h-10 animate-spin' />
-                </div>
+                <SkeletonProfile />
             )}
         </>
     );

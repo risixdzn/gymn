@@ -10,7 +10,7 @@ import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import SkeletonProfile from "./SkeletonProfile";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -96,9 +96,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                     </div>
                 </div>
             ) : (
-                <div className='w-full flex justify-center'>
-                    <Loader2 className='w-10 h-10 animate-spin' />
-                </div>
+                <SkeletonProfile />
             )}
         </>
     );
