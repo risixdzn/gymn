@@ -1,5 +1,7 @@
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import UserDefaultAvatar from "../../public/user.png";
+import { StaticImageData } from "next/image";
 
 type useGetCurrentProfileProps = {
     session: Session | null;
@@ -15,7 +17,7 @@ export type UserProfile = {
     first_name: string;
     profile: string;
     email: string;
-    avatar_url: string;
+    avatar_url: string | StaticImageData;
 };
 
 export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
@@ -44,8 +46,7 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
                 const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
                 const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
 
-                const defaultAvatar =
-                    "https://bkeiikprhrwohskvmxkd.supabase.co/storage/v1/object/public/avatars/user.png";
+                const defaultAvatar = UserDefaultAvatar;
                 const avatar_url = avatarData
                     ? `${avatarData.avatar_url}?v=${Date.now()}`
                     : defaultAvatar;
@@ -106,9 +107,10 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
                 const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
                 const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
 
-                const defaultAvatar =
-                    "https://bkeiikprhrwohskvmxkd.supabase.co/storage/v1/object/public/avatars/user.png";
-                const avatar_url = avatarData ? avatarData.avatar_url : defaultAvatar;
+                const defaultAvatar = UserDefaultAvatar;
+                const avatar_url = avatarData
+                    ? `${avatarData.avatar_url}?v=${Date.now()}`
+                    : defaultAvatar;
 
                 setDisplayUser({
                     created_at: data.created_at,

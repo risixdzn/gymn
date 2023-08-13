@@ -1,7 +1,5 @@
-import { UserProfile } from "@/lib/supabase/getProfile";
 import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
 import Image from "next/image";
-import UserLogo from "../../../public/user.png";
 import { Button } from "@/components/ui/button";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { SignOut } from "@/lib/auth/signOut";
@@ -11,7 +9,7 @@ import { Session } from "@supabase/supabase-js";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useState, Suspense } from "react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type PersonalProfileProps = {
@@ -43,17 +41,13 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                     </p>
                                 </div>
                                 {displayUser && (
-                                    <Suspense
-                                        fallback={<Loader2 className='w-8 h-8 animate-spin' />}
-                                    >
-                                        <Image
-                                            width={300}
-                                            height={300}
-                                            alt=''
-                                            className='w-full h-full object-cover'
-                                            src={`${displayUser.avatar_url}?v=${Date.now()}`}
-                                        />
-                                    </Suspense>
+                                    <Image
+                                        width={300}
+                                        height={300}
+                                        alt=''
+                                        className='w-full h-full object-cover'
+                                        src={displayUser.avatar_url}
+                                    />
                                 )}
                             </div>
                         </DialogTrigger>

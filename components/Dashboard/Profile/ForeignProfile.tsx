@@ -1,7 +1,5 @@
-import { UserProfile } from "@/lib/supabase/getProfile";
 import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
 import Image from "next/image";
-import UserLogo from "../../../public/user.png";
 import { Button } from "@/components/ui/button";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { SignOut } from "@/lib/auth/signOut";
@@ -19,8 +17,8 @@ type PersonalProfileProps = {
 
 export default function ForeignProfile({ router, username, session }: PersonalProfileProps) {
     const { loading, displayUser, unexistent } = useGetProfile({ username });
-
     const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
+
     return (
         <>
             {!loading && !unexistent ? (
@@ -43,13 +41,15 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                             </div>
                         ) : null}
 
-                        <Image
-                            width={300}
-                            height={300}
-                            alt=''
-                            className='w-full h-full'
-                            src={UserLogo}
-                        />
+                        {displayUser && (
+                            <Image
+                                width={300}
+                                height={300}
+                                alt=''
+                                className='w-full h-full object-cover'
+                                src={displayUser.avatar_url}
+                            />
+                        )}
                     </div>
                     {displayUser?.username == session?.user.user_metadata.username ? (
                         <div
