@@ -1,5 +1,7 @@
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import UserDefaultAvatar from "../../public/user.png";
+import { StaticImageData } from "next/image";
 
 type useGetCurrentProfileProps = {
     session: Session | null;
@@ -15,6 +17,7 @@ export type UserProfile = {
     first_name: string;
     profile: string;
     email: string;
+    avatar_url: string | StaticImageData;
 };
 
 export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
@@ -30,7 +33,9 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
 
             let { data, error, status } = await supabase
                 .from("users")
-                .select("created_at, username, profile, first_name, email")
+                .select(
+                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url)"
+                )
                 .eq("id", user?.id)
                 .single();
             if (error && status !== 406) {
@@ -38,12 +43,21 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
             }
 
             if (data) {
+                const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
+                const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
+
+                const defaultAvatar = UserDefaultAvatar;
+                const avatar_url = avatarData
+                    ? `${avatarData.avatar_url}?v=${Date.now()}`
+                    : defaultAvatar;
+
                 setDisplayUser({
                     created_at: data.created_at,
                     username: data.username,
                     first_name: data.first_name,
                     profile: data.profile,
                     email: data.email,
+                    avatar_url: avatar_url,
                 });
             }
         } catch (error) {
@@ -53,11 +67,15 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
         }
     }, [user, supabase]);
 
+    function refetchUser() {
+        getProfile();
+    }
+
     useEffect(() => {
         getProfile();
     }, [getProfile]);
 
-    return { loading, displayUser };
+    return { loading, displayUser, refetchUser };
 }
 
 export function useGetProfile({ username }: useGetForeignProfileProps) {
@@ -73,7 +91,9 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
 
             let { data, error, status } = await supabase
                 .from("users")
-                .select("created_at, username, profile, first_name, email")
+                .select(
+                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url)"
+                )
                 .eq("username", username)
                 .single();
 
@@ -84,12 +104,21 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
             }
 
             if (data) {
+                const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
+                const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
+
+                const defaultAvatar = UserDefaultAvatar;
+                const avatar_url = avatarData
+                    ? `${avatarData.avatar_url}?v=${Date.now()}`
+                    : defaultAvatar;
+
                 setDisplayUser({
                     created_at: data.created_at,
                     username: data.username,
                     first_name: data.first_name,
                     profile: data.profile,
                     email: data.email,
+                    avatar_url: avatar_url,
                 });
             }
         } catch (error) {

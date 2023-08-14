@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { uploadPicture } from "@/lib/supabase/uploadPicture";
+import { useRouter } from "next/navigation";
 
 type UploadStages = "selectpic" | "reviewpic";
 
@@ -142,14 +143,17 @@ function ReviewPic({ files, displayUser }: UploadUiProps) {
 export default function UploadUI({
     displayUser,
     setDialogOpen,
+    refetchUser,
 }: {
     displayUser: UserProfile | null;
     setDialogOpen: Dispatch<SetStateAction<boolean>>;
+    refetchUser: Function;
 }) {
     const [uploadStage, setUploadStage] = useState<UploadStages>("selectpic");
     const [files, setFiles] = useState<File[]>([]);
     const [loading, setLoading] = useState(false);
     const supabase = createClientComponentClient();
+    const router = useRouter();
 
     function handleBackstage() {
         setFiles([]);
@@ -205,7 +209,9 @@ export default function UploadUI({
                                     displayUser?.username,
                                     setFiles,
                                     setDialogOpen,
-                                    setLoading
+                                    setLoading,
+                                    router,
+                                    refetchUser
                                 )
                             }
                         >

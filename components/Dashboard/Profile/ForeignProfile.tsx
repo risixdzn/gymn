@@ -1,7 +1,5 @@
-import { UserProfile } from "@/lib/supabase/getProfile";
 import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
 import Image from "next/image";
-import UserLogo from "../../../public/user.png";
 import { Button } from "@/components/ui/button";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { SignOut } from "@/lib/auth/signOut";
@@ -10,6 +8,7 @@ import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { Session } from "@supabase/supabase-js";
 import UnexistentProfile from "./UnexistentProfile";
 import { useGetProfile } from "@/lib/supabase/getProfile";
+import SkeletonProfile from "./SkeletonProfile";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -19,8 +18,8 @@ type PersonalProfileProps = {
 
 export default function ForeignProfile({ router, username, session }: PersonalProfileProps) {
     const { loading, displayUser, unexistent } = useGetProfile({ username });
-
     const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
+
     return (
         <>
             {!loading && !unexistent ? (
@@ -43,13 +42,15 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                             </div>
                         ) : null}
 
-                        <Image
-                            width={300}
-                            height={300}
-                            alt=''
-                            className='w-full h-full'
-                            src={UserLogo}
-                        />
+                        {displayUser && (
+                            <Image
+                                width={300}
+                                height={300}
+                                alt=''
+                                className='w-full h-full object-cover'
+                                src={displayUser.avatar_url}
+                            />
+                        )}
                     </div>
                     {displayUser?.username == session?.user.user_metadata.username ? (
                         <div
@@ -93,9 +94,7 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
             ) : unexistent ? (
                 <UnexistentProfile username={username} />
             ) : (
-                <div className='w-full flex justify-center'>
-                    <Loader2 className='w-10 h-10 animate-spin' />
-                </div>
+                <SkeletonProfile />
             )}
         </>
     );

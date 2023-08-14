@@ -1,7 +1,5 @@
-import { UserProfile } from "@/lib/supabase/getProfile";
 import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
 import Image from "next/image";
-import UserLogo from "../../../public/user.png";
 import { Button } from "@/components/ui/button";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { SignOut } from "@/lib/auth/signOut";
@@ -12,6 +10,7 @@ import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
+import SkeletonProfile from "./SkeletonProfile";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -19,7 +18,7 @@ type PersonalProfileProps = {
 };
 
 export default function PersonalProfile({ router, session }: PersonalProfileProps) {
-    const { loading, displayUser } = useGetCurrentProfile({ session });
+    const { loading, displayUser, refetchUser } = useGetCurrentProfile({ session });
     const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -33,7 +32,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                             <div
                                 id='pfp'
                                 className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
-                    -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden'
+                    -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden object-cover'
                             >
                                 <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center'>
                                     <Edit className='lg:scale-150 drop-shadow-lg pointer-events-none' />
@@ -41,17 +40,28 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                         Alterar
                                     </p>
                                 </div>
-                                <Image
-                                    width={300}
-                                    height={300}
-                                    alt=''
-                                    className='w-full h-full'
-                                    src={UserLogo}
-                                />
+                                {displayUser && (
+                                    <Image
+                                        width={300}
+                                        height={300}
+                                        alt=''
+                                        className='w-full h-full object-cover z-[1]'
+                                        src={displayUser.avatar_url}
+                                    />
+                                )}
+                                <div className='w-full h-full absolute flex items-center justify-center'>
+                                    <h2 className='text-4xl'>
+                                        {displayUser?.username.slice(0, 2).toUpperCase()}
+                                    </h2>
+                                </div>
                             </div>
                         </DialogTrigger>
                         <DialogContent>
-                            <UploadUI displayUser={displayUser} setDialogOpen={setDialogOpen} />
+                            <UploadUI
+                                displayUser={displayUser}
+                                setDialogOpen={setDialogOpen}
+                                refetchUser={refetchUser}
+                            />
                         </DialogContent>
                     </Dialog>
 
@@ -91,9 +101,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                     </div>
                 </div>
             ) : (
-                <div className='w-full flex justify-center'>
-                    <Loader2 className='w-10 h-10 animate-spin' />
-                </div>
+                <SkeletonProfile />
             )}
         </>
     );
