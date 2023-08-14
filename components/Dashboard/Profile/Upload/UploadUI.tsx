@@ -191,8 +191,9 @@ export default function UploadUI({
                     />
                 )
             ) : (
-                <div className='w-full h-64 flex items-center justify-center border-border border-[1px] rounded-lg bg-gradient-to-b from-transparent to-border/20'>
-                    <Loader2 className='animate-spin w-10 h-10' />
+                <div className='w-full h-64 flex items-center justify-center border-border border-[1px] rounded-lg bg-gradient-to-b from-transparent to-border/20 flex-col gap-2'>
+                    <Loader2 className='animate-spin w-10 h-10 text-muted-foreground' />
+                    <p className='text-sm text-muted-foreground'>Enviando</p>
                 </div>
             )}
             <DialogFooter>
