@@ -1,6 +1,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { Dispatch, SetStateAction } from "react";
+import imageCompression from "browser-image-compression";
 
 export const uploadPicture = async (
     files: any, //arqvuios
@@ -16,7 +17,11 @@ export const uploadPicture = async (
 
     try {
         setLoading(true);
-
+        const compressedImage = await imageCompression(picture.file, {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            fileType: "image/webp",
+        });
         //tentar baixar a foto com o username
         const { data, error } = await supabase.storage.from("avatars").download(`${username}`);
         //se ocorrer um erro (foto nao existe)
@@ -24,7 +29,7 @@ export const uploadPicture = async (
             //crie uma foto nova
             const { data, error } = await supabase.storage
                 .from("avatars")
-                .upload(`${username}`, picture.file);
+                .upload(`${username}`, compressedImage);
             if (error) {
                 console.log(error);
             } else {
@@ -37,7 +42,7 @@ export const uploadPicture = async (
             //atualize a foto existente
             const { data, error } = await supabase.storage
                 .from("avatars")
-                .update(`${username}`, picture.file);
+                .update(`${username}`, compressedImage);
             if (error) {
                 console.log(error);
             } else {

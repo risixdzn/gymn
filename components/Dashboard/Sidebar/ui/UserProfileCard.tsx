@@ -26,13 +26,15 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                     <div className='flex items-center justify-between py-5 px-5'>
                         <div className='flex flex-row items-center gap-4'>
                             <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
-                                <Image
-                                    width={100}
-                                    height={100}
-                                    alt=''
-                                    className='w-full h-full'
-                                    src={UserLogo}
-                                />
+                                {displayUser && (
+                                    <Image
+                                        width={100}
+                                        height={100}
+                                        alt=''
+                                        className='w-full h-full object-cover'
+                                        src={displayUser.avatar_url}
+                                    />
+                                )}
                             </div>
                             <div>
                                 <h3 className='text-sm'>{displayUser?.username}</h3>
@@ -102,13 +104,15 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                         id='pfp'
                         className='w-14 h-14 bg-card mt-7 border-border border-[1px] absolute z-[1] rounded-xl overflow-hidden'
                     >
-                        <Image
-                            width={100}
-                            height={100}
-                            alt=''
-                            className='w-full h-full'
-                            src={UserLogo}
-                        />
+                        {displayUser && (
+                            <Image
+                                width={100}
+                                height={100}
+                                alt=''
+                                className='w-full h-full object-cover'
+                                src={displayUser.avatar_url}
+                            />
+                        )}
                     </div>
                 </HoverCardContent>
             </HoverCard>

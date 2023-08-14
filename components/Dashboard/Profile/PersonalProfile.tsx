@@ -45,10 +45,15 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                         width={300}
                                         height={300}
                                         alt=''
-                                        className='w-full h-full object-cover'
+                                        className='w-full h-full object-cover z-[1]'
                                         src={displayUser.avatar_url}
                                     />
                                 )}
+                                <div className='w-full h-full absolute flex items-center justify-center'>
+                                    <h2 className='text-4xl'>
+                                        {displayUser?.username.slice(0, 2).toUpperCase()}
+                                    </h2>
+                                </div>
                             </div>
                         </DialogTrigger>
                         <DialogContent>
