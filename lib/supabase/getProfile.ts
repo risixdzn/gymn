@@ -2,6 +2,7 @@ import { Session, createClientComponentClient } from "@supabase/auth-helpers-nex
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import UserDefaultAvatar from "../../public/user.png";
 import { StaticImageData } from "next/image";
+import { downloadAvatar } from "./downloadAvatar";
 
 type useGetCurrentProfileProps = {
     session: Session | null;
@@ -45,11 +46,9 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
             if (data) {
                 const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
                 const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
-
                 const defaultAvatar = UserDefaultAvatar;
-                const avatar_url = avatarData
-                    ? `${avatarData.avatar_url}?v=${Date.now()}`
-                    : defaultAvatar;
+
+                const avatar_url = avatarData ? await downloadAvatar(data.username) : defaultAvatar;
 
                 setDisplayUser({
                     created_at: data.created_at,
@@ -108,9 +107,7 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
                 const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
 
                 const defaultAvatar = UserDefaultAvatar;
-                const avatar_url = avatarData
-                    ? `${avatarData.avatar_url}?v=${Date.now()}`
-                    : defaultAvatar;
+                const avatar_url = avatarData ? await downloadAvatar(data.username) : defaultAvatar;
 
                 setDisplayUser({
                     created_at: data.created_at,
