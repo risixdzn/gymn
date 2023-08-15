@@ -82,6 +82,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                         height={300}
                                         alt=''
                                         className='w-full h-full object-cover z-[1]'
+                                        key={1}
                                         src={displayUser.avatar_url}
                                     />
                                 )}
