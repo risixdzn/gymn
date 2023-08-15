@@ -27,8 +27,17 @@ export function ReviewPic({ files, displayUser, uploadingTo }: ReviewPicProps) {
                                   className='w-full h-full object-cover rounded-t-2xl'
                               />
                           ))
-                        : null}
-                    {/* TODO: Show user current banner */}
+                        : displayUser &&
+                          displayUser.banner_url !== null && (
+                              <Image
+                                  width={1500}
+                                  height={700}
+                                  src={displayUser.banner_url as string}
+                                  alt=''
+                                  key={1}
+                                  className='w-full h-full object-cover rounded-t-2xl'
+                              />
+                          )}
                 </div>
                 <div
                     id='pfp'

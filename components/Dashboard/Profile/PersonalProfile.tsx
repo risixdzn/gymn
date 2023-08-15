@@ -52,13 +52,16 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                 <X className='lg:scale-125 drop-shadow-lg pointer-events-none' />
                             </button>
                         </div>
-                        <Image
-                            width={1500}
-                            height={1000}
-                            alt=''
-                            className='w-full h-full object-cover z-[1] rounded-t-2xl'
-                            src={banner}
-                        />
+                        {displayUser && displayUser.banner_url !== null && (
+                            <Image
+                                width={1500}
+                                height={1000}
+                                src={displayUser.banner_url as string}
+                                alt=''
+                                key={1}
+                                className='w-full h-full object-cover rounded-t-2xl'
+                            />
+                        )}
                     </div>
                     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                         <DialogTrigger className='absolute'>

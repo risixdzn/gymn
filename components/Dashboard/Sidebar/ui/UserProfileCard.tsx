@@ -54,7 +54,18 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                     <div
                         id='banner'
                         className='bg-accent dark:bg-accent/60 rounded-t-md absolute w-72 h-[4.5rem] -ml-4 -mt-4'
-                    ></div>
+                    >
+                        {displayUser && displayUser.banner_url !== null && (
+                            <Image
+                                width={300}
+                                height={100}
+                                src={displayUser.banner_url as string}
+                                alt=''
+                                key={1}
+                                className='w-full h-full object-cover rounded-t-md'
+                            />
+                        )}
+                    </div>
                     <div
                         id='badgeholder'
                         className='absolute w-[16rem] h-auto mt-[4.5rem] flex justify-end'

@@ -24,7 +24,19 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
         <>
             {!loading && !unexistent ? (
                 <div>
-                    <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'></div>
+                    <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'>
+                        {displayUser && displayUser.banner_url !== null && (
+                            <Image
+                                width={1500}
+                                height={1000}
+                                src={displayUser.banner_url as string}
+                                alt=''
+                                key={1}
+                                className='w-full h-full object-cover rounded-t-2xl'
+                            />
+                        )}
+                    </div>
+
                     <div
                         id='pfp'
                         className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
