@@ -1,4 +1,4 @@
-import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
+import { Edit, CalendarDays, Loader2, LogOut, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
@@ -11,6 +11,7 @@ import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import SkeletonProfile from "./SkeletonProfile";
+import banner from "../../../public/w11.jpg";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -26,7 +27,39 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
         <>
             {!loading ? (
                 <div>
-                    <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'></div>
+                    <div
+                        id='banner'
+                        className='w-full h-36 bg-accent rounded-t-2xl lg:h-72 relative overflow-hidden'
+                    >
+                        <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/50  transition-all absolute flex flex-row gap-2 items-center justify-center'>
+                            <Dialog>
+                                <DialogTrigger>
+                                    <button className='bg-black/50 p-5 rounded-full outline-0 outline-white hover:outline-2 hover:outline-white transition-all'>
+                                        <Edit className='lg:scale-125 drop-shadow-lg pointer-events-none' />
+                                    </button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <UploadUI
+                                        displayUser={displayUser}
+                                        setDialogOpen={setDialogOpen}
+                                        refetchUser={refetchUser}
+                                        uploadingTo='banners'
+                                    />
+                                </DialogContent>
+                            </Dialog>
+
+                            <button className='bg-black/50 p-5 rounded-full'>
+                                <X className='lg:scale-125 drop-shadow-lg pointer-events-none' />
+                            </button>
+                        </div>
+                        <Image
+                            width={1500}
+                            height={1000}
+                            alt=''
+                            className='w-full h-full object-cover z-[1] rounded-t-2xl'
+                            src={banner}
+                        />
+                    </div>
                     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                         <DialogTrigger className='absolute'>
                             <div
@@ -61,6 +94,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                 displayUser={displayUser}
                                 setDialogOpen={setDialogOpen}
                                 refetchUser={refetchUser}
+                                uploadingTo='avatars'
                             />
                         </DialogContent>
                     </Dialog>
