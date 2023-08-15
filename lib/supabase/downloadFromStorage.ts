@@ -10,9 +10,11 @@ export async function downloadAvatar(username: string) {
     }
 
     const url = URL.createObjectURL(data);
-    console.log(url);
+    const timestamp = Date.now();
+    const timestampedUrl = `${url}#t=${timestamp}`;
+    console.log(timestampedUrl);
 
-    return url;
+    return timestampedUrl;
 }
 
 export async function downloadBanner(username: string) {
@@ -24,7 +26,9 @@ export async function downloadBanner(username: string) {
     }
 
     const url = URL.createObjectURL(data);
-    console.log(url);
+    const timestamp = Date.now();
+    const timestampedUrl = `${url}#t=${timestamp}`;
+    console.log(timestampedUrl);
 
-    return url;
+    return timestampedUrl;
 }
