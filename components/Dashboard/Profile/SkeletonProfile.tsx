@@ -4,7 +4,7 @@ export default function SkeletonProfile() {
     return (
         <div>
             <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'>
-                <Skeleton className='w-full h-full' />
+                <Skeleton className='w-full h-full rounded-t-2xl' />
             </div>
             <div
                 id='pfp'

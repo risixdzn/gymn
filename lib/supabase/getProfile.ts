@@ -2,6 +2,7 @@ import { Session, createClientComponentClient } from "@supabase/auth-helpers-nex
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import UserDefaultAvatar from "../../public/user.png";
 import { StaticImageData } from "next/image";
+import { downloadAvatar, downloadBanner } from "./downloadFromStorage";
 
 type useGetCurrentProfileProps = {
     session: Session | null;
@@ -18,6 +19,7 @@ export type UserProfile = {
     profile: string;
     email: string;
     avatar_url: string | StaticImageData;
+    banner_url: string | StaticImageData | null;
 };
 
 export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
@@ -34,7 +36,7 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
             let { data, error, status } = await supabase
                 .from("users")
                 .select(
-                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url)"
+                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url)"
                 )
                 .eq("id", user?.id)
                 .single();
@@ -43,13 +45,17 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
             }
 
             if (data) {
-                const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
-                const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
+                // avatars ou banners pode ser um objeto, ou nulo => se nao possuir um avatar
+                const avatars = data.avatars || null;
+                const banners = data.banners || null;
+                // se for um array, estamos lidando um uma resposta nao nula e então extraimos o indice 0, se nao, apenas retorno o objeto nulo
+                const avatarData = Array.isArray(avatars) ? avatars[0] : avatars;
+                const bannerData = Array.isArray(banners) ? banners[0] : banners;
 
                 const defaultAvatar = UserDefaultAvatar;
-                const avatar_url = avatarData
-                    ? `${avatarData.avatar_url}?v=${Date.now()}`
-                    : defaultAvatar;
+
+                const avatar_url = avatarData ? await downloadAvatar(data.username) : defaultAvatar;
+                const banner_url = bannerData ? await downloadBanner(data.username) : null;
 
                 setDisplayUser({
                     created_at: data.created_at,
@@ -58,6 +64,7 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
                     profile: data.profile,
                     email: data.email,
                     avatar_url: avatar_url,
+                    banner_url: banner_url,
                 });
             }
         } catch (error) {
@@ -92,7 +99,7 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
             let { data, error, status } = await supabase
                 .from("users")
                 .select(
-                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url)"
+                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url)"
                 )
                 .eq("username", username)
                 .single();
@@ -104,13 +111,17 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
             }
 
             if (data) {
-                const avatars = data.avatars || null; // avatars pode ser um objeto, ou nada, se nao possuir um avatar
-                const avatarData = Array.isArray(avatars) ? avatars[0] : avatars; // se for um array, estamos lidando um uma resposta e então extraimos o indice 0, se nao, apenas coloco o objeto
+                // avatars ou banners pode ser um objeto, ou nulo => se nao possuir um avatar
+                const avatars = data.avatars || null;
+                const banners = data.banners || null;
+                // se for um array, estamos lidando um uma resposta nao nula e então extraimos o indice 0, se nao, apenas retorno o objeto nulo
+                const avatarData = Array.isArray(avatars) ? avatars[0] : avatars;
+                const bannerData = Array.isArray(banners) ? banners[0] : banners;
 
                 const defaultAvatar = UserDefaultAvatar;
-                const avatar_url = avatarData
-                    ? `${avatarData.avatar_url}?v=${Date.now()}`
-                    : defaultAvatar;
+
+                const avatar_url = avatarData ? await downloadAvatar(data.username) : defaultAvatar;
+                const banner_url = bannerData ? await downloadBanner(data.username) : null;
 
                 setDisplayUser({
                     created_at: data.created_at,
@@ -119,6 +130,7 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
                     profile: data.profile,
                     email: data.email,
                     avatar_url: avatar_url,
+                    banner_url: banner_url,
                 });
             }
         } catch (error) {
