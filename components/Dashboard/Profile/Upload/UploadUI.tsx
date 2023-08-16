@@ -11,13 +11,6 @@ import { ReviewPic } from "./ReviewPic";
 
 export type UploadStages = "selectpic" | "reviewpic";
 
-type UploadUiProps = {
-    setFiles: Dispatch<SetStateAction<any>>;
-    files: File[];
-    setUploadStage: Dispatch<SetStateAction<UploadStages>>;
-    displayUser: UserProfile | null;
-};
-
 export default function UploadUI({
     displayUser,
     setDialogOpen,
