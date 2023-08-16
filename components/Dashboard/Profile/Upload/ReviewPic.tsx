@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { LogOut } from "lucide-react";
-import type { UserProfile } from "@/lib/supabase/getProfile";
+import { UserProfile } from "@/types/UserProfile";
 import { Button } from "@/components/ui/button";
 
 interface ReviewPicProps {

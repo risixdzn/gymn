@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "reac
 import UserDefaultAvatar from "../../public/user.png";
 import { StaticImageData } from "next/image";
 import { downloadAvatar, downloadBanner } from "./downloadFromStorage";
+import { UserProfile } from "@/types/UserProfile";
 
 type useGetCurrentProfileProps = {
     session: Session | null;
@@ -10,17 +11,6 @@ type useGetCurrentProfileProps = {
 
 type useGetForeignProfileProps = {
     username: string;
-};
-
-export type UserProfile = {
-    id: string;
-    created_at: string;
-    username: string;
-    display_name: string;
-    profile: string;
-    email: string;
-    avatar_url: string | StaticImageData;
-    banner_url: string | StaticImageData | null;
 };
 
 export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {

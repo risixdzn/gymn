@@ -25,7 +25,7 @@ const Drawer = ({
     onOpenChange: Dispatch<SetStateAction<boolean>>;
 }) => {
     return screenWidth < 1024 ? (
-        <VaulDrawer.Root shouldScaleBackground open={open} onOpenChange={onOpenChange}>
+        <VaulDrawer.Root open={open} onOpenChange={onOpenChange}>
             {children}
         </VaulDrawer.Root>
     ) : (
@@ -44,8 +44,8 @@ const DrawerTrigger = ({ screenWidth, children }: Props) => {
 const DrawerContent = ({ screenWidth, children }: Props) => {
     return screenWidth < 1024 ? (
         <VaulDrawer.Portal>
-            <VaulDrawer.Overlay className='fixed inset-0 bg-black/40 z-[99]' />
-            <VaulDrawer.Content className='bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 z-[100]'>
+            <VaulDrawer.Overlay className='fixed inset-0 bg-black/40 z-[48]' />
+            <VaulDrawer.Content className='bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 z-[49]'>
                 <div className='mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-accent mb-8 mt-4' />
                 <div className='max-w-md mx-auto px-8'>{children}</div>
             </VaulDrawer.Content>

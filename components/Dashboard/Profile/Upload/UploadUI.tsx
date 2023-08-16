@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState, Dispatch, SetStateAction } from "react";
 import { Loader2 } from "lucide-react";
-import { UserProfile } from "@/lib/supabase/getProfile";
+import { UserProfile } from "@/types/UserProfile";
 import { uploadPicture } from "@/lib/supabase/uploadPicture";
 import { DropArea } from "./Droparea";
 import { ReviewPic } from "./ReviewPic";
