@@ -11,7 +11,7 @@ import UploadUI from "./Upload/UploadUI";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import SkeletonProfile from "./SkeletonProfile";
-import banner from "../../../public/w11.jpg";
+import EditProfile from "./EditProfile";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -107,7 +107,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         id='actions'
                         className='absolute w-[calc(100%-2.5rem)] lg:w-[calc(100%-5rem)] mt-3 lg:mt-7 h-10 flex gap-2 justify-end'
                     >
-                        <Button variant={"outline"}>Editar perfil</Button>
+                        <EditProfile displayUser={displayUser} />
                         <Button
                             onClick={() => SignOut({ router })}
                             size={"icon"}
