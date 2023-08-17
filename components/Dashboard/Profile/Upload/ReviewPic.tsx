@@ -78,7 +78,7 @@ export function ReviewPic({ files, displayUser, uploadingTo }: ReviewPicProps) {
                 </div>
                 <div id='topinfo' className='w-full h-auto flex flex-col pl-2 mt-12 py-5  gap-1'>
                     <h1 className='text-2xl tracking-tight font-semibold flex items-center'>
-                        {displayUser?.first_name}
+                        {displayUser?.display_name}
                         <span className='text-muted-foreground inline-block pl-2 text-sm'>
                             {"@" + displayUser?.username}
                         </span>

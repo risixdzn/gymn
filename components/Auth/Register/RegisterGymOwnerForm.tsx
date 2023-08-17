@@ -15,7 +15,7 @@ import SubmitButton from "./ui/SubmitButton";
 import { AuthState } from "../AuthCard";
 
 export type RegisterGymOwnerForm = {
-    firstName: string;
+    displayName: string;
     username: string;
     email: string;
     password: string;
@@ -46,7 +46,7 @@ export default function RegisterGymOwnerForm({ setShowForm }: RegisterMemberForm
     } = useForm<RegisterGymOwnerForm>({
         mode: "all",
         defaultValues: {
-            firstName: "",
+            displayName: "",
             username: "",
             email: "",
             password: "",

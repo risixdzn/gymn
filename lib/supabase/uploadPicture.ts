@@ -6,6 +6,7 @@ import imageCompression from "browser-image-compression";
 type uploadPictureProps = {
     files: any; //arqvuios
     username: string | undefined; //para fazer o select com o username
+    userId: string | undefined;
     setFiles: Dispatch<SetStateAction<any>>; //para resetar os arquivos ao terminar
     setDialogOpen: Dispatch<SetStateAction<boolean>>; //para fechar o dialog no sucesso
     setLoading: Dispatch<SetStateAction<boolean>>;
@@ -16,6 +17,7 @@ type uploadPictureProps = {
 export const uploadPicture = async ({
     files,
     username,
+    userId,
     setFiles,
     setDialogOpen,
     setLoading,
@@ -32,10 +34,10 @@ export const uploadPicture = async ({
             maxWidthOrHeight: uploadingTo == "avatars" ? 1920 : 2580,
             fileType: "image/webp",
         });
-        //tentar baixar a foto com o username
-        const { data, error } = await supabase.storage.from(uploadingTo).download(`${username}`);
-        //se ocorrer um erro (foto nao existe)
-        if (error) {
+        //verificar se o usuário tem um avatar ou banner
+        const { data, error } = await supabase.from(uploadingTo).select("*").eq("owner_id", userId);
+        //se data for nulo (foto nao existe)
+        if (data == null) {
             console.clear();
             console.log("Foto nao encontrada, enviando uma nova foto.");
             //crie uma foto nova
@@ -51,6 +53,7 @@ export const uploadPicture = async ({
             setFiles([]);
             refetchUser();
         } else {
+            console.clear();
             //atualize a foto existente
             const { data, error } = await supabase.storage
                 .from(uploadingTo)

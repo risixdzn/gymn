@@ -15,7 +15,7 @@ import { AuthState } from "../AuthCard";
 
 export type RegisterMemberForm = {
     email: string;
-    firstName: string;
+    displayName: string;
     username: string;
     password: string;
     confirmPassword: string;
@@ -44,7 +44,7 @@ export default function RegisterMemberForm({ setShowForm }: RegisterMemberFormPr
         mode: "all",
         defaultValues: {
             email: "",
-            firstName: "",
+            displayName: "",
             username: "",
             password: "",
             confirmPassword: "",

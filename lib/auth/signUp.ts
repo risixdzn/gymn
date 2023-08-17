@@ -32,7 +32,7 @@ export async function MemberSignUp({ userData, setLoading, setSignUpSuccess }: M
             options: {
                 data: {
                     username: userData.username,
-                    first_name: userData.firstName,
+                    display_name: userData.displayName,
                     profile: "Member",
                 },
             },
@@ -79,7 +79,7 @@ export async function GymOwnerSignUp({
             options: {
                 data: {
                     username: userData.username,
-                    first_name: userData.firstName,
+                    display_name: userData.displayName,
                     gym_name: userData.gymName,
                     gym_address: userData.gymAddress,
                     profile: "GymOwner",

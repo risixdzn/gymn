@@ -84,7 +84,7 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                         <h3 className='text-[13px] text-muted-foreground'>
                             {displayUser?.username}
                         </h3>
-                        <h2 className='font-semibold'>{displayUser?.first_name}</h2>
+                        <h2 className='font-semibold'>{displayUser?.display_name}</h2>
                         <p className='text-sm text-muted-foreground max-h-10 overflow-hidden truncate'>
                             • Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat error
                             velit quo explicabo expedita, aut nesciunt voluptatibus quia tenetur.

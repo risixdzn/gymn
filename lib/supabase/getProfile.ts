@@ -13,9 +13,10 @@ type useGetForeignProfileProps = {
 };
 
 export type UserProfile = {
+    id: string;
     created_at: string;
     username: string;
-    first_name: string;
+    display_name: string;
     profile: string;
     email: string;
     avatar_url: string | StaticImageData;
@@ -36,7 +37,7 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
             let { data, error, status } = await supabase
                 .from("users")
                 .select(
-                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url)"
+                    "id, created_at, username, profile, display_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url)"
                 )
                 .eq("id", user?.id)
                 .single();
@@ -58,9 +59,10 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
                 const banner_url = bannerData ? await downloadBanner(data.username) : null;
 
                 setDisplayUser({
+                    id: data.id,
                     created_at: data.created_at,
                     username: data.username,
-                    first_name: data.first_name,
+                    display_name: data.display_name,
                     profile: data.profile,
                     email: data.email,
                     avatar_url: avatar_url,
@@ -99,7 +101,7 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
             let { data, error, status } = await supabase
                 .from("users")
                 .select(
-                    "created_at, username, profile, first_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url)"
+                    "id, created_at, username, profile, display_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url)"
                 )
                 .eq("username", username)
                 .single();
@@ -124,9 +126,10 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
                 const banner_url = bannerData ? await downloadBanner(data.username) : null;
 
                 setDisplayUser({
+                    id: data.id,
                     created_at: data.created_at,
                     username: data.username,
-                    first_name: data.first_name,
+                    display_name: data.display_name,
                     profile: data.profile,
                     email: data.email,
                     avatar_url: avatar_url,
