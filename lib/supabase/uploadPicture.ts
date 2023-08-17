@@ -35,9 +35,10 @@ export const uploadPicture = async ({
             fileType: "image/webp",
         });
         //verificar se o usuário tem um avatar ou banner
-        const { data, error } = await supabase.from(uploadingTo).select("*").eq("owner_id", userId);
-        //se data for nulo (foto nao existe)
-        if (data == null) {
+        const { data } = await supabase.from(uploadingTo).select("*").eq("owner_id", userId);
+        console.log("Fetched", typeof data, data);
+        //se data lenght = 0 (foto nao existe)
+        if (data?.length == 0) {
             console.clear();
             console.log("Foto nao encontrada, enviando uma nova foto.");
             //crie uma foto nova

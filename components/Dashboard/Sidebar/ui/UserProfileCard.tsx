@@ -37,9 +37,11 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                                 )}
                             </div>
                             <div>
-                                <h3 className='text-sm'>{displayUser?.username}</h3>
+                                <h3 className='text-sm font-semibold'>
+                                    {displayUser?.display_name}
+                                </h3>
                                 <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
-                                    {displayUser?.email}
+                                    @{displayUser?.username}
                                 </h3>
                             </div>
                         </div>
