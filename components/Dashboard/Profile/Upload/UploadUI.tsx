@@ -52,6 +52,7 @@ export default function UploadUI({
                             uploadPicture({
                                 files: files,
                                 username: displayUser?.username,
+                                userId: displayUser?.id,
                                 setFiles: setFiles,
                                 setDialogOpen: setDialogOpen,
                                 setLoading: setLoading,

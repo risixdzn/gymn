@@ -87,7 +87,7 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                         className='w-full h-auto flex flex-col pl-2 lg:mt-0 mt-10 lg:pl-[calc(12rem+(2.5rem*2))] py-5 lg:py-7 gap-1'
                     >
                         <h1 className='text-2xl lg:text-3xl tracking-tight font-semibold flex items-center'>
-                            {displayUser?.first_name}
+                            {displayUser?.display_name}
                             <span className='lg:text-base text-muted-foreground inline-block pl-2 text-sm'>
                                 {"@" + displayUser?.username}
                             </span>

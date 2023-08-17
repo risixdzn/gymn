@@ -35,33 +35,33 @@ export default function RegisterStep1({ register, errors, loading }: StepProps) 
     return (
         <>
             <div>
-                <Label htmlFor='firstName'>Primeiro nome</Label>
+                <Label htmlFor='displayName'>Nome de exibição</Label>
                 <Input
                     disabled={loading}
                     key={1}
                     placeholder='John'
-                    id='firstName'
+                    id='displayName'
                     type='text'
                     className='mt-2'
-                    {...typedRegister("firstName", {
+                    {...typedRegister("displayName", {
                         required: "Preencha este campo.",
                         minLength: {
                             value: 2,
                             message: "O nome não pode ser tão curto.",
                         },
                         maxLength: {
-                            value: 30,
+                            value: 25,
                             message: "O nome não pode ser tão longo.",
                         },
                         pattern: {
-                            value: /^[a-zA-Z0-9äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
+                            value: /^[a-zA-Z0-9_ äëiöüÄËÏÖÜáéíóúÁÉÍÓÚãõñÃÕÑâêîôûÂÊÎÔÛ]*$/,
                             message: "O nome não pode conter caracteres especiais.",
                         },
                     })}
                 ></Input>
-                <p className='text-xs text-muted-foreground mt-2'>Este nome não será publico</p>
-                {errors.firstName && (
-                    <p className='text-xs text-destructive mt-2'>{errors.firstName.message}</p>
+                <p className='text-xs text-muted-foreground mt-2'>Este será o nome exibido</p>
+                {errors.displayName && (
+                    <p className='text-xs text-destructive mt-2'>{errors.displayName.message}</p>
                 )}
             </div>
 
@@ -90,7 +90,9 @@ export default function RegisterStep1({ register, errors, loading }: StepProps) 
                         },
                     })}
                 ></Input>
-                <p className='text-xs text-muted-foreground mt-2'>Este será seu nome de exibição</p>
+                <p className='text-xs text-muted-foreground mt-2'>
+                    Você será identificado(a) por esse nome.
+                </p>
                 {errors.username && (
                     <p className='text-xs text-destructive mt-2'>{errors.username.message}</p>
                 )}

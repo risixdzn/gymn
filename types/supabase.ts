@@ -40,6 +40,37 @@ export interface Database {
           }
         ]
       }
+      banners: {
+        Row: {
+          banner_url: string
+          id: string
+          owner_id: string | null
+        }
+        Insert: {
+          banner_url: string
+          id: string
+          owner_id?: string | null
+        }
+        Update: {
+          banner_url?: string
+          id?: string
+          owner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "banners_id_fkey"
+            columns: ["id"]
+            referencedRelation: "objects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "banners_owner_id_fkey"
+            columns: ["owner_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       gym: {
         Row: {
           address: string | null
@@ -74,27 +105,30 @@ export interface Database {
       users: {
         Row: {
           avatar_id: string | null
+          banner_id: string | null
           created_at: string | null
+          display_name: string | null
           email: string | null
-          first_name: string | null
           id: string
           profile: string | null
           username: string | null
         }
         Insert: {
           avatar_id?: string | null
+          banner_id?: string | null
           created_at?: string | null
+          display_name?: string | null
           email?: string | null
-          first_name?: string | null
           id: string
           profile?: string | null
           username?: string | null
         }
         Update: {
           avatar_id?: string | null
+          banner_id?: string | null
           created_at?: string | null
+          display_name?: string | null
           email?: string | null
-          first_name?: string | null
           id?: string
           profile?: string | null
           username?: string | null
@@ -104,6 +138,12 @@ export interface Database {
             foreignKeyName: "users_avatar_id_fkey"
             columns: ["avatar_id"]
             referencedRelation: "avatars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_banner_id_fkey"
+            columns: ["banner_id"]
+            referencedRelation: "banners"
             referencedColumns: ["id"]
           },
           {
