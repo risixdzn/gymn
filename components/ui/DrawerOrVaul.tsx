@@ -29,7 +29,9 @@ const Drawer = ({
             {children}
         </VaulDrawer.Root>
     ) : (
-        <Sheet>{children}</Sheet>
+        <Sheet open={open} onOpenChange={onOpenChange}>
+            {children}
+        </Sheet>
     );
 };
 

@@ -14,11 +14,12 @@ import { EditProfileForm } from "./EditForm";
 
 type EditProfileProps = {
     displayUser: UserProfile | null;
+    refetchUser: () => void;
 };
 
-export default function EditProfile({ displayUser }: EditProfileProps) {
+export default function EditProfile({ displayUser, refetchUser }: EditProfileProps) {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const { screenWidth, isClient } = useGetScreenWidth();
+    const { screenWidth } = useGetScreenWidth();
 
     return (
         <>
@@ -32,7 +33,11 @@ export default function EditProfile({ displayUser }: EditProfileProps) {
                         Você está editando seu perfil. Clique em salvar quando estiver pronto(a).
                     </DrawerDescription>
                     <div className='mt-4'>
-                        <EditProfileForm displayUser={displayUser} />
+                        <EditProfileForm
+                            displayUser={displayUser}
+                            setDrawerOpen={setDrawerOpen}
+                            refetchUser={refetchUser}
+                        />
                     </div>
                 </DrawerContent>
             </Drawer>

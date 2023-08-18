@@ -9,4 +9,5 @@ export type UserProfile = {
     email: string;
     avatar_url: string | StaticImageData;
     banner_url: string | StaticImageData | null;
+    bio: string;
 };

@@ -17,30 +17,43 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ProfilePreview } from "../ProfilePreview";
+import { Textarea } from "@/components/ui/textarea";
+import { editProfile } from "@/lib/supabase/editProfile";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
-type UserCanEdit = {
-    displayName: string | undefined;
-    email: string | undefined;
+export type UserCanEdit = {
+    display_name: string | undefined;
+    bio: string | undefined;
+};
+type EditProfileFormProps = {
+    displayUser: UserProfile | null;
+    setDrawerOpen: Dispatch<SetStateAction<boolean>>;
+    refetchUser: () => void;
 };
 
-export function EditProfileForm({ displayUser }: { displayUser: UserProfile | null }) {
+export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: EditProfileFormProps) {
     const form = useForm<z.infer<typeof EditProfileFormSchema>>({
         resolver: zodResolver(EditProfileFormSchema),
         defaultValues: {
-            displayName: displayUser?.display_name,
-            email: displayUser?.email,
+            display_name: displayUser?.display_name,
+            bio: displayUser?.bio !== null ? displayUser?.bio : "",
         },
         mode: "all",
     });
 
-    function onSubmit(values: z.infer<typeof EditProfileFormSchema>) {
+    const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
+
+    async function onSubmit(values: z.infer<typeof EditProfileFormSchema>) {
         const currentUser: UserCanEdit = {
-            displayName: displayUser?.display_name,
-            email: displayUser?.email,
+            display_name: displayUser?.display_name,
+            bio: displayUser?.bio,
         };
         const newUser: UserCanEdit = {
-            displayName: values.displayName,
-            email: values.email,
+            display_name: values.display_name,
+            bio: values.bio,
         };
 
         function compareUsers(currentUser: UserCanEdit, newUser: UserCanEdit) {
@@ -62,6 +75,16 @@ export function EditProfileForm({ displayUser }: { displayUser: UserProfile | nu
 
         const editedValues = compareUsers(currentUser, newUser);
         console.log("Valores editados", editedValues);
+        await editProfile({
+            editedData: editedValues,
+            userId: displayUser?.id as string,
+            setLoading: setLoading,
+            toast: toast,
+        });
+        setDrawerOpen(false);
+        setTimeout(() => {
+            refetchUser();
+        }, 300);
     }
 
     return (
@@ -71,7 +94,7 @@ export function EditProfileForm({ displayUser }: { displayUser: UserProfile | nu
                 <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-4'>
                     <FormField
                         control={form.control}
-                        name={"displayName"}
+                        name={"display_name"}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nome de exibição</FormLabel>
@@ -87,20 +110,32 @@ export function EditProfileForm({ displayUser }: { displayUser: UserProfile | nu
                     />
                     <FormField
                         control={form.control}
-                        name={"email"}
+                        name={"bio"}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel>Bio</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='example@email.com' {...field}></Input>
+                                    <Textarea
+                                        placeholder='Escreva sua bio aqui.'
+                                        className='resize-none'
+                                        {...field}
+                                    />
                                 </FormControl>
-                                <FormDescription>Este é o seu email de login.</FormDescription>
+                                <FormDescription>
+                                    Esta será a sua biografia mostrada no perfil.
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
 
-                    <Button type='submit'>Confirmar</Button>
+                    <Button type='submit' disabled={!loading && false}>
+                        {!loading ? (
+                            "Salvar alterações"
+                        ) : (
+                            <Loader2 className='w-4 h-4 animate-spin' />
+                        )}
+                    </Button>
                 </form>
             </Form>
         </>

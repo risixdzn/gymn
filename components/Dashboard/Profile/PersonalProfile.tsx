@@ -107,7 +107,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         id='actions'
                         className='absolute w-[calc(100%-2.5rem)] lg:w-[calc(100%-5rem)] mt-3 lg:mt-7 h-10 flex gap-2 justify-end'
                     >
-                        <EditProfile displayUser={displayUser} />
+                        <EditProfile displayUser={displayUser} refetchUser={refetchUser} />
                         <Button
                             onClick={() => SignOut({ router })}
                             size={"icon"}
