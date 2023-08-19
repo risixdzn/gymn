@@ -25,9 +25,9 @@ export function ModeToggle({ side }: { side: "top" | "bottom" | "left" | "right"
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' side={side}>
-                <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("light")}>Claro</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>Escuro</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("system")}>Sistema</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

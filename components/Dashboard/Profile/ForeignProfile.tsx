@@ -43,7 +43,7 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                         -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden'
                     >
                         {displayUser?.username == session?.user.user_metadata.username ? (
-                            <div className='group hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center'>
+                            <div className='group hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center text-white'>
                                 <Edit
                                     className='lg:scale-150 drop-shadow-lg pointer-events-none'
                                     style={{ pointerEvents: "none" }}

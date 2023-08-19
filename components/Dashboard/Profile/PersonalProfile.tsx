@@ -34,7 +34,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/50  transition-all absolute flex flex-row gap-2 items-center justify-center'>
                             <Dialog>
                                 <DialogTrigger>
-                                    <button className='bg-black/50 p-5 rounded-full outline-0 outline-white hover:outline-2 hover:outline-white transition-all'>
+                                    <button className='bg-black/50 p-5 rounded-full outline-0 outline-white hover:outline-2 hover:outline-white transition-all text-white'>
                                         <Edit className='lg:scale-125 drop-shadow-lg pointer-events-none' />
                                     </button>
                                 </DialogTrigger>
@@ -48,7 +48,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                 </DialogContent>
                             </Dialog>
 
-                            <button className='bg-black/50 p-5 rounded-full'>
+                            <button className='bg-black/50 p-5 rounded-full text-white'>
                                 <X className='lg:scale-125 drop-shadow-lg pointer-events-none' />
                             </button>
                         </div>
@@ -70,7 +70,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                 className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
                     -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden object-cover'
                             >
-                                <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center'>
+                                <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center text-white'>
                                     <Edit className='lg:scale-150 drop-shadow-lg pointer-events-none' />
                                     <p className='text-sm drop-shadow-lg  pointer-events-none'>
                                         Alterar
