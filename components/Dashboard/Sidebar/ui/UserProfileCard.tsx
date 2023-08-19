@@ -1,5 +1,5 @@
 import { ModeToggle } from "@/components/ModeToggle";
-import { UserProfile } from "@/lib/supabase/getProfile";
+import { UserProfile } from "@/types/UserProfile";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays } from "lucide-react";
@@ -41,7 +41,7 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                                     {displayUser?.display_name}
                                 </h3>
                                 <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
-                                    @{displayUser?.username}
+                                    {displayUser?.username}
                                 </h3>
                             </div>
                         </div>

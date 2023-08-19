@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { SheetHeader, SheetDescription, SheetTitle, SheetFooter } from "@/components/ui/sheet";
-import { UserProfile } from "@/lib/supabase/getProfile";
+import { UserProfile } from "@/types/UserProfile";
 import {
     Drawer,
     DrawerContent,
@@ -10,14 +10,16 @@ import {
 } from "@/components/ui/DrawerOrVaul";
 import { useState } from "react";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
+import { EditProfileForm } from "./EditForm";
 
 type EditProfileProps = {
     displayUser: UserProfile | null;
+    refetchUser: () => void;
 };
 
-export default function EditProfile({ displayUser }: EditProfileProps) {
+export default function EditProfile({ displayUser, refetchUser }: EditProfileProps) {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const { screenWidth, isClient } = useGetScreenWidth();
+    const { screenWidth } = useGetScreenWidth();
 
     return (
         <>
@@ -30,7 +32,13 @@ export default function EditProfile({ displayUser }: EditProfileProps) {
                     <DrawerDescription screenWidth={screenWidth}>
                         Você está editando seu perfil. Clique em salvar quando estiver pronto(a).
                     </DrawerDescription>
-                    <div className='mt-4'></div>
+                    <div className='mt-4'>
+                        <EditProfileForm
+                            displayUser={displayUser}
+                            setDrawerOpen={setDrawerOpen}
+                            refetchUser={refetchUser}
+                        />
+                    </div>
                 </DrawerContent>
             </Drawer>
         </>
