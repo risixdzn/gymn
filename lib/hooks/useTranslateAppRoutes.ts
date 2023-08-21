@@ -12,5 +12,5 @@ export const useTranslateAppRoutes = (routename: string) => {
         gym: "Academia",
     };
 
-    return translatedRoutes[routename] || "undefined";
+    return translatedRoutes[routename] || "404";
 };
