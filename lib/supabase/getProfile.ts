@@ -135,9 +135,13 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
         }
     }, [username, supabase]);
 
+    function refetchUser() {
+        getProfile();
+    }
+
     useEffect(() => {
         getProfile();
     }, [getProfile]);
 
-    return { loading, displayUser, unexistent };
+    return { loading, displayUser, unexistent, refetchUser };
 }

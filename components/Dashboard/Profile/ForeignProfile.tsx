@@ -1,5 +1,4 @@
-import { Edit, CalendarDays, Loader2, LogOut } from "lucide-react";
-import Image from "next/image";
+import { LogOut, Users2, Dumbbell, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { SignOut } from "@/lib/auth/signOut";
@@ -9,6 +8,10 @@ import { Session } from "@supabase/supabase-js";
 import UnexistentProfile from "./UnexistentProfile";
 import { useGetProfile } from "@/lib/supabase/getProfile";
 import SkeletonProfile from "./SkeletonProfile";
+import { BannerWithActions } from "./reusable/BannerWithActions";
+import { ProfilePicture } from "./reusable/ProfilePicture";
+import EditProfile from "./Edit/EditProfile";
+import { use, useState } from "react";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
@@ -17,90 +20,114 @@ type PersonalProfileProps = {
 };
 
 export default function ForeignProfile({ router, username, session }: PersonalProfileProps) {
-    const { loading, displayUser, unexistent } = useGetProfile({ username });
+    const { loading, displayUser, unexistent, refetchUser } = useGetProfile({ username });
     const formattedJoinDate = useTimestampConverter(displayUser?.created_at);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
         <>
             {!loading && !unexistent ? (
-                <div>
-                    <div id='banner' className='w-full h-36 bg-accent rounded-t-2xl lg:h-72'>
-                        {displayUser && displayUser.banner_url !== null && (
-                            <Image
-                                width={1500}
-                                height={1000}
-                                src={displayUser.banner_url as string}
-                                alt=''
-                                key={1}
-                                className='w-full h-full object-cover rounded-t-2xl'
-                            />
-                        )}
-                    </div>
-
-                    <div
-                        id='pfp'
-                        className='z-[1] absolute w-28 lg:w-48 h-28 lg:h-48 rounded-full lg:rounded-3xl bg-card 
-                        -translate-y-[50%] lg:-translate-y-[15%] ml-0 lg:ml-10 border-background border-[5px] lg:border-[7.5px] overflow-hidden'
+                <div className='rounded-xl shadow-sm'>
+                    <BannerWithActions
+                        dialogOpen={dialogOpen}
+                        setDialogOpen={setDialogOpen}
+                        displayUser={displayUser}
+                        refetchUser={refetchUser}
                     >
-                        {displayUser?.id == session?.user.id ? (
-                            <div className='group hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center text-white'>
-                                <Edit
-                                    className='lg:scale-150 drop-shadow-lg pointer-events-none'
-                                    style={{ pointerEvents: "none" }}
+                        {displayUser?.id == session?.user.id && (
+                            <>
+                                <EditProfile
+                                    className='xl:hidden'
+                                    displayUser={displayUser}
+                                    refetchUser={refetchUser}
                                 />
-                                <p className='text-sm drop-shadow-lg  pointer-events-none'>
-                                    Alterar
-                                </p>
-                            </div>
-                        ) : null}
-
-                        {displayUser && (
-                            <Image
-                                width={300}
-                                height={300}
-                                alt=''
-                                className='w-full h-full object-cover'
-                                src={displayUser.avatar_url}
-                            />
+                                <Button
+                                    onClick={() => SignOut({ router })}
+                                    size={"icon"}
+                                    variant={"outline"}
+                                >
+                                    <LogOut className='scale-75' />
+                                </Button>
+                            </>
                         )}
-                    </div>
-                    {displayUser?.username == session?.user.user_metadata.username ? (
-                        <div
-                            id='actions'
-                            className='absolute w-[calc(100%-2.5rem)] lg:w-[calc(100%-5rem)] mt-3 lg:mt-7 h-10 flex gap-2 justify-end'
-                        >
-                            <Button variant={"outline"}>Editar perfil</Button>
-                            <Button
-                                onClick={() => SignOut({ router })}
-                                size={"icon"}
-                                className='lg:mr-7'
-                                variant={"outline"}
-                            >
-                                <LogOut className='scale-75' />
-                            </Button>
-                        </div>
-                    ) : (
-                        <></>
-                    )}
+                    </BannerWithActions>
+                    <ProfilePicture
+                        dialogOpen={dialogOpen}
+                        displayUser={displayUser}
+                        refetchUser={refetchUser}
+                        setDialogOpen={setDialogOpen}
+                        className='-translate-y-[calc(4rem+50%)] xl:-translate-y-[calc(5rem+50%)]
+                        xl:w-80 xl:h-80 xl:ml-10 xl:border-card shadow-lg'
+                    />
                     <div
-                        id='topinfo'
-                        className='w-full h-auto flex flex-col pl-2 lg:mt-0 mt-10 lg:pl-[calc(12rem+(2.5rem*2))] py-5 lg:py-7 gap-1'
+                        id='content'
+                        className='
+                        xl:mt-6 xl:grid xl:grid-cols-[20rem_auto] xl:gap-6 xl:pl-10'
                     >
-                        <h1 className='text-2xl lg:text-3xl tracking-tight font-semibold flex items-center'>
-                            {displayUser?.display_name}
-                            <span className='lg:text-base text-muted-foreground inline-block pl-2 text-sm'>
+                        <div id='profiledata' className='xl:w-80 xl:pt-20'>
+                            <h1
+                                id='display_name'
+                                className='text-2xl xl:text-3xl tracking-tight font-semibold'
+                            >
+                                {displayUser?.display_name}
+                            </h1>
+                            <h3 id='username' className='text-muted-foreground'>
                                 {"@" + displayUser?.username}
-                            </span>
-                        </h1>
-                        <span>
-                            <Badge className='w-auto'>
-                                {displayUser?.profile == "Member" ? "Membro" : "Dono de .academia."}
-                            </Badge>
-                        </span>
-                        <p className='text-muted-foreground text-[13px] flex items-center mt-1 gap-1'>
-                            <CalendarDays className='inline-block scale-75' /> Entrou em{" "}
-                            {formattedJoinDate}.
-                        </p>
+                                <Badge
+                                    id='profile'
+                                    className='w-auto bg-accent dark:bg-accent/60 text-foreground mt-2 ml-3'
+                                >
+                                    {displayUser?.profile == "Member"
+                                        ? "Membro"
+                                        : "Dono de .academia."}
+                                </Badge>
+                            </h3>
+
+                            <p
+                                id='bio'
+                                className='text-sm text-foreground my-4 leading-5 max-h-[80px] overflow-clip whitespace-pre-line'
+                            >
+                                {displayUser?.bio}
+                            </p>
+                            {displayUser?.id == session?.user.id && (
+                                <EditProfile
+                                    width='full'
+                                    className='w-full bg-card h-9 xl:block hidden'
+                                    displayUser={displayUser}
+                                    refetchUser={refetchUser}
+                                />
+                            )}
+                            <div className='text-muted-foreground flex gap-2 my-4 xl:mt-4 -mt-5'>
+                                <Users2 />
+                                <Badge className='bg-accent dark:bg-accent/60 text-muted-foreground h-7 rounded-sm text-sm gap-1'>
+                                    <span className='text-foreground'>50</span> seguidores
+                                </Badge>
+                                <span>&bull;</span>
+                                <Badge className='bg-accent dark:bg-accent/60 text-muted-foreground h-7 rounded-sm text-sm gap-1'>
+                                    <span className='text-foreground'>24</span> seguindo
+                                </Badge>
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <span className=' text-muted-foreground text-sm flex gap-2 items-center '>
+                                    <Dumbbell className='inline-block scale-75' />
+                                    <span className='text-sm text-foreground'>Punch Fitness</span>
+                                </span>
+                                <span className=' text-muted-foreground text-sm flex gap-2 items-center '>
+                                    <MapPin className='inline-block scale-75' />
+                                    <span className='text-sm text-foreground'>
+                                        Av Paulista, 735
+                                    </span>
+                                </span>
+                                <span className='text-muted-foreground text-xs flex gap-2 items-center mt-2'>
+                                    Entrou em {formattedJoinDate}.
+                                </span>
+                            </div>
+                        </div>
+                        <hr className='xl:hidden my-7 xl:my-0'></hr>
+                        <div
+                            id='posts'
+                            className='w-full xl:bg-card h-[30rem] rounded-2xl xl:border-border xl:border-[1px]'
+                        ></div>
                     </div>
                 </div>
             ) : unexistent ? (
