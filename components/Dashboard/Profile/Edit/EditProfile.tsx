@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { SheetHeader, SheetDescription, SheetTitle, SheetFooter } from "@/components/ui/sheet";
-import { UserProfile } from "@/types/UserProfile";
 import {
-    Drawer,
-    DrawerContent,
-    DrawerTrigger,
-    DrawerTitle,
-    DrawerDescription,
-} from "@/components/ui/DrawerOrVaul";
+    Sheet,
+    SheetHeader,
+    SheetDescription,
+    SheetTitle,
+    SheetTrigger,
+    SheetContent,
+    SheetClose,
+} from "@/components/ui/sheet";
+import { UserProfile } from "@/types/UserProfile";
 import { useState } from "react";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { EditProfileForm } from "./EditForm";
@@ -23,24 +24,20 @@ export default function EditProfile({ displayUser, refetchUser }: EditProfilePro
 
     return (
         <>
-            <Drawer screenWidth={screenWidth} open={drawerOpen} onOpenChange={setDrawerOpen}>
-                <DrawerTrigger screenWidth={screenWidth}>
+            <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
+                <SheetTrigger>
                     <Button variant={"outline"}>Editar perfil</Button>
-                </DrawerTrigger>
-                <DrawerContent screenWidth={screenWidth}>
-                    <DrawerTitle screenWidth={screenWidth}>Editar perfil</DrawerTitle>
-                    <DrawerDescription screenWidth={screenWidth}>
-                        Você está editando seu perfil. Clique em salvar quando estiver pronto(a).
-                    </DrawerDescription>
-                    <div className='mt-4'>
+                </SheetTrigger>
+                <SheetContent className='w-[calc(100%-4rem)] pt-4' closeButtonVisible={false}>
+                    <div className='h-full overflow-scroll scrollbar scrollbar-w-[4px] scrollbar-thumb-gray-300/30 scrollbar-track-transparent '>
                         <EditProfileForm
                             displayUser={displayUser}
                             setDrawerOpen={setDrawerOpen}
                             refetchUser={refetchUser}
                         />
                     </div>
-                </DrawerContent>
-            </Drawer>
+                </SheetContent>
+            </Sheet>
         </>
     );
 }
