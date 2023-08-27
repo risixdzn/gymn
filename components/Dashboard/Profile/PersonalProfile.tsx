@@ -91,7 +91,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
 
                             <p
                                 id='bio'
-                                className='text-sm text-foreground my-4 leading-5 max-h-[80px] overflow-clip whitespace-pre-line'
+                                className='text-sm text-foreground mt-4 xl:my-4 leading-5 max-h-[80px] overflow-clip whitespace-pre-line'
                             >
                                 {displayUser?.bio}
                             </p>
@@ -101,7 +101,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                                 displayUser={displayUser}
                                 refetchUser={refetchUser}
                             />
-                            <div className='text-muted-foreground flex gap-2 my-4 xl:mt-4 -mt-5'>
+                            <div className='text-muted-foreground flex gap-2 mb-4 xl:mt-4 '>
                                 <Users2 />
                                 <Badge className='bg-accent dark:bg-accent/60 text-muted-foreground h-7 rounded-sm text-sm gap-1'>
                                     <span className='text-foreground'>50</span> seguidores
