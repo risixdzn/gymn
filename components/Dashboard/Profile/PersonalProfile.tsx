@@ -130,7 +130,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         <hr className='xl:hidden my-7 xl:my-0'></hr>
                         <div
                             id='posts'
-                            className='w-full xl:bg-card h-[30rem] rounded-2xl xl:border-border xl:border-[1px]'
+                            className='w-full xl:bg-card h-[30rem] rounded-2xl xl:border-border xl:border-[1px] xl:shadow-lg'
                         ></div>
                     </div>
                 </div>

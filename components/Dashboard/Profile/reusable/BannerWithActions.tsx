@@ -55,7 +55,7 @@ export function BannerWithActions({
             </div>
             <div
                 id='actions'
-                className='shadow-lg w-full h-16 xl:h-20 rounded-b-2xl border-border 
+                className='xl:shadow-lg w-full h-16 xl:h-20 rounded-b-2xl border-border 
                 border-b-0 border-x-0 bg-transparent
                 xl:border-b-[1px] xl:border-x-[1px] xl:bg-card
                 flex items-center justify-end px-0 xl:px-6 gap-2'
