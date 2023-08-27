@@ -11,7 +11,7 @@ import SkeletonProfile from "./SkeletonProfile";
 import { BannerWithActions } from "./reusable/BannerWithActions";
 import { ProfilePicture } from "./reusable/ProfilePicture";
 import EditProfile from "./Edit/EditProfile";
-import { use, useState } from "react";
+import { useState } from "react";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
