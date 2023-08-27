@@ -4,6 +4,9 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import GymnLogo from "@/components/ui/Icons/GymnLogo";
+
 export default function DashboardNotFound() {
     const router = useRouter();
     return (
@@ -18,6 +21,21 @@ export default function DashboardNotFound() {
             <Button className='mt-4' onClick={() => router.back()}>
                 <ArrowLeft className='scale-75' /> Voltar
             </Button>
+            <Popover>
+                <PopoverTrigger>
+                    <Button variant={"link"} className='mt-3'>
+                        Sobre
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className='text-sm flex items-center justify-center flex-col'>
+                    <GymnLogo className='w-16 mb-2 inline-block fill-card-foreground' />
+                    <p className='text-center'>
+                        Gymn é um webapp em <b>desenvolvimento.</b>
+                        <br></br> Algumas das funcionalidades podem ainda não estar disponíveis em
+                        produção, o que levará a uma página de 404.
+                    </p>
+                </PopoverContent>
+            </Popover>
         </div>
     );
 }
