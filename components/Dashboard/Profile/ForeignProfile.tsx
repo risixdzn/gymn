@@ -33,6 +33,7 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                         setDialogOpen={setDialogOpen}
                         displayUser={displayUser}
                         refetchUser={refetchUser}
+                        ableToEdit={session?.user.id == displayUser?.id}
                     >
                         {displayUser?.id == session?.user.id && (
                             <>
@@ -56,6 +57,7 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                         displayUser={displayUser}
                         refetchUser={refetchUser}
                         setDialogOpen={setDialogOpen}
+                        ableToEdit={session?.user.id == displayUser?.id}
                         className='-translate-y-[calc(4rem+50%)] xl:-translate-y-[calc(5rem+50%)]
                         xl:w-80 xl:h-80 xl:ml-10 xl:border-card shadow-lg'
                     />
