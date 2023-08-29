@@ -11,6 +11,7 @@ export function BannerWithActions({
     displayUser,
     refetchUser,
     children,
+    ableToEdit,
 }: ProfilePictureBannerProps) {
     return (
         <>
@@ -21,27 +22,29 @@ export function BannerWithActions({
                     className
                 )}
             >
-                <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/50  transition-all absolute flex flex-row gap-2 items-center justify-center'>
-                    <Dialog>
-                        <DialogTrigger>
-                            <button className='bg-black/50 p-5 rounded-full outline-0 outline-white hover:outline-2 hover:outline-white transition-all text-white'>
-                                <Edit className='xl:scale-125 drop-shadow-lg pointer-events-none' />
-                            </button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <UploadUI
-                                displayUser={displayUser}
-                                setDialogOpen={setDialogOpen}
-                                refetchUser={refetchUser}
-                                uploadingTo='banners'
-                            />
-                        </DialogContent>
-                    </Dialog>
+                {ableToEdit && (
+                    <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/50  transition-all absolute flex flex-row gap-2 items-center justify-center'>
+                        <Dialog>
+                            <DialogTrigger>
+                                <button className='bg-black/50 p-5 rounded-full outline-0 outline-white hover:outline-2 hover:outline-white transition-all text-white'>
+                                    <Edit className='xl:scale-125 drop-shadow-lg pointer-events-none' />
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <UploadUI
+                                    displayUser={displayUser}
+                                    setDialogOpen={setDialogOpen}
+                                    refetchUser={refetchUser}
+                                    uploadingTo='banners'
+                                />
+                            </DialogContent>
+                        </Dialog>
 
-                    <button className='bg-black/50 p-5 rounded-full text-white'>
-                        <X className='xl:scale-125 drop-shadow-lg pointer-events-none' />
-                    </button>
-                </div>
+                        <button className='bg-black/50 p-5 rounded-full text-white'>
+                            <X className='xl:scale-125 drop-shadow-lg pointer-events-none' />
+                        </button>
+                    </div>
+                )}
                 {displayUser && displayUser.banner_url !== null && (
                     <Image
                         width={1500}

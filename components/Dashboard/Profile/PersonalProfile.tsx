@@ -25,6 +25,7 @@ export interface ProfilePictureBannerProps {
     displayUser: UserProfile | null;
     refetchUser: () => void;
     children?: ReactNode;
+    ableToEdit: boolean;
 }
 
 //USED XL BREAKPOINT ON PROFILE TO AVOID CROWDED SCREEN
@@ -37,12 +38,13 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
     return (
         <>
             {!loading ? (
-                <div className='rounded-xl shadow-sm'>
+                <div className='rounded-xl shadow-sm relative min-h-screen'>
                     <BannerWithActions
                         dialogOpen={dialogOpen}
                         setDialogOpen={setDialogOpen}
                         displayUser={displayUser}
                         refetchUser={refetchUser}
+                        ableToEdit={true}
                     >
                         <EditProfile
                             className='xl:hidden'
@@ -62,15 +64,16 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         displayUser={displayUser}
                         refetchUser={refetchUser}
                         setDialogOpen={setDialogOpen}
+                        ableToEdit={true}
                         className='-translate-y-[calc(4rem+50%)] xl:-translate-y-[calc(5rem+50%)]
                         xl:w-80 xl:h-80 xl:ml-10 xl:border-card shadow-lg'
                     />
                     <div
                         id='content'
                         className='
-                        xl:mt-6 xl:grid xl:grid-cols-[20rem_auto] xl:gap-6 xl:pl-10'
+                        xl:mt-6 xl:grid xl:grid-cols-[20rem_auto] xl:gap-6 xl:pl-10 relative'
                     >
-                        <div id='profiledata' className='xl:w-80 xl:pt-20'>
+                        <div id='profiledata' className='xl:w-80 xl:pt-20 max-h-screen'>
                             <h1
                                 id='display_name'
                                 className='text-2xl xl:text-3xl tracking-tight font-semibold'
@@ -130,7 +133,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         <hr className='xl:hidden my-7 xl:my-0'></hr>
                         <div
                             id='posts'
-                            className='w-full xl:bg-card h-[30rem] rounded-2xl xl:border-border xl:border-[1px] xl:shadow-lg'
+                            className='w-full xl:bg-card h-[90rem] rounded-2xl xl:border-border xl:border-[1px] xl:shadow-lg'
                         ></div>
                     </div>
                 </div>
