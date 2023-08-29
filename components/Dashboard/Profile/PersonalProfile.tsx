@@ -39,7 +39,6 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
         <>
             {!loading ? (
                 <div className='rounded-xl shadow-sm relative min-h-screen'>
-                    {/* aqui o sticky funciona */}
                     <BannerWithActions
                         dialogOpen={dialogOpen}
                         setDialogOpen={setDialogOpen}
@@ -66,7 +65,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         refetchUser={refetchUser}
                         setDialogOpen={setDialogOpen}
                         ableToEdit={true}
-                        className='-translate-y-[calc(4rem+50%)] xl:-translate-y-[calc(5rem+50%)] sticky top-0
+                        className='-translate-y-[calc(4rem+50%)] xl:-translate-y-[calc(5rem+50%)]
                         xl:w-80 xl:h-80 xl:ml-10 xl:border-card shadow-lg'
                     />
                     <div
@@ -74,11 +73,7 @@ export default function PersonalProfile({ router, session }: PersonalProfileProp
                         className='
                         xl:mt-6 xl:grid xl:grid-cols-[20rem_auto] xl:gap-6 xl:pl-10 relative'
                     >
-                        {/* aqui o sticky nao funciona */}
-                        <div
-                            id='profiledata'
-                            className='xl:w-80 xl:pt-20 sticky top-0 max-h-screen'
-                        >
+                        <div id='profiledata' className='xl:w-80 xl:pt-20 max-h-screen'>
                             <h1
                                 id='display_name'
                                 className='text-2xl xl:text-3xl tracking-tight font-semibold'
