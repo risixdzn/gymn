@@ -21,12 +21,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { editProfile } from "@/lib/supabase/editProfile";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Fingerprint, Loader2, MapPin, User } from "lucide-react";
 import { SheetClose } from "@/components/ui/sheet";
 
 export type UserCanEdit = {
     display_name: string | undefined;
     bio: string | undefined;
+    location: string | undefined;
 };
 type EditProfileFormProps = {
     displayUser: UserProfile | null;
@@ -40,6 +41,7 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
         defaultValues: {
             display_name: displayUser?.display_name,
             bio: displayUser?.bio !== null ? displayUser?.bio : "",
+            location: displayUser?.location !== null ? displayUser?.location : "",
         },
         mode: "all",
     });
@@ -51,10 +53,12 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
         const currentUser: UserCanEdit = {
             display_name: displayUser?.display_name,
             bio: displayUser?.bio,
+            location: displayUser?.location,
         };
         const newUser: UserCanEdit = {
             display_name: values.display_name,
             bio: values.bio,
+            location: values.location,
         };
 
         function compareUsers(currentUser: UserCanEdit, newUser: UserCanEdit) {
@@ -109,13 +113,16 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
                     {/* actual form with profile preview */}
                     <div className='max-h-full h-auto overflow-y-scrol'>
                         <ProfilePreview displayUser={displayUser} />
-                        <div className='mt-10'>
+                        <div className='mt-12'>
                             <FormField
                                 control={form.control}
                                 name={"display_name"}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Nome de exibição</FormLabel>
+                                        <FormLabel className='flex items-center gap-1'>
+                                            <User className='inline-block scale-75 text-muted-foreground' />
+                                            Nome de exibição
+                                        </FormLabel>
                                         <FormControl>
                                             <Input placeholder='John Doe' {...field}></Input>
                                         </FormControl>
@@ -128,7 +135,10 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
                                 name={"bio"}
                                 render={({ field }) => (
                                     <FormItem className='mt-2'>
-                                        <FormLabel>Bio</FormLabel>
+                                        <FormLabel className='flex items-center gap-1'>
+                                            <Fingerprint className='inline-block scale-75 text-muted-foreground' />
+                                            Bio
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
                                                 cols={30}
@@ -143,6 +153,25 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
                                         <FormDescription>
                                             Esta será a sua biografia mostrada no perfil.
                                         </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name={"location"}
+                                render={({ field }) => (
+                                    <FormItem className='mt-2'>
+                                        <FormLabel className='flex items-center gap-1'>
+                                            <MapPin className='inline-block scale-75 text-muted-foreground' />
+                                            Local
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder='Av Paulista, 735'
+                                                {...field}
+                                            ></Input>
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}

@@ -16,4 +16,5 @@ export const EditProfileFormSchema = z.object({
         .refine((value) => value.split("\n").length <= 4, {
             message: `A bio não deve ter mais de ${4} linhas.`,
         }),
+    location: z.string().max(30, "O seu local deve ser menor"),
 });
