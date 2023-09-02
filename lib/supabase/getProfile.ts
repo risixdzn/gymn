@@ -1,7 +1,6 @@
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UserDefaultAvatar from "../../public/user.png";
-import { StaticImageData } from "next/image";
 import { downloadAvatar, downloadBanner } from "./downloadFromStorage";
 import { UserProfile } from "@/types/UserProfile";
 
@@ -27,7 +26,16 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
             let { data, error, status } = await supabase
                 .from("users")
                 .select(
-                    "id, created_at, username, profile, display_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url), bio"
+                    `id,
+                    created_at,
+                    username,
+                    profile,
+                    display_name,
+                    email,
+                    avatars!users_avatar_id_fkey(avatar_url),
+                    banners!users_banner_id_fkey(banner_url),
+                    bio,
+                    location`
                 )
                 .eq("id", user?.id)
                 .single();
@@ -58,6 +66,7 @@ export function useGetCurrentProfile({ session }: useGetCurrentProfileProps) {
                     avatar_url: avatar_url,
                     banner_url: banner_url,
                     bio: data.bio,
+                    location: data.location,
                 });
             }
         } catch (error) {
@@ -92,7 +101,16 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
             let { data, error, status } = await supabase
                 .from("users")
                 .select(
-                    "id, created_at, username, profile, display_name, email, avatars!users_avatar_id_fkey(avatar_url), banners!users_banner_id_fkey(banner_url), bio"
+                    `id,
+                    created_at,
+                    username,
+                    profile,
+                    display_name,
+                    email,
+                    avatars!users_avatar_id_fkey(avatar_url),
+                    banners!users_banner_id_fkey(banner_url),
+                    bio,
+                    location`
                 )
                 .eq("username", username)
                 .single();
@@ -126,6 +144,7 @@ export function useGetProfile({ username }: useGetForeignProfileProps) {
                     avatar_url: avatar_url,
                     banner_url: banner_url,
                     bio: data.bio,
+                    location: data.location,
                 });
             }
         } catch (error) {

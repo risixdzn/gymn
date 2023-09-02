@@ -114,12 +114,14 @@ export default function ForeignProfile({ router, username, session }: PersonalPr
                                     <Dumbbell className='inline-block scale-75' />
                                     <span className='text-sm text-foreground'>Punch Fitness</span>
                                 </span>
-                                <span className=' text-muted-foreground text-sm flex gap-2 items-center '>
-                                    <MapPin className='inline-block scale-75' />
-                                    <span className='text-sm text-foreground'>
-                                        Av Paulista, 735
+                                {displayUser?.location && (
+                                    <span className=' text-muted-foreground text-sm flex gap-2 items-center '>
+                                        <MapPin className='inline-block scale-75' />
+                                        <span className='text-sm text-foreground'>
+                                            {displayUser.location}
+                                        </span>
                                     </span>
-                                </span>
+                                )}
                                 <span className='text-muted-foreground text-xs flex gap-2 items-center mt-2'>
                                     Entrou em {formattedJoinDate}.
                                 </span>

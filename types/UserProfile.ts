@@ -10,4 +10,5 @@ export type UserProfile = {
     avatar_url: string | StaticImageData;
     banner_url: string | StaticImageData | null;
     bio: string;
+    location: string;
 };
