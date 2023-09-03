@@ -5,8 +5,7 @@ import PagesContainer from "@/components/Dashboard/PagesContainer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import DashUi from "@/components/Dashboard/DashUi";
 import { Analytics } from "@vercel/analytics/react";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryProvider } from "@/lib/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,21 +15,19 @@ export const metadata = {
     manifest: "/manifest.json",
 };
 
-export const reactQueryClient = new QueryClient();
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='en'>
-            <body className={`${inter.className} select-none`}>
-                <QueryClientProvider client={reactQueryClient}>
+        <ReactQueryProvider>
+            <html lang='en'>
+                <body className={`${inter.className} select-none`}>
                     <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                         <DashUi />
                         <Toaster />
                         <Analytics />
                         <PagesContainer>{children}</PagesContainer>
                     </ThemeProvider>
-                </QueryClientProvider>
-            </body>
-        </html>
+                </body>
+            </html>
+        </ReactQueryProvider>
     );
 }
