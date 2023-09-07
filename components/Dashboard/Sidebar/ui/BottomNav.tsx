@@ -12,7 +12,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
     return (
         <div
             id='bottomnav'
-            className='w-full h-20 fixed z-[2] top-full -translate-y-20 bg-card rounded-t-3xl flex items-center justify-around px-5'
+            className='w-full h-20 fixed z-[2] bottom-0 bg-card rounded-t-3xl flex items-center justify-around px-5'
         >
             <Link
                 href='/dashboard/home'
