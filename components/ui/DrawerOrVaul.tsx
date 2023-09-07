@@ -7,10 +7,13 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { ReactNode, Dispatch, SetStateAction } from "react";
+import { cn } from "@/lib/utils";
 
 type Props = {
     screenWidth: number;
     children?: ReactNode;
+    scrollable?: boolean;
+    className?: string;
 };
 
 const Drawer = ({
@@ -43,37 +46,54 @@ const DrawerTrigger = ({ screenWidth, children }: Props) => {
     );
 };
 
-const DrawerContent = ({ screenWidth, children }: Props) => {
+const DrawerContent = ({ screenWidth, children, scrollable, className }: Props) => {
     return screenWidth < 1024 ? (
         <VaulDrawer.Portal>
             <VaulDrawer.Overlay className='fixed inset-0 bg-black/40 z-[48]' />
-            <VaulDrawer.Content className='bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 z-[49]'>
+            <VaulDrawer.Content
+                className={cn(
+                    "bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 z-[9999999]",
+                    className
+                )}
+            >
                 <div className='mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-accent mb-8 mt-4' />
-                <div className='max-w-md mx-auto px-8'>{children}</div>
+                <div
+                    className={`max-w-md w-full mx-auto px-8 flex flex-col  ${
+                        scrollable ? "overflow-auto" : ""
+                    }`}
+                >
+                    {children}
+                </div>
             </VaulDrawer.Content>
         </VaulDrawer.Portal>
     ) : (
-        <SheetContent className='w-[400px] sm:w-[540px]'>{children}</SheetContent>
+        <SheetContent
+            className={cn(`w-[400px] sm:w-[540px] ${scrollable ? "overflow-auto" : ""}`, className)}
+        >
+            {children}
+        </SheetContent>
     );
 };
 
-const DrawerTitle = ({ screenWidth, children }: Props) => {
+const DrawerTitle = ({ screenWidth, children, className }: Props) => {
     return screenWidth < 1024 ? (
-        <VaulDrawer.Title className='max-w-md mx-auto text-lg font-semibold text-foreground'>
+        <VaulDrawer.Title
+            className={cn("max-w-md mx-auto text-lg font-semibold text-foreground", className)}
+        >
             {children}
         </VaulDrawer.Title>
     ) : (
-        <SheetTitle>{children}</SheetTitle>
+        <SheetTitle className={className}>{children}</SheetTitle>
     );
 };
 
-const DrawerDescription = ({ screenWidth, children }: Props) => {
+const DrawerDescription = ({ screenWidth, children, className }: Props) => {
     return screenWidth < 1024 ? (
-        <VaulDrawer.Description className='text-sm text-muted-foreground'>
+        <VaulDrawer.Description className={cn("text-sm text-muted-foreground", className)}>
             {children}
         </VaulDrawer.Description>
     ) : (
-        <SheetDescription>{children}</SheetDescription>
+        <SheetDescription className={className}>{children}</SheetDescription>
     );
 };
 
