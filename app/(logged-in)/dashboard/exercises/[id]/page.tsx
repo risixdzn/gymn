@@ -7,6 +7,7 @@ import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ExercisePageProps = {
     params: {
@@ -15,7 +16,7 @@ type ExercisePageProps = {
 };
 
 export default function ExercisePage({ params }: ExercisePageProps) {
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["exercise", params.id], //key and params to define the query
         queryFn: () => {
             //function called on querying
@@ -27,12 +28,18 @@ export default function ExercisePage({ params }: ExercisePageProps) {
 
     return (
         <>
-            <Button className='mb-4' onClick={() => router.back()}>
+            <Button className='mb-4' onClick={() => router.back()} variant={"secondary"}>
                 <ArrowLeft className='scale-75 w-auto' /> Voltar
             </Button>
-            {data?.data.map((exercise: Exercise, index: number) => (
-                <ExerciseCard key={exercise.id} exercise={exercise} />
-            ))}
+            {!isLoading ? (
+                <>
+                    {data?.data.map((exercise: Exercise, index: number) => (
+                        <ExerciseCard key={exercise.id} exercise={exercise} />
+                    ))}
+                </>
+            ) : (
+                <Skeleton className='w-full h-[150px] md:h-[250px] lg:h-[300px] dark:opacity-50' />
+            )}
         </>
     );
 }
