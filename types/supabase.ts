@@ -71,6 +71,46 @@ export interface Database {
           }
         ]
       }
+      exercises: {
+        Row: {
+          created_by: string | null
+          description: string | null
+          equipment: string[] | null
+          id: string
+          level: string | null
+          muscle: string[] | null
+          name: string | null
+          visibility: string | null
+        }
+        Insert: {
+          created_by?: string | null
+          description?: string | null
+          equipment?: string[] | null
+          id?: string
+          level?: string | null
+          muscle?: string[] | null
+          name?: string | null
+          visibility?: string | null
+        }
+        Update: {
+          created_by?: string | null
+          description?: string | null
+          equipment?: string[] | null
+          id?: string
+          level?: string | null
+          muscle?: string[] | null
+          name?: string | null
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercises_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       gym: {
         Row: {
           address: string | null
@@ -106,30 +146,36 @@ export interface Database {
         Row: {
           avatar_id: string | null
           banner_id: string | null
+          bio: string | null
           created_at: string | null
           display_name: string | null
           email: string | null
           id: string
+          location: string | null
           profile: string | null
           username: string | null
         }
         Insert: {
           avatar_id?: string | null
           banner_id?: string | null
+          bio?: string | null
           created_at?: string | null
           display_name?: string | null
           email?: string | null
           id: string
+          location?: string | null
           profile?: string | null
           username?: string | null
         }
         Update: {
           avatar_id?: string | null
           banner_id?: string | null
+          bio?: string | null
           created_at?: string | null
           display_name?: string | null
           email?: string | null
           id?: string
+          location?: string | null
           profile?: string | null
           username?: string | null
         }

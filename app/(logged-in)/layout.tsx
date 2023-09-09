@@ -5,6 +5,7 @@ import PagesContainer from "@/components/Dashboard/PagesContainer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import DashUi from "@/components/Dashboard/DashUi";
 import { Analytics } from "@vercel/analytics/react";
+import { ReactQueryProvider } from "@/lib/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,15 +17,17 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='en'>
-            <body className={`${inter.className} select-none`}>
-                <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-                    <DashUi />
-                    <Toaster />
-                    <Analytics />
-                    <PagesContainer>{children}</PagesContainer>
-                </ThemeProvider>
-            </body>
-        </html>
+        <ReactQueryProvider>
+            <html lang='en'>
+                <body className={`${inter.className} select-none`}>
+                    <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+                        <DashUi />
+                        <Toaster />
+                        <Analytics />
+                        <PagesContainer>{children}</PagesContainer>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </ReactQueryProvider>
     );
 }

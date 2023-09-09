@@ -8,7 +8,7 @@ export function ProfilePreview({ displayUser }: { displayUser: UserProfile | nul
     return (
         <div className='relative'>
             <div id='banner' className='w-full h-20 bg-accent rounded-t-lg'>
-                {displayUser && (
+                {displayUser?.banner_url && (
                     <Image
                         width={1500}
                         height={700}
@@ -24,7 +24,7 @@ export function ProfilePreview({ displayUser }: { displayUser: UserProfile | nul
                 className='z-[1] absolute w-20 h-20 rounded-full bg-card 
                 -translate-y-[50%] ml-0 border-background border-[5px] overflow-hidden object-cover'
             >
-                {displayUser && (
+                {displayUser?.avatar_url && (
                     <Image
                         width={300}
                         height={300}
