@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
-    const muscle = searchParams.get("muscle");
+    const queryParams = searchParams.keys();
     const supabase = createRouteHandlerClient({ cookies });
 
     try {
@@ -22,8 +22,15 @@ export async function GET(request: Request) {
             .eq("visibility", "public")
             .eq("created_by", "da89627e-3917-4e7c-a583-dab21d5ef726"); //admin id
 
-        if (muscle !== null && muscle !== "") {
-            query = query.filter("muscle", "cs", `{${muscle}}`);
+        //para cada chave dos queryparams
+        for (const key of queryParams) {
+            if (key === "muscle" || key === "equipment") {
+                //filtra
+                const value = searchParams.get(key); //pega a chave, se nao for nula e nem vazia
+                if (value !== null && value !== "") {
+                    query = query.filter(key, "cs", `{${value}}`); //filtre
+                }
+            }
         }
 
         let { data, error } = await query; //query stuff here

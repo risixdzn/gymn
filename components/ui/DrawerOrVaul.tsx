@@ -21,8 +21,8 @@ const Drawer = ({
 }: {
     screenWidth: number;
     children?: ReactNode;
-    open: boolean;
-    onOpenChange: Dispatch<SetStateAction<boolean>>;
+    open?: boolean;
+    onOpenChange?: Dispatch<SetStateAction<boolean>>;
 }) => {
     return screenWidth < 1024 ? (
         <VaulDrawer.Root open={open} onOpenChange={onOpenChange}>
