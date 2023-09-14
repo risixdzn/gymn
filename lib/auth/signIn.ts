@@ -33,9 +33,7 @@ export async function LogIn({ userData, setLoading, router }: LoginProps) {
             description: "Aguarde o redirecionamento.",
         });
 
-        setTimeout(() => {
-            router.push("/dashboard/profile");
-        }, 500);
+        router.push("/dashboard/profile");
     }
 
     setLoading(false);

@@ -176,3 +176,29 @@
 .translatez10 {
     transform: translateZ(10px);
 }
+
+.glowingCard {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    background-color: var(--card);
+    padding: 1rem;
+    border-radius: var(--radius);
+    @apply h-[125px] md:h-[250px] lg:h-[300px] shadow-xl border-border border-[1px];
+}
+
+.glowingCard::before {
+    background: radial-gradient(
+        800px circle at var(--mouse-x) var(--mouse-y),
+        rgba(255, 255, 255, 0.06),
+        transparent 40%
+    );
+    border-radius: inherit;
+    content: "";
+    height: 100%;
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 2;
+}
