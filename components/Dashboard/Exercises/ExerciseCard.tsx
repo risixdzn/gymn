@@ -20,7 +20,7 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
     const { screenWidth } = useGetScreenWidth();
 
     return (
-        <GlowingCard className='relative w-full h-[150px] md:h-[250px] lg:h-[300px]'>
+        <GlowingCard className='relative w-full h-[150px] md:h-[250px] lg:h-[300px] group'>
             <div
                 id='difficulty_indicator'
                 className={`hidden md:block w-full h-2 rounded-full`}
@@ -75,7 +75,7 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
                     </>
                 )}
             </div>
-            <span className='absolute bottom-0 right-0 mb-3 mr-3 md:right-auto md:mb-4 text-xs flex items-center gap-[0.15rem]'>
+            <span className='group-hover:underline absolute bottom-0 right-0 mb-3 mr-3 md:right-auto md:mb-4 text-xs flex items-center gap-[0.15rem]'>
                 Ver mais <ArrowRight className='scale-[0.65] inline-block' />
             </span>
         </GlowingCard>

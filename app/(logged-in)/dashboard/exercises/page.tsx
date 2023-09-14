@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
 import MuscleFilterDrawer from "@/components/Dashboard/Exercises/MuscleFilterDrawer";
 import Filters from "@/components/Dashboard/Exercises/Filters";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export type Exercise = {
     id: string;
@@ -29,7 +30,7 @@ export default function Exercises() {
     const [filteredEquipment, setFilteredEquipment] = useState("");
     const [currentFilters, setCurrentFilters] = useState<string[]>([]);
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["exercises", filteredMuscle, filteredEquipment], //key and params to define the query
         queryFn: () => {
             //function called on querying
@@ -51,6 +52,8 @@ export default function Exercises() {
 
     const [muscleFilterDrawerOpen, setMuscleFilterDrawerOpen] = useState(false);
     const [equipmentFilterDrawerOpen, setEquipmentFilterDrawerOpen] = useState(false);
+
+    const skeletons = new Array(15).fill(null);
 
     return (
         <div>
@@ -81,16 +84,29 @@ export default function Exercises() {
             />
 
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 mt-4'>
-                {data?.data.map((exercise: Exercise, index: number) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.04 }}
-                    >
-                        <ExerciseCard key={exercise.id} exercise={exercise} />
-                    </motion.div>
-                ))}
+                {!isLoading ? (
+                    <>
+                        {data?.data.map((exercise: Exercise, index: number) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.075 }}
+                            >
+                                <ExerciseCard key={exercise.id} exercise={exercise} />
+                            </motion.div>
+                        ))}
+                    </>
+                ) : (
+                    <>
+                        {skeletons.map((_, index) => (
+                            <Skeleton
+                                className='w-full h-[150px] md:h-[250px] lg:h-[300px] dark:opacity-50'
+                                key={index}
+                            />
+                        ))}
+                    </>
+                )}
             </div>
         </div>
     );
