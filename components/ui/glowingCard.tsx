@@ -23,7 +23,7 @@ export default function GlowingCard({
             hover:before:bottom-[10%] hover:before:opacity-100 
             dark:hover:bg-accent/40
             hover:bg-accent/30
-            transition-all`,
+            `,
                 className
             )}
         >
