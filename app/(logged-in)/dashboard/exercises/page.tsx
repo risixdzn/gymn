@@ -1,18 +1,15 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Dumbbell, ListFilter, Plus, Shapes, Triangle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion } from "framer-motion";
 import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
-import MuscleFilterDrawer from "@/components/Dashboard/Exercises/MuscleFilterDrawer";
 import Filters from "@/components/Dashboard/Exercises/Filters";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export type Exercise = {
     id: string;
@@ -87,14 +84,15 @@ export default function Exercises() {
                 {!isLoading ? (
                     <>
                         {data?.data.map((exercise: Exercise, index: number) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: index * 0.075 }}
-                            >
-                                <ExerciseCard key={exercise.id} exercise={exercise} />
-                            </motion.div>
+                            <Link href={`/dashboard/exercises/${exercise.id}`} key={index}>
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: index * 0.075 }}
+                                >
+                                    <ExerciseCard key={exercise.id} exercise={exercise} />
+                                </motion.div>
+                            </Link>
                         ))}
                     </>
                 ) : (
