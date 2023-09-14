@@ -1,6 +1,7 @@
 import { Drawer as VaulDrawer } from "vaul";
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetDescription,
     SheetTitle,
@@ -14,6 +15,7 @@ type Props = {
     children?: ReactNode;
     scrollable?: boolean;
     className?: string;
+    closeVisible?: boolean;
 };
 
 const Drawer = ({
@@ -46,7 +48,7 @@ const DrawerTrigger = ({ screenWidth, children }: Props) => {
     );
 };
 
-const DrawerContent = ({ screenWidth, children, scrollable, className }: Props) => {
+const DrawerContent = ({ screenWidth, children, scrollable, className, closeVisible }: Props) => {
     return screenWidth < 1024 ? (
         <VaulDrawer.Portal>
             <VaulDrawer.Overlay className='fixed inset-0 bg-black/40 z-[48]' />
