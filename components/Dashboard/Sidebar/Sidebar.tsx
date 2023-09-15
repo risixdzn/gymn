@@ -71,7 +71,7 @@ export default function Sidebar({ session }: { session: Session | null }) {
         <>
             <div
                 id='sidebar'
-                className={`fixed w-80 h-[100%] bg-background shadow-lg transition-all duration-300 border-border border-r-[1px] z-[3]
+                className={`fixed w-80 h-[100%] bg-background shadow-lg transition-all duration-300 border-border border-r-[1px] z-[30]
 flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-translate-x-80"}`}
             >
                 <div id='topsection' className='w-full h-auto px-5 pt-5 flex flex-col gap-6'>
@@ -144,10 +144,9 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
             </div>
             {screenWidth < 1024 ? (
                 <>
+                    {/* Hamburger */}
                     <Button
-                        className={`z-[4] fixed mx-3 mt-3 transition-all duration-300 ${
-                            sidebarOpen ? "translate-x-[calc(20rem-(100%+(0.75rem*2)))]" : ""
-                        }`}
+                        className={`z-[40] fixed right-0 mx-3 mt-3 transition-all duration-300 `}
                         size={"icon"}
                         variant={"ghost"}
                         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -156,12 +155,22 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                     </Button>
                     <div
                         id={"header"}
-                        className='w-full h-16 bg-background fixed flex items-center px-3 z-[2]'
+                        className='w-full h-16 bg-background fixed flex items-center px-3 z-[20]'
                     >
                         <div className='w-full h-full flex items-center justify-center text-sm'>
                             <h4>{translatedCurrentRoute}</h4>
                         </div>
                     </div>
+
+                    <div
+                        id='blurry-bg'
+                        className={`fixed w-full h-full bg-black z-[29] backdrop-blur-lg transition-all ${
+                            sidebarOpen
+                                ? "opacity-20 dark:opacity-50 pointer-events-auto"
+                                : "pointer-events-none opacity-0"
+                        }`}
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                    ></div>
 
                     <BottomNav pathname={pathname} />
                 </>
