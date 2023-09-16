@@ -3,73 +3,53 @@ import { SolidHomeIcon } from "@/components/ui/Icons/Home/SolidHome";
 import { SolidUserIcon } from "@/components/ui/Icons/User/SolidUser";
 import { UserIcon } from "@/components/ui/Icons/User/User";
 import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
-import { Home, Search, Dumbbell, User } from "lucide-react";
+import { Home, Search, Dumbbell, User, HeartPulse, Warehouse } from "lucide-react";
 import Link from "next/link";
+import { ReactElement, ReactNode, cloneElement } from "react";
+
+const NavLink = ({
+    pathname,
+    href,
+    icon,
+    text,
+}: {
+    pathname: string;
+    href: string;
+    icon: ReactElement; //fix type later
+    text: string;
+}) => {
+    const currentRoute = useGetRouteName(pathname);
+    const CustomIcon = ({ icon }: { icon: ReactElement }) => {
+        return cloneElement(icon, {
+            strokeWidth: currentRoute == href ? 2.5 : 2,
+            className: "transition-all",
+        });
+    };
+
+    return (
+        <Link
+            href={`/dashboard/${href}`}
+            className={`transition-all flex flex-col items-center gap-1 ${
+                currentRoute == href ? "text-g_purple" : "text-muted-foreground"
+            }`}
+        >
+            <CustomIcon icon={icon} />
+            <p className='text-xs'>{text}</p>
+        </Link>
+    );
+};
 
 export default function BottomNav({ pathname }: { pathname: string }) {
-    const currentRoute = useGetRouteName(pathname);
-
     return (
         <div
             id='bottomnav'
             className='w-full h-20 fixed z-[2] bottom-0 bg-card rounded-t-3xl flex items-center justify-around px-5'
         >
-            <Link
-                href='/dashboard/home'
-                className={`transition-all flex flex-col items-center gap-1 ${
-                    currentRoute == "home" ? "text-g_purple" : "text-muted-foreground"
-                }`}
-            >
-                {currentRoute == "home" ? (
-                    <SolidHomeIcon className='fill-g_purple' width={24} height={24} />
-                ) : (
-                    <HomeIcon className='fill-muted-foreground' width={24} height={24} />
-                )}
-                <p className='text-xs'>Home</p>
-            </Link>
-            <Link
-                href='/dashboard/explore'
-                className={`transition-all flex flex-col items-center gap-1 ${
-                    currentRoute == "explore" ? "text-g_purple" : "text-muted-foreground"
-                }`}
-            >
-                <Search
-                    strokeWidth={currentRoute == "explore" ? 3 : 2}
-                    className='transition-all'
-                />
-                <p className='text-xs'>Explorar</p>
-            </Link>
-            <Link
-                href='/dashboard/workouts'
-                className={`transition-all flex flex-col items-center gap-1 ${
-                    currentRoute == "workouts" ? "text-g_purple" : "text-muted-foreground"
-                }`}
-            >
-                <Dumbbell
-                    strokeWidth={currentRoute == "workouts" ? 3 : 2}
-                    className='transition-all'
-                />
-                <p className='text-xs'>Treinos</p>
-            </Link>
-            <Link
-                href='/dashboard/profile'
-                className={`transition-all flex flex-col items-center gap-1 ${
-                    currentRoute == "profile"
-                        ? "text-g_purple font-semibold"
-                        : "text-muted-foreground"
-                }`}
-            >
-                {currentRoute == "profile" ? (
-                    <SolidUserIcon className='fill-g_purple' width={24} height={24} />
-                ) : (
-                    <UserIcon
-                        className='stroke-muted-foreground fill-none'
-                        width={24}
-                        height={24}
-                    />
-                )}
-                <p className='text-xs'>Perfil</p>
-            </Link>
+            <NavLink pathname={pathname} href={"home"} text={"Home"} icon={<Home />} />
+            <NavLink pathname={pathname} href={"explore"} text={"Explorar"} icon={<Search />} />
+            <NavLink pathname={pathname} href={"workouts"} text={"Treinos"} icon={<Dumbbell />} />
+            <NavLink pathname={pathname} href={"gym"} text={"Academia"} icon={<Warehouse />} />
+            <NavLink pathname={pathname} href={"profile"} text={"Perfil"} icon={<User />} />
         </div>
     );
 }

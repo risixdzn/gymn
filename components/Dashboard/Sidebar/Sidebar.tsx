@@ -26,7 +26,7 @@ import SearchCommand from "./ui/SearchCommand";
 import { Session } from "@supabase/auth-helpers-nextjs";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UserProfileCard from "./ui/UserProfileCard";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
 import { useTranslateAppRoutes } from "@/lib/hooks/useTranslateAppRoutes";
 import BottomNav from "./ui/BottomNav";
@@ -60,8 +60,14 @@ export default function Sidebar({ session }: { session: Session | null }) {
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
     const pathname = usePathname();
+
+    const searchParams = useSearchParams();
     const currentRoute = useGetRouteName(pathname);
     const translatedCurrentRoute = useTranslateAppRoutes(currentRoute);
+
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [pathname, searchParams]);
 
     if (!isClient) {
         return null;
@@ -164,7 +170,7 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
 
                     <div
                         id='blurry-bg'
-                        className={`fixed w-full h-full bg-black z-[29] backdrop-blur-lg transition-all ${
+                        className={`fixed w-full h-full bg-black z-[29] backdrop-blur-lg     transition-all ${
                             sidebarOpen
                                 ? "opacity-20 dark:opacity-50 pointer-events-auto"
                                 : "pointer-events-none opacity-0"
