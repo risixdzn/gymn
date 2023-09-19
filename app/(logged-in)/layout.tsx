@@ -20,7 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ReactQueryProvider>
             <html lang='en'>
                 <body className={`${inter.className} select-none`}>
-                    <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+                    <ThemeProvider
+                        attribute='class'
+                        defaultTheme='system'
+                        enableSystem
+                        disableTransitionOnChange
+                    >
                         <DashUi />
                         <Toaster />
                         <Analytics />

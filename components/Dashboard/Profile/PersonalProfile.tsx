@@ -1,6 +1,6 @@
 import { LogOut, Users2, MapPin, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { SignOut } from "@/lib/auth/signOut";
 import { Badge } from "@/components/ui/badge";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";

@@ -1,6 +1,5 @@
 import { LogOut, Users2, Dumbbell, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { SignOut } from "@/lib/auth/signOut";
 import { Badge } from "@/components/ui/badge";
 import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
@@ -12,6 +11,7 @@ import { BannerWithActions } from "./reusable/BannerWithActions";
 import { ProfilePicture } from "./reusable/ProfilePicture";
 import EditProfile from "./Edit/EditProfile";
 import { useState } from "react";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 type PersonalProfileProps = {
     router: AppRouterInstance;
