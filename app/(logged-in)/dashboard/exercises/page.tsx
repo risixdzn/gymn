@@ -80,7 +80,7 @@ export default function Exercises() {
                 currentFilters={currentFilters}
             />
 
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 mt-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 mt-4 mb-20 lg:mb-0'>
                 {!isLoading ? (
                     <>
                         {data?.data.map((exercise: Exercise, index: number) => (
