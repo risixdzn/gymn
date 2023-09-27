@@ -57,12 +57,12 @@ export default function CTABanner({
             id='wrapper'
             className={cn(
                 open ? "translate-y-0" : "translate-y-36",
-                "w-full absolute bottom-0 h-auto p-3 transition-all pointer-events-auto"
+                "w-full fixed z-[60] bottom-0 h-auto p-3 transition-all pointer-events-auto"
             )}
         >
             <div
                 id='banner'
-                className='w-full - rounded-lg z-50 isolate flex items-center gap-x-6 overflow-hidden bg-gradient-to-br from-g_purple to-g_darkpurple px-6 py-2.5 sm:px-3.5 sm:before:flex-1'
+                className='w-full max-w-7xl mx-auto rounded-lg z-50 isolate flex items-center gap-x-6 overflow-hidden bg-gradient-to-br from-g_purple to-g_darkpurple px-6 py-2.5 sm:px-3.5 sm:before:flex-1'
             >
                 <div className='flex flex-wrap items-center gap-x-4 gap-y-2 text-white'>
                     <p className='text-sm leading-6 '>
