@@ -10,6 +10,7 @@ import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
 import Filters from "@/components/Dashboard/Exercises/Filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import AddExercise from "@/components/Dashboard/Exercises/AddExercise/AddExercise";
 
 export type Exercise = {
     id: string;
@@ -56,9 +57,7 @@ export default function Exercises() {
         <div>
             <div id='title' className='flex w-full gap-4 justify-between'>
                 <h1 className='text-4xl font-semibold'>Exercícios</h1>
-                <Button>
-                    <Plus className='scale-75' /> Adicionar
-                </Button>
+                <AddExercise />
             </div>
             <div className='flex flex-col gap-4 mt-4 flex-wrap'>
                 <div id='subtitle'>

@@ -27,6 +27,8 @@ export const muscles = [
     "Tríceps",
 ];
 
+export const levels = ["Iniciante", "Intermediário", "Avançado"];
+
 type FiltersProps = {
     className: string;
     filteredMuscle: string;
