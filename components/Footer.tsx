@@ -2,6 +2,7 @@ import Image from "next/image";
 import RoundLogo from "../public/g_Icon.png";
 import GymnLogo from "./ui/Icons/GymnLogo";
 import { GithubIcon, TwitterIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -37,14 +38,20 @@ export default function Footer() {
                             <h2 className='mb-6 text-sm font-semibold uppercase'>Legal</h2>
                             <ul className='text-muted-foreground font-base text-sm'>
                                 <li className='mb-4'>
-                                    <a href='#' className='hover:underline'>
+                                    <Link
+                                        href={"/legal/privacy-policy"}
+                                        className='hover:underline'
+                                    >
                                         Política de privacidade
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href='#' className='hover:underline'>
+                                    <Link
+                                        href={"/legal/terms-and-conditions"}
+                                        className='hover:underline'
+                                    >
                                         Termos e condições
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
