@@ -31,6 +31,7 @@ export async function LogIn({ userData, setLoading, router }: LoginProps) {
         toast({
             title: "Você entrou com sucesso!",
             description: "Aguarde o redirecionamento.",
+            variant: "success",
         });
 
         router.push("/dashboard/profile");
