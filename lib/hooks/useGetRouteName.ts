@@ -8,3 +8,7 @@ export function useGetRouteName(pathname: string) {
 
     return Route;
 }
+
+export function useGetPathnameArray(pathname: string) {
+    return pathname.split("/");
+}

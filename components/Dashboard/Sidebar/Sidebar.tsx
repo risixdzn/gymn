@@ -30,6 +30,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
 import { useTranslateAppRoutes } from "@/lib/hooks/useTranslateAppRoutes";
 import BottomNav from "./ui/BottomNav";
+import Breadcrumbs from "./ui/Breadcrumbs";
+
+//TODO: Fix wrong color bug
 
 export default function Sidebar({ session }: { session: Session | null }) {
     const [isClient, setIsClient] = useState(false);
@@ -77,7 +80,7 @@ export default function Sidebar({ session }: { session: Session | null }) {
         <>
             <div
                 id='sidebar'
-                className={`fixed w-80 h-[100%] bg-background shadow-lg transition-all duration-300 border-border border-r-[1px] z-[30]
+                className={`fixed w-80 h-[100%] bg-card shadow-lg transition-all duration-300 border-border border-r-[1px] z-[30]
 flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-translate-x-80"}`}
             >
                 <div id='topsection' className='w-full h-auto px-5 pt-5 flex flex-col gap-6'>
@@ -147,6 +150,13 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                 <div id='bottomsection' className='w-full h-auto border-t-[1px] border-border'>
                     <UserProfileCard displayUser={displayUser} screenWidth={screenWidth} />
                 </div>
+            </div>
+            <div
+                id='breadcrumbs'
+                style={{ zIndex: 30 }}
+                className='lg:flex fixed bg-card bg- items-center pl-6 hidden lg:w-[calc(100%-20rem)] lg:ml-[20rem] h-14 border-b-[1px] border-border'
+            >
+                <Breadcrumbs pathname={pathname} />
             </div>
             {screenWidth < 1024 ? (
                 <>
