@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useToast } from "../ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
 
 export default function UnauthorizedAlert() {
     const { toast } = useToast();
@@ -16,9 +15,8 @@ export default function UnauthorizedAlert() {
         if (unauthorizedAction?.split("=")[1] === "true") {
             toast({
                 variant: "destructive",
-                title: "Ação nao autorizada.",
-                description: "Você não pode executar tal ação deslogado.",
-                action: <ToastAction altText='Concordo'>Entendi</ToastAction>,
+                title: "Acesso negado.",
+                description: "Você não pode acessar essa seção sem fazer login.",
             });
         }
 
