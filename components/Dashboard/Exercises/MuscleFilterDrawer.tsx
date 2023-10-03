@@ -3,48 +3,38 @@ import {
     DrawerContent,
     DrawerDescription,
     DrawerTitle,
+    DrawerTrigger,
 } from "@/components/ui/DrawerOrVaul";
 import { Input } from "@/components/ui/input";
-import { SheetClose } from "@/components/ui/sheet";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { Grid2x2, Search } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { muscles } from "./Filters";
+import { Button } from "@/components/ui/button";
 
-export default function MuscleFilterDrawer({
-    muscles,
-    muscleFilterDrawerOpen,
-    setMuscleFilterDrawerOpen,
-    setFilteredMuscle,
-    setCurrentFilters,
-    currentFilters,
-    filteredMuscle,
-}: {
-    muscles: string[];
-    muscleFilterDrawerOpen: boolean;
-    setMuscleFilterDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    setFilteredMuscle: Dispatch<SetStateAction<string>>;
-    setCurrentFilters: Dispatch<SetStateAction<string[]>>;
-
-    currentFilters: string[];
-    filteredMuscle: string;
-}) {
+export default function MuscleFilterDrawer() {
+    const [open, setOpen] = useState(false);
     const { screenWidth } = useGetScreenWidth();
+    const searchParams = useSearchParams();
+    const selectedMuscle = searchParams.get("muscle");
 
     const [searchTerm, setSearchTerm] = useState(""); // State for the search term
-
     // Filter the muscles based on the search term
     const searchedMuscles = muscles.filter((muscle) =>
         muscle.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <Drawer
-            screenWidth={screenWidth}
-            open={muscleFilterDrawerOpen}
-            onOpenChange={setMuscleFilterDrawerOpen}
-        >
+        <Drawer screenWidth={screenWidth} open={open} onOpenChange={setOpen}>
+            <DrawerTrigger screenWidth={screenWidth}>
+                <Button className='h-8' variant={selectedMuscle ? "secondary" : "outline"}>
+                    {selectedMuscle ? selectedMuscle : "Todos os músculos"}
+                </Button>
+            </DrawerTrigger>
             <DrawerContent screenWidth={screenWidth} scrollable={true} closeVisible={false}>
                 <div className='pt-12 z-[2] -translate-y-12 sticky top-0 bg-background pb-4'>
                     <DrawerTitle screenWidth={screenWidth} className='z-[4]'>
@@ -64,46 +54,38 @@ export default function MuscleFilterDrawer({
                     </div>
                 </div>
                 <div className='mt-2 -translate-y-12'>
-                    <button
+                    <Link
+                        href={`?`}
                         className={`py-4 border-b-[1px] border-border w-full px-4 flex items-center gap-4 hover:bg-accent/50 ${
-                            filteredMuscle == "" && "bg-accent/50"
+                            selectedMuscle == "" && "bg-accent/50"
                         }`}
-                        onClick={() => {
-                            setFilteredMuscle("");
-                            setMuscleFilterDrawerOpen(false);
-                        }}
+                        onClick={() => setOpen(false)}
                     >
                         <div
                             className={`w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-md ${
-                                filteredMuscle == "" && "bg-background"
+                                selectedMuscle == "" && "bg-background"
                             }`}
                         >
                             <Grid2x2 className='text-foreground' />
                         </div>
                         <span className='text-sm'>Todos</span>
-                    </button>
+                    </Link>
                     {searchedMuscles.map((muscle, index) => (
-                        <motion.button
+                        <Link
+                            href={`?muscle=${muscle}`}
                             className={`py-4 border-b-[1px] border-border w-full px-4 flex items-center gap-4 hover:bg-accent/50 hadow-md ${
-                                filteredMuscle == muscle && "bg-accent/50"
+                                selectedMuscle == muscle && "bg-accent/50"
                             }`}
-                            onClick={() => {
-                                setCurrentFilters([...currentFilters, muscle]);
-                                setFilteredMuscle(muscle);
-                                setMuscleFilterDrawerOpen(false);
-                            }}
                             key={index}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: index * 0.03 }}
+                            onClick={() => setOpen(false)}
                         >
                             <div
                                 className={`w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-md ${
-                                    filteredMuscle == muscle && "bg-background"
+                                    selectedMuscle == muscle && "bg-background"
                                 }`}
                             ></div>
                             <span className='text-sm'>{muscle}</span>
-                        </motion.button>
+                        </Link>
                     ))}
                 </div>
             </DrawerContent>
