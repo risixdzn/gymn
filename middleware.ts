@@ -27,12 +27,20 @@ export async function middleware(req: NextRequest) {
 
     //HANDLER PROTECTED ROUTES
     if (!session) {
-        return NextResponse.redirect(new URL("/auth", req.url));
+        const response = NextResponse.redirect(new URL("/auth", req.url));
+        response.headers.set(
+            "Set-Cookie",
+            `UnauthorizedAction=true; Max-Age=${60 * 6 * 24}; Path=/`
+        );
+        // By adding Path=/ to the cookie definition, you ensure that
+        //the "UnauthorizedAction" cookie is available for all subpaths under the root path.
+        // This should make the unauthorized alert work correctly on nested protected routes.
+        return response;
     }
 
     return res;
 }
 
 export const config = {
-    matcher: "/dashboard/:path*",
+    matcher: ["/dashboard/:path*", "/api/:path*"],
 };
