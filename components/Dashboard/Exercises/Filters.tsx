@@ -1,11 +1,3 @@
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Dumbbell, ListFilter, Shapes, Triangle, X } from "lucide-react";
-import MuscleFilterDrawer from "./MuscleFilterDrawer";
-import { Dispatch, SetStateAction } from "react";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import FilterDrawer from "./FilterDrawer";
 import { useSearchParams } from "next/navigation";
 

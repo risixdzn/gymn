@@ -16,6 +16,7 @@ type Props = {
     scrollable?: boolean;
     className?: string;
     closeVisible?: boolean;
+    asChild?: boolean;
 };
 
 const Drawer = ({
@@ -40,11 +41,11 @@ const Drawer = ({
     );
 };
 
-const DrawerTrigger = ({ screenWidth, children }: Props) => {
+const DrawerTrigger = ({ screenWidth, children, asChild }: Props) => {
     return screenWidth < 1024 ? (
-        <VaulDrawer.Trigger>{children}</VaulDrawer.Trigger>
+        <VaulDrawer.Trigger asChild={asChild}>{children}</VaulDrawer.Trigger>
     ) : (
-        <SheetTrigger>{children}</SheetTrigger>
+        <SheetTrigger asChild={asChild}>{children}</SheetTrigger>
     );
 };
 

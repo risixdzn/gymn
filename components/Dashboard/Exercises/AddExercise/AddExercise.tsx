@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronsUpDown, Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { ChevronDown, ChevronsUpDown, Plus } from "lucide-react";
+import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import {
@@ -36,22 +36,145 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+
+function VaulCheckboxSelect({
+    field,
+    options,
+    form,
+}: {
+    field: any;
+    options: {
+        id: string;
+        label: string;
+    }[];
+    form: UseFormReturn<
+        {
+            name: string;
+            muscles: string[];
+            equipment: string[];
+            level: string;
+            description: string;
+        },
+        any,
+        undefined
+    >;
+}) {
+    const { screenWidth } = useGetScreenWidth();
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <Drawer screenWidth={screenWidth} open={open} onOpenChange={setOpen}>
+                <DrawerTrigger screenWidth={screenWidth} asChild>
+                    <button className='relative w-full px-3 py-2 text-sm rounded-md border-border border-[1px] text-left text-muted-foreground'>
+                        {field.value.length == 0 && "Selecionar músculo"}
+                        <a className='absolute right-0 mr-2'>
+                            <ChevronDown className='scale-75 text-muted-foreground' />
+                        </a>
+                        {field.value.length > 0 && (
+                            <div className='flex gap-1 flex-wrap'>
+                                {field.value.map((value: string) => (
+                                    <Badge key={value} className='rounded-sm' variant={"secondary"}>
+                                        {value}
+                                    </Badge>
+                                ))}
+                            </div>
+                        )}
+                    </button>
+                </DrawerTrigger>
+                <DrawerContent screenWidth={screenWidth} scrollable>
+                    <DrawerTitle screenWidth={screenWidth}>Selecionar músculos</DrawerTitle>
+                    <DrawerDescription screenWidth={screenWidth}>
+                        Selecione os músculos alvo do exercício
+                        <Button
+                            variant={"secondary"}
+                            className='mt-2 w-full'
+                            onClick={() => setOpen(!open)}
+                        >
+                            Concluído
+                        </Button>
+                    </DrawerDescription>
+                    <div className='mt-2'>
+                        {options.map((option) => (
+                            <FormField
+                                key={option.id}
+                                control={form.control}
+                                name='muscles'
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem
+                                            key={option.id}
+                                            className={
+                                                "py-4 border-b-[1px] border-border w-full px-4 flex items-center gap-4 hover:bg-accent/50 shadow-md justify-between"
+                                            }
+                                            onClick={() => {
+                                                const isChecked = field.value?.includes(option.id);
+                                                let updatedOptions = Array.isArray(field.value)
+                                                    ? [...field.value]
+                                                    : [];
+                                                if (isChecked) {
+                                                    updatedOptions = updatedOptions.filter(
+                                                        (value) => value !== option.id
+                                                    );
+                                                } else {
+                                                    updatedOptions.push(option.id);
+                                                }
+                                                field.onChange(updatedOptions);
+                                            }}
+                                        >
+                                            <FormLabel className='font-normal flex items-center gap-4'>
+                                                <div className='w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-md '></div>
+                                                {option.label}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Checkbox
+                                                    className='-translate-y-1 scale-125'
+                                                    checked={field.value?.includes(option.id)}
+                                                    onCheckedChange={(checked) => {
+                                                        let updatedOptions = Array.isArray(
+                                                            field.value
+                                                        )
+                                                            ? [...field.value]
+                                                            : [];
+                                                        if (checked) {
+                                                            updatedOptions.push(option.id);
+                                                        } else {
+                                                            updatedOptions = updatedOptions.filter(
+                                                                (value) => value !== option.id
+                                                            );
+                                                        }
+                                                        field.onChange(updatedOptions);
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+                        ))}
+                    </div>
+                </DrawerContent>
+            </Drawer>
+        </>
+    );
+}
+
+export const formSchema = z.object({
+    name: z.string().min(4, "O nome deve ser maior").max(40, "O nome deve ser menor"),
+    muscles: z.array(z.string()).refine((value) => value.some((item) => item), {
+        message: "Você deve selecionar pelo menos um músculo.",
+    }),
+    equipment: z.array(z.string()),
+    level: z.string(),
+    description: z
+        .string()
+        .min(20, "A descrição deve ser maior")
+        .max(350, "A descrição deve ser menor"),
+});
 
 export default function AddExercise() {
     const { screenWidth } = useGetScreenWidth();
-
-    const formSchema = z.object({
-        name: z.string().min(4, "O nome deve ser maior").max(40, "O nome deve ser menor"),
-        muscles: z.array(z.string()).refine((value) => value.some((item) => item), {
-            message: "Você deve selecionar pelo menos um músculo.",
-        }),
-        equipment: z.array(z.string()),
-        level: z.string(),
-        description: z
-            .string()
-            .min(20, "A descrição deve ser maior")
-            .max(350, "A descrição deve ser menor"),
-    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -113,101 +236,11 @@ export default function AddExercise() {
                                         <FormDescription className='-mt-2'>
                                             Selecione os musculos alvo do exercício
                                         </FormDescription>
-                                        <Collapsible className='w-full py-[0.125rem] border-[1px] border-border rounded-md pl-3 pr-[0.125rem] cursor-pointer'>
-                                            <CollapsibleTrigger asChild>
-                                                <div className='space-y-0'>
-                                                    <div className='flex items-center justify-between space-x-4'>
-                                                        <h4 className='text-sm '>
-                                                            {field.value.length > 0
-                                                                ? "Músculos selecionados"
-                                                                : "Selecionar músculo"}
-                                                        </h4>
-                                                        <Button
-                                                            variant='ghost'
-                                                            type='button'
-                                                            size='sm'
-                                                            className='w-9 p-0'
-                                                        >
-                                                            <ChevronsUpDown className='h-4 w-4 text-muted-foreground' />
-                                                            <span className='sr-only'>Toggle</span>
-                                                        </Button>
-                                                    </div>
-
-                                                    {field.value.length > 0 && (
-                                                        <div className='flex gap-1 flex-wrap pb-2'>
-                                                            {field.value.map((value) => (
-                                                                <Badge
-                                                                    key={value}
-                                                                    className='rounded-sm'
-                                                                    variant={"secondary"}
-                                                                >
-                                                                    {value}
-                                                                </Badge>
-                                                            ))}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </CollapsibleTrigger>
-                                            <CollapsibleContent className='space-y-2'>
-                                                <div className='pt-1 pb-4 flex flex-col gap-2 mx-2'>
-                                                    {musclesWithLabels.map((muscle) => (
-                                                        <FormField
-                                                            key={muscle.id}
-                                                            control={form.control}
-                                                            name='muscles'
-                                                            render={({ field }) => {
-                                                                return (
-                                                                    <FormItem
-                                                                        key={muscle.id}
-                                                                        className='flex flex-row items-start space-x-3 space-y-0'
-                                                                    >
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(
-                                                                                    muscle.id
-                                                                                )}
-                                                                                onCheckedChange={(
-                                                                                    checked
-                                                                                ) => {
-                                                                                    let updatedMuscles =
-                                                                                        Array.isArray(
-                                                                                            field.value
-                                                                                        )
-                                                                                            ? [
-                                                                                                  ...field.value,
-                                                                                              ]
-                                                                                            : [];
-                                                                                    if (checked) {
-                                                                                        updatedMuscles.push(
-                                                                                            muscle.id
-                                                                                        );
-                                                                                    } else {
-                                                                                        updatedMuscles =
-                                                                                            updatedMuscles.filter(
-                                                                                                (
-                                                                                                    value
-                                                                                                ) =>
-                                                                                                    value !==
-                                                                                                    muscle.id
-                                                                                            );
-                                                                                    }
-                                                                                    field.onChange(
-                                                                                        updatedMuscles
-                                                                                    );
-                                                                                }}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className='font-normal'>
-                                                                            {muscle.label}
-                                                                        </FormLabel>
-                                                                    </FormItem>
-                                                                );
-                                                            }}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </CollapsibleContent>
-                                        </Collapsible>
+                                        <VaulCheckboxSelect
+                                            field={field}
+                                            options={musclesWithLabels}
+                                            form={form}
+                                        />
                                         <FormMessage />
                                     </FormItem>
                                 )}
