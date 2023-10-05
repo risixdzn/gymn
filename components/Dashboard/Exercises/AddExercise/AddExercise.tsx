@@ -68,12 +68,12 @@ function VaulCheckboxSelect({
             <Drawer screenWidth={screenWidth} open={open} onOpenChange={setOpen}>
                 <DrawerTrigger screenWidth={screenWidth} asChild>
                     <button className='relative w-full px-3 py-2 text-sm rounded-md border-border border-[1px] text-left text-muted-foreground'>
-                        {field.value.length > 0 ? "Músculos selecionados" : "Selecionar músculo"}
+                        {field.value.length == 0 && "Selecionar músculo"}
                         <a className='absolute right-0 mr-2'>
                             <ChevronDown className='scale-75 text-muted-foreground' />
                         </a>
                         {field.value.length > 0 && (
-                            <div className='flex gap-1 flex-wrap mt-2'>
+                            <div className='flex gap-1 flex-wrap'>
                                 {field.value.map((value: string) => (
                                     <Badge key={value} className='rounded-sm' variant={"secondary"}>
                                         {value}
@@ -108,6 +108,20 @@ function VaulCheckboxSelect({
                                             className={
                                                 "py-4 border-b-[1px] border-border w-full px-4 flex items-center gap-4 hover:bg-accent/50 shadow-md justify-between"
                                             }
+                                            onClick={() => {
+                                                const isChecked = field.value?.includes(option.id);
+                                                let updatedOptions = Array.isArray(field.value)
+                                                    ? [...field.value]
+                                                    : [];
+                                                if (isChecked) {
+                                                    updatedOptions = updatedOptions.filter(
+                                                        (value) => value !== option.id
+                                                    );
+                                                } else {
+                                                    updatedOptions.push(option.id);
+                                                }
+                                                field.onChange(updatedOptions);
+                                            }}
                                         >
                                             <FormLabel className='font-normal flex items-center gap-4'>
                                                 <div className='w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-md '></div>
@@ -143,77 +157,6 @@ function VaulCheckboxSelect({
                 </DrawerContent>
             </Drawer>
         </>
-    );
-
-    return (
-        <Collapsible className='w-full py-[0.125rem] border-[1px] border-border rounded-md pl-3 pr-[0.125rem] cursor-pointer'>
-            <CollapsibleTrigger asChild>
-                <div className='space-y-0'>
-                    <div className='flex items-center justify-between space-x-4'>
-                        <h4 className='text-sm '>
-                            {field.value.length > 0
-                                ? "Músculos selecionados"
-                                : "Selecionar músculo"}
-                        </h4>
-                        <Button variant='ghost' type='button' size='sm' className='w-9 p-0'>
-                            <ChevronsUpDown className='h-4 w-4 text-muted-foreground' />
-                            <span className='sr-only'>Toggle</span>
-                        </Button>
-                    </div>
-
-                    {field.value.length > 0 && (
-                        <div className='flex gap-1 flex-wrap pb-2'>
-                            {field.value.map((value: string) => (
-                                <Badge key={value} className='rounded-sm' variant={"secondary"}>
-                                    {value}
-                                </Badge>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className='space-y-2'>
-                <div className='pt-1 pb-4 flex flex-col gap-2 mx-2'>
-                    {options.map((option) => (
-                        <FormField
-                            key={option.id}
-                            control={form.control}
-                            name='muscles'
-                            render={({ field }) => {
-                                return (
-                                    <FormItem
-                                        key={option.id}
-                                        className='flex flex-row items-start space-x-3 space-y-0'
-                                    >
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value?.includes(option.id)}
-                                                onCheckedChange={(checked) => {
-                                                    let updatedOptions = Array.isArray(field.value)
-                                                        ? [...field.value]
-                                                        : [];
-                                                    if (checked) {
-                                                        updatedOptions.push(option.id);
-                                                    } else {
-                                                        updatedOptions = updatedOptions.filter(
-                                                            (value) => value !== option.id
-                                                        );
-                                                    }
-                                                    field.onChange(updatedOptions);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormLabel className='font-normal'>
-                                            {option.label}
-                                        </FormLabel>
-                                    </FormItem>
-                                );
-                            }}
-                        />
-                    ))}
-                </div>
-            </CollapsibleContent>
-        </Collapsible>
     );
 }
 
