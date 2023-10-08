@@ -8,6 +8,7 @@ import { useTimestampConverter } from "@/lib/hooks/useTimestampConvert";
 import { useState } from "react";
 import UserLogo from "../../../../public/user.png";
 import Image from "next/image";
+import Link from "next/link";
 
 type UserProfileCardProps = {
     displayUser: UserProfile | null;
@@ -23,30 +24,32 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
         <>
             <HoverCard openDelay={100}>
                 <HoverCardTrigger>
-                    <div className='flex items-center justify-between py-5 px-5'>
-                        <div className='flex flex-row items-center gap-4'>
-                            <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
-                                {displayUser && (
-                                    <Image
-                                        width={100}
-                                        height={100}
-                                        alt=''
-                                        className='w-full h-full object-cover'
-                                        src={displayUser.avatar_url}
-                                    />
-                                )}
+                    <Link href={"/dashboard/profile"}>
+                        <div className='flex items-center justify-between py-5 px-5'>
+                            <div className='flex flex-row items-center gap-4'>
+                                <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
+                                    {displayUser && (
+                                        <Image
+                                            width={100}
+                                            height={100}
+                                            alt=''
+                                            className='w-full h-full object-cover'
+                                            src={displayUser.avatar_url}
+                                        />
+                                    )}
+                                </div>
+                                <div>
+                                    <h3 className='text-sm font-semibold'>
+                                        {displayUser?.display_name}
+                                    </h3>
+                                    <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
+                                        {displayUser?.username}
+                                    </h3>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className='text-sm font-semibold'>
-                                    {displayUser?.display_name}
-                                </h3>
-                                <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
-                                    {displayUser?.username}
-                                </h3>
-                            </div>
+                            <ModeToggle side='top' />
                         </div>
-                        <ModeToggle side='top' />
-                    </div>
+                    </Link>
                 </HoverCardTrigger>
                 <HoverCardContent
                     className='mx-2 mb-2 bg-background w-72 h-[17rem]'

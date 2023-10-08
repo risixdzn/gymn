@@ -89,7 +89,11 @@ export default function Exercises() {
                         {data?.data.map((exercise: Exercise, index: number) => (
                             <Link href={`/dashboard/exercises/${exercise.id}`} key={index}>
                                 <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    initial={
+                                        index < 35
+                                            ? { opacity: 0, scale: 0.8 }
+                                            : { opacity: 1, scale: 1 }
+                                    }
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: index * 0.075 }}
                                 >
