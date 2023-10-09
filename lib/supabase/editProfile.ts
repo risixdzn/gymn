@@ -32,6 +32,7 @@ export async function editProfile({ editedData, userId, setLoading, toast }: use
             toast({
                 title: "Alterações salvas.",
                 description: "Você pode observar as novas informações na pagina de perfil.",
+                variant: "success",
             });
         }
     } catch (error) {

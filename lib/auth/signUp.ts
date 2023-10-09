@@ -49,6 +49,7 @@ export async function MemberSignUp({ userData, setLoading, setSignUpSuccess }: M
             toast({
                 title: "Parabéns! Você registrou o seguinte usuário:",
                 description: signUpResult.data.user?.email,
+                variant: "success",
             });
             console.log(signUpResult.data);
         }
@@ -56,6 +57,7 @@ export async function MemberSignUp({ userData, setLoading, setSignUpSuccess }: M
         toast({
             title: "Este usuário ja existe.",
             description: "Tente usar outro email, ou entre na página de login.",
+            variant: "destructive",
         });
     }
 
@@ -98,6 +100,7 @@ export async function GymOwnerSignUp({
             toast({
                 title: "Parabéns! Você registrou o seguinte usuário:",
                 description: signUpResult.data.user?.email,
+                variant: "success",
             });
             console.log(signUpResult.data);
         }
@@ -105,6 +108,7 @@ export async function GymOwnerSignUp({
         toast({
             title: "Este usuário ja existe.",
             description: "Tente usar outro email, ou entre na página de login.",
+            variant: "destructive",
         });
     }
 

@@ -39,6 +39,9 @@
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 210 40% 98%;
 
+        --success: 120 39% 54%;
+        --success-foreground: 210 40% 98%;
+
         --ring: 215 20.2% 65.1%;
 
         --radius: 0.5rem;
@@ -59,7 +62,7 @@
         --popover: 0 0% 6%;
         --popover-foreground: 210 40% 98%;
 
-        --card: 0 0% 6%;
+        --card: 0 0% 5.5%;
         --card-foreground: 210 40% 98%;
 
         --border: 217 0% 18%;
@@ -76,6 +79,9 @@
 
         --destructive: 0 62.8% 50%;
         --destructive-foreground: 0 85.7% 97.3%;
+
+        --success: 120 45% 49%;
+        --success-foreground: 210 40% 98%;
 
         --ring: 217 0% 18%;
     }
