@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext } from "react";
 import { SidebarData } from "../Sidebar/SidebarContext";
 import { Button } from "@/components/ui/button";
@@ -5,12 +7,12 @@ import { Menu } from "lucide-react";
 import Header from "./Header";
 import BottomNav from "./BottomNav";
 
-export default function MobileLayout({ pathname }: { pathname: string }) {
-    const { screenWidth, setSidebarOpen, sidebarOpen } = useContext(SidebarData);
+export default function MobileLayout() {
+    const { screenWidth, setSidebarOpen, sidebarOpen, pathname } = useContext(SidebarData);
 
     return (
         <>
-            {/* Mobile layout (displays a route header, a hamburger button and the bottomnav) */};
+            {/* Mobile layout (displays a route header, a hamburger button and the bottomnav) */}
             {screenWidth < 1024 && (
                 <>
                     {/* Route header */}

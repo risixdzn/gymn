@@ -29,15 +29,10 @@ import Breadcrumbs from "../Others/Breadcrumbs";
 import Header from "../Others/Header";
 import { SidebarData } from "./SidebarContext";
 
-export default function Sidebar({
-    session,
-    pathname,
-}: {
-    session: Session | null;
-    pathname: string;
-}) {
+export default function Sidebar({ session }: { session: Session | null }) {
     const { displayUser } = useGetCurrentProfile({ session });
-    const { isClient, screenWidth, setSidebarOpen, sidebarOpen } = useContext(SidebarData);
+    const { isClient, screenWidth, setSidebarOpen, sidebarOpen, pathname } =
+        useContext(SidebarData);
     const searchParams = useSearchParams();
 
     useEffect(() => {
