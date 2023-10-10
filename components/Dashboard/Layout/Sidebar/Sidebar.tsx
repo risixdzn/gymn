@@ -3,7 +3,6 @@
 import {
     Bell,
     Compass,
-    Home,
     Layers,
     Menu,
     User,
@@ -12,64 +11,38 @@ import {
     Warehouse,
     Settings,
     BadgeHelp,
-    Search,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import GymnIcon from "../../../public/g_SquareIcon.png";
+import GymnIcon from "../../../../public/g_SquareIcon.png";
 import Image from "next/image";
-import Link from "next/link";
 import LinkButton from "./ui/LinkButton";
-import { ModeToggle } from "@/components/ModeToggle";
 import SearchCommand from "./ui/SearchCommand";
 import { Session } from "@supabase/auth-helpers-nextjs";
 import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
 import UserProfileCard from "./ui/UserProfileCard";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
 import { useTranslateAppRoutes } from "@/lib/hooks/useTranslateAppRoutes";
-import BottomNav from "./ui/BottomNav";
-import Breadcrumbs from "./ui/Breadcrumbs";
+import BottomNav from "../Others/BottomNav";
+import Breadcrumbs from "../Others/Breadcrumbs";
+import Header from "../Others/Header";
+import { SidebarData } from "./SidebarContext";
 
-//TODO: Fix wrong color bug
-
-export default function Sidebar({ session }: { session: Session | null }) {
-    const [isClient, setIsClient] = useState(false);
-    const [screenWidth, setScreenWidth] = useState<number>(0); // Inicializa com 0
-
-    const { loading, displayUser } = useGetCurrentProfile({ session });
-
-    function getCurrentDimension() {
-        return window.innerWidth;
-    }
-
-    //HANDLER Sidebar Size
-    useEffect(() => {
-        setIsClient(true);
-        setScreenWidth(getCurrentDimension()); // Define a largura inicial quando o componente é montado
-
-        // Adiciona o event listener apenas no lado do cliente
-        const updateDimension = () => {
-            setScreenWidth(getCurrentDimension());
-        };
-        window.addEventListener("resize", updateDimension);
-
-        return () => {
-            window.removeEventListener("resize", updateDimension); // Remove o event listener ao desmontar o componente
-        };
-    }, []);
-
-    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-
-    const pathname = usePathname();
-
+export default function Sidebar({
+    session,
+    pathname,
+}: {
+    session: Session | null;
+    pathname: string;
+}) {
+    const { displayUser } = useGetCurrentProfile({ session });
+    const { isClient, screenWidth, setSidebarOpen, sidebarOpen } = useContext(SidebarData);
     const searchParams = useSearchParams();
-    const currentRoute = useGetRouteName(pathname);
-    const translatedCurrentRoute = useTranslateAppRoutes(currentRoute);
 
     useEffect(() => {
         setSidebarOpen(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname, searchParams]);
 
     if (!isClient) {
@@ -151,48 +124,6 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                     <UserProfileCard displayUser={displayUser} screenWidth={screenWidth} />
                 </div>
             </div>
-            <div
-                id='breadcrumbs'
-                style={{ zIndex: 30 }}
-                className='lg:flex fixed bg-card bg- items-center pl-6 hidden lg:w-[calc(100%-20rem)] lg:ml-[20rem] h-14 border-b-[1px] border-border'
-            >
-                <Breadcrumbs pathname={pathname} />
-            </div>
-            {screenWidth < 1024 ? (
-                <>
-                    {/* Hamburger */}
-                    <Button
-                        className={`z-[40] fixed right-0 mx-3 mt-3 transition-all duration-300 `}
-                        size={"icon"}
-                        variant={"ghost"}
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                    >
-                        <Menu className='absolute z-50' />
-                    </Button>
-                    <div
-                        id={"header"}
-                        className='w-full h-16 bg-background fixed flex items-center px-3 z-[20]'
-                    >
-                        <div className='w-full h-full flex items-center justify-center text-sm'>
-                            <h4>{translatedCurrentRoute}</h4>
-                        </div>
-                    </div>
-
-                    <div
-                        id='blurry-bg'
-                        className={`fixed w-full h-full bg-black z-[29] backdrop-blur-lg     transition-all ${
-                            sidebarOpen
-                                ? "opacity-20 dark:opacity-50 pointer-events-auto"
-                                : "pointer-events-none opacity-0"
-                        }`}
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                    ></div>
-
-                    <BottomNav pathname={pathname} />
-                </>
-            ) : (
-                <></>
-            )}
         </>
     );
 }

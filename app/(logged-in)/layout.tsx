@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import PagesContainer from "@/components/Dashboard/PagesContainer";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import DashUi from "@/components/Dashboard/DashUi";
+import DashUi from "@/components/Dashboard/Layout/DashUi";
 import { Analytics } from "@vercel/analytics/react";
 import { ReactQueryProvider } from "@/lib/ReactQueryProvider";
 
