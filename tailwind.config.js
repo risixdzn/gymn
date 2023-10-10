@@ -81,10 +81,10 @@ module.exports = {
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
             backgroundImage: {
-                heroBGDark: "url(../public/heroBGDark.png)",
-                heroBGWhite: "url(../public/heroBGWhite.png)",
-                loginBGDark: "url(../public/LoginBGDark.png)",
-                loginBGWhite: "url(../public/LoginBGWhite.png)",
+                heroBGDark: "url(../public/heroBGDark.webp)",
+                heroBGWhite: "url(../public/heroBGWhite.webp)",
+                loginBGDark: "url(../public/LoginBGDark.webp)",
+                loginBGWhite: "url(../public/LoginBGWhite.webp)",
             },
             boxShadow: {
                 g_PrimaryGlow: "0px 0px 15px 0px rgba(161,67,255,0.75);",
