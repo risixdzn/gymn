@@ -5,14 +5,11 @@ import { translatePathnameArray } from "@/lib/hooks/useTranslateAppRoutes";
 import { cn } from "@/lib/utils";
 import { Folder } from "lucide-react";
 import Link from "next/link";
+import { SidebarData } from "../Sidebar/SidebarContext";
+import { useContext } from "react";
 
-export default function Breadcrumbs({
-    pathname,
-    className,
-}: {
-    pathname: string;
-    className?: string;
-}) {
+export default function Breadcrumbs({ className }: { className?: string }) {
+    const { pathname } = useContext(SidebarData);
     //all pathnames
     const pathnames: string[] = useGetPathnameArray(pathname);
     //translated using hook

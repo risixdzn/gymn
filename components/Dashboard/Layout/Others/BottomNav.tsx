@@ -15,7 +15,7 @@ const NavLink = ({
 }: {
     pathname: string;
     href: string;
-    icon: ReactElement; //fix type later
+    icon: ReactElement;
     text: string;
 }) => {
     const currentRoute = useGetRouteName(pathname);
