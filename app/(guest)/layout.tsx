@@ -21,7 +21,10 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='en'>
+        <html
+            lang='en'
+            className='snap-y snap-proximity overscroll-contain overflow-y-scroll scroll-smooth'
+        >
             <head>
                 <link rel='icon' href='../favicon.ico' />
             </head>
