@@ -85,8 +85,8 @@ module.exports = {
                 heroBGWhite: "url(../public/heroBGWhite.webp)",
                 loginBGDark: "url(../public/LoginBGDark.webp)",
                 loginBGWhite: "url(../public/LoginBGWhite.webp)",
-                footerBGDark: "url(../public/footerBGDark.webp)",
-                footerBGWhite: "url(../public/footerBGWhite.webp)",
+                footerBGDark: "url(../public/FooterBGDark.webp)",
+                footerBGWhite: "url(../public/FooterBGWhite.webp)",
             },
             boxShadow: {
                 g_PrimaryGlow: "0px 0px 15px 0px rgba(161,67,255,0.75);",
