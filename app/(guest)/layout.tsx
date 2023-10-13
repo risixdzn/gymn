@@ -6,6 +6,7 @@ import VerficationSuccessAlert from "@/components/Auth/Register/ui/VerificationS
 import Header from "@/components/Header";
 import { Analytics } from "@vercel/analytics/react";
 import UnauthorizedAlert from "@/components/Auth/UnauthorizedAlert";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     <Header />
                     {children}
+                    <Footer />
                     <Toaster />
                     <Analytics />
                     <VerficationSuccessAlert />
