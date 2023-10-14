@@ -15,6 +15,10 @@ export default function Hero() {
             relative
         '
         >
+            <div
+                id='fading_gradient'
+                className='absolute w-full h-full bg-gradient-to-b from-transparent via-transparent to-background'
+            ></div>
             <div className='z-10 flex items-center justify-center flex-col'>
                 <h1
                     className='
