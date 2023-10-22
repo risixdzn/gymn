@@ -1,15 +1,15 @@
 "use client";
 
-import { ModeToggle } from "./ModeToggle";
-import { Button } from "./ui/button";
+import { ModeToggle } from "../ModeToggle";
+import { Button } from "../ui/button";
 import { Github, LogIn, User } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import GymnLogo from "./ui/Icons/GymnLogo";
+import GymnLogo from "../ui/Icons/GymnLogo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Session } from "@supabase/auth-helpers-nextjs";
-import GymnIcon from "./ui/Icons/GymnIcon";
+import GymnIcon from "../ui/Icons/GymnIcon";
 
 export default function Navbar({ session }: { session: Session | null }) {
     const [navOpen, setNavOpen] = useState<boolean>(false);

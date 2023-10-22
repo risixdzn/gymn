@@ -1,6 +1,6 @@
 import Image from "next/image";
-import RoundLogo from "../public/g_Icon.png";
-import GymnLogo from "./ui/Icons/GymnLogo";
+import RoundLogo from "../../public/g_Icon.png";
+import GymnLogo from "../ui/Icons/GymnLogo";
 import { GithubIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
 
