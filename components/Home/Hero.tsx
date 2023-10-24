@@ -9,7 +9,7 @@ export default function Hero() {
     return (
         <section
             className='
-            w-full h-screen flex items-center justify-center
+            w-full h-screen  flex items-center justify-center
             bg-heroBGWhite bg-center bg-cover
             dark:bg-heroBGDark
             relative

@@ -3,13 +3,14 @@ import { Skeleton } from "../ui/skeleton";
 export default function Preview() {
     return (
         <section
+            data-scroll-section
             id='preview'
             className='
-            w-full h-screen flex justify-center border-2 '
+            w-full h-screen snap-start flex justify-center '
         >
             <div
-                className='w-full h-[calc(100%-12rem)] max-w-[1300px] mx-4 lg:mx-20 aspect-auto bg-secondary rounded-lg
-             -translate-y-40'
+                className='w-full mt-20 h-[calc(100%-14rem)] max-w-[1300px] mx-4 lg:mx-20 aspect-auto bg-secondary rounded-lg
+             '
             >
                 <Skeleton className='w-full h-full' />
             </div>
