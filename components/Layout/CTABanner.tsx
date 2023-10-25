@@ -1,23 +1,68 @@
+"use client";
+
 import { ArrowRight, X } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+
+interface CTAProps {
+    text: string;
+    cta: string;
+    href: string;
+    boldPhrase?: string;
+    identifier: string;
+    openTimeout: number;
+}
 
 export default function CTABanner({
     text,
     cta,
     href,
     boldPhrase,
-}: {
-    text: string;
-    cta: string;
-    href: string;
-    boldPhrase?: string;
-}) {
+    identifier,
+    openTimeout,
+}: CTAProps) {
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        const localState = localStorage.getItem(identifier);
+        if (localState === "false") {
+            setOpen(false);
+        }
+        if (localState === null || localState === "true") {
+            console.log(
+                `UseEffect triggered // Localstate: ${localState} => type: ${typeof localState}`
+            );
+            // Only set it to "true" if it doesn't exist or is "true"
+            setTimeout(() => {
+                localStorage.setItem(identifier, "true");
+                setOpen(true);
+            }, openTimeout);
+        }
+    }, [setOpen, identifier, openTimeout]);
+
+    useEffect(() => {
+        console.log("openstate => ", open);
+    }, [open]);
+
+    function closeCTA() {
+        localStorage.setItem(identifier, "false");
+        setOpen(false);
+        return;
+    }
+
     return (
-        <div id='wrapper' className='w-full absolute bottom-0 h-auto p-3'>
+        <div
+            id='wrapper'
+            className={cn(
+                open ? "translate-y-0" : "translate-y-36",
+                "w-full absolute bottom-0 h-auto p-3 transition-all"
+            )}
+        >
             <div
                 id='banner'
-                className='w-full rounded-lg z-50 isolate flex items-center gap-x-6 overflow-hidden bg-gradient-to-br from-g_purple to-g_darkpurple px-6 py-2.5 sm:px-3.5 sm:before:flex-1'
+                className='w-full - rounded-lg z-50 isolate flex items-center gap-x-6 overflow-hidden bg-gradient-to-br from-g_purple to-g_darkpurple px-6 py-2.5 sm:px-3.5 sm:before:flex-1'
             >
                 <div className='flex flex-wrap items-center gap-x-4 gap-y-2 text-white'>
                     <p className='text-sm leading-6 '>
@@ -35,7 +80,8 @@ export default function CTABanner({
                         )}
                         {text}
                     </p>
-                    <Link href={href}>
+                    {open}
+                    <Link href={href} onClick={() => closeCTA()}>
                         <Button className='px-3.5 py-1 h-auto rounded-full' variant={"secondary"}>
                             {cta}
                             <ArrowRight className='scale-75 ml-1' />
@@ -47,6 +93,7 @@ export default function CTABanner({
                         size={"icon"}
                         variant={"ghost"}
                         className='hover:bg-transparent p-0 w-auto h-auto'
+                        onClick={() => closeCTA()}
                     >
                         <X className='scale-75 text-white' />
                     </Button>
