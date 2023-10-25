@@ -10,6 +10,9 @@ const nextConfig = {
             },
         ],
     },
+    // Configure `pageExtensions`` to include MDX files
+    pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+    // Optionally, add any other Next.js config below
 };
 
 const isProd = process.env.NODE_ENV === "production";
@@ -19,4 +22,6 @@ const withPWA = require("next-pwa")({
     disable: !isProd,
 });
 
-module.exports = withPWA(nextConfig);
+const withMDX = require("@next/mdx")();
+
+module.exports = withPWA(withMDX(nextConfig));

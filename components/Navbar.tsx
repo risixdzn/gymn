@@ -29,7 +29,7 @@ export default function Navbar({ session }: { session: Session | null }) {
                         : "w-full h-20 flex items-center bg-background/40 justify-center border-b-2"
                 }`}
             >
-                <div className='w-[100%] max-w-6xl h-20 flex items-center justify-between'>
+                <div className='w-[100%] max-w-7xl h-20 flex items-center justify-between'>
                     <Link href='/'>
                         <GymnLogo
                             width={90}
