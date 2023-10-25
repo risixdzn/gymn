@@ -18,6 +18,8 @@ export default async function Header() {
                 text={"Alcançe o seu melhor desempenho com Gymn"}
                 cta={"Começar"}
                 href={"/auth"}
+                openTimeout={5000}
+                identifier='joinuscta'
             />
         </div>
     );
