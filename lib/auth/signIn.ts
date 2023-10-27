@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { translatedErrors } from "../supabase/errors";
 
 type LoginProps = {
     userData: LoginForm;
@@ -22,9 +23,15 @@ export async function LogIn({ userData, setLoading, router }: LoginProps) {
     });
 
     if (error) {
+        const errorStatus = error.status || 0;
+        const translatedError = translatedErrors[errorStatus];
+
+        const errTitle = translatedError ? translatedError.title : error.name;
+        const errDescription = translatedError ? translatedError.description : error.message;
+
         toast({
-            title: error.name,
-            description: error.message,
+            title: `${errTitle}`,
+            description: errDescription,
             variant: "destructive",
         });
     } else {

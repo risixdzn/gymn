@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 import { supabase } from "../supabase";
 import { toast } from "@/components/ui/use-toast";
 import { type RegisterGymOwnerForm } from "@/components/Auth/Register/RegisterGymOwnerForm";
+import { translatedErrors } from "../supabase/errors";
 
 type MemberSignUpProps = {
     userData: RegisterMemberForm;
@@ -39,9 +40,16 @@ export async function MemberSignUp({ userData, setLoading, setSignUpSuccess }: M
         });
 
         if (signUpResult.error?.message) {
+            const error = signUpResult.error;
+            const errorStatus = error.status || 0;
+            const translatedError = translatedErrors[errorStatus];
+
+            const errTitle = translatedError ? translatedError.title : error.name;
+            const errDescription = translatedError ? translatedError.description : error.message;
+
             toast({
-                title: signUpResult.error.name,
-                description: signUpResult.error.message,
+                title: `${errTitle}`,
+                description: errDescription,
                 variant: "destructive",
             });
         } else {
@@ -90,9 +98,16 @@ export async function GymOwnerSignUp({
         });
 
         if (signUpResult.error?.message) {
+            const error = signUpResult.error;
+            const errorStatus = error.status || 0;
+            const translatedError = translatedErrors[errorStatus];
+
+            const errTitle = translatedError ? translatedError.title : error.name;
+            const errDescription = translatedError ? translatedError.description : error.message;
+
             toast({
-                title: signUpResult.error.name,
-                description: signUpResult.error.message,
+                title: `${errTitle}`,
+                description: errDescription,
                 variant: "destructive",
             });
         } else {
