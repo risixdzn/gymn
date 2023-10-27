@@ -21,15 +21,17 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html
-            lang='en'
-            className='snap-y snap-proximity overscroll-contain overflow-y-scroll scroll-smooth'
-        >
+        <html lang='en' className='scroll-smooth'>
             <head>
                 <link rel='icon' href='../favicon.ico' />
             </head>
             <body className={`${inter.className} min-h-screen`}>
-                <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+                <ThemeProvider
+                    disableTransitionOnChange
+                    attribute='class'
+                    defaultTheme='system'
+                    enableSystem
+                >
                     <Header />
                     {children}
                     <Footer />
