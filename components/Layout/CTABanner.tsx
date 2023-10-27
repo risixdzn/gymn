@@ -57,7 +57,7 @@ export default function CTABanner({
             id='wrapper'
             className={cn(
                 open ? "translate-y-0" : "translate-y-36",
-                "w-full absolute bottom-0 h-auto p-3 transition-all"
+                "w-full absolute bottom-0 h-auto p-3 transition-all pointer-events-auto"
             )}
         >
             <div

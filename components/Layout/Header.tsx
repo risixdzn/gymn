@@ -12,7 +12,7 @@ export default async function Header() {
     } = await supabase.auth.getSession();
 
     return (
-        <div className='fixed z-50 w-full h-full'>
+        <div className='fixed z-50 w-full h-full pointer-events-none'>
             <Navbar session={session} />
             <CTABanner
                 text={"Alcançe o seu melhor desempenho com Gymn"}
