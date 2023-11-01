@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import DashUi from "@/components/Dashboard/Layout/DashUi";
 import { Analytics } from "@vercel/analytics/react";
 import { ReactQueryProvider } from "@/lib/ReactQueryProvider";
+import { Suspense } from "react";
+import Preloader from "@/components/Dashboard/Preloader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,10 +28,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <DashUi />
-                        <Toaster />
-                        <Analytics />
-                        <PagesContainer>{children}</PagesContainer>
+                        <Preloader>
+                            <DashUi />
+                            <Toaster />
+                            <Analytics />
+                            <PagesContainer>{children}</PagesContainer>
+                        </Preloader>
                     </ThemeProvider>
                 </body>
             </html>
