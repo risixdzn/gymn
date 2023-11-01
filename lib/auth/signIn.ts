@@ -4,15 +4,15 @@ import { LoginForm } from "@/components/Auth/Login/LoginForm";
 import { Dispatch, SetStateAction } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
 import { translatedErrors } from "../supabase/errors";
 
 type LoginProps = {
     userData: LoginForm;
     setLoading: Dispatch<SetStateAction<boolean>>;
     router: any;
+    callbackUrl: string | null;
 };
-export async function LogIn({ userData, setLoading, router }: LoginProps) {
+export async function LogIn({ userData, setLoading, router, callbackUrl }: LoginProps) {
     setLoading(true);
 
     const supabase = createClientComponentClient();
@@ -40,8 +40,11 @@ export async function LogIn({ userData, setLoading, router }: LoginProps) {
             description: "Aguarde o redirecionamento.",
             variant: "success",
         });
-
-        router.push("/dashboard/profile");
+        if (callbackUrl) {
+            router.push(callbackUrl);
+        } else {
+            router.push("/dashboard/profile");
+        }
     }
 
     setLoading(false);

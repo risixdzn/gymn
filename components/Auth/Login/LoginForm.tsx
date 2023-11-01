@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { LogIn } from "@/lib/auth/signIn";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export type LoginForm = {
     email: string;
@@ -17,6 +17,8 @@ export type LoginForm = {
 export default function LoginForm() {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl");
 
     const {
         register,
@@ -31,7 +33,7 @@ export default function LoginForm() {
     });
 
     const submitData = (userData: LoginForm) => {
-        LogIn({ userData, setLoading, router });
+        LogIn({ userData, setLoading, router, callbackUrl });
         console.log("This is the user data", userData);
     };
 

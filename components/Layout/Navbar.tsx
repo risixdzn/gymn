@@ -22,7 +22,7 @@ export default function Navbar({ session }: { session: Session | null }) {
     return (
         <header className='flex justify-center pointer-events-auto'>
             <div
-                className={`fixed z-50 mt- bg-clip-padding backdrop-filter backdrop-blur-xl px-10 border-border transition-all duration-300
+                className={`fixed z-50 mt- bg-clip-padding backdrop-filter backdrop-blur-xl px-10 border-border/50 transition-all duration-300
                 ${
                     navOpen
                         ? "w-[calc(100vw-2rem)] mt-[1rem] h-20 bg-background/80 flex rounded-t-lg items-center justify-center border-x-2 border-t-2 "
@@ -115,10 +115,10 @@ export default function Navbar({ session }: { session: Session | null }) {
                         ? `absolute z-40 w-[calc(100vw-2rem)] mt-[6rem] h-[25rem] transition-all duration-300
                     border-x-2 border-b-2 rounded-x-lg rounded-b-lg
                     bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-5
-                    bg-background/80 border-border`
+                    bg-background/80 border-border/50`
                         : `absolute z-40 w-full h-20 transition-all duration-300
                     bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 px-5 
-                    bg-background/0 border-border
+                    bg-background/0 border-border/50
                     `
                 }
             >

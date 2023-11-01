@@ -27,7 +27,9 @@ export async function middleware(req: NextRequest) {
 
     //HANDLER PROTECTED ROUTES
     if (!session) {
-        const response = NextResponse.redirect(new URL("/auth", req.url));
+        const callbackUrl = encodeURIComponent(req.url); // Encode the URL that the user tried to access unauthenticated
+        const authURL = `/auth?callbackUrl=${callbackUrl}`;
+        const response = NextResponse.redirect(new URL(authURL, req.url)); //redirect to /auth, with the callback being the requrl
         response.headers.set(
             "Set-Cookie",
             `UnauthorizedAction=true; Max-Age=${60 * 6 * 24}; Path=/`
@@ -35,6 +37,9 @@ export async function middleware(req: NextRequest) {
         // By adding Path=/ to the cookie definition, you ensure that
         //the "UnauthorizedAction" cookie is available for all subpaths under the root path.
         // This should make the unauthorized alert work correctly on nested protected routes.
+        if (new URL(req.url).pathname.startsWith("/api")) {
+            return NextResponse.json("Unauthorized", { status: 401 });
+        }
         return response;
     }
 
