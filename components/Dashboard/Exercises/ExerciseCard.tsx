@@ -1,4 +1,4 @@
-import { Exercise } from "@/app/(logged-in)/dashboard/exercises/page";
+import { type Exercise } from "@/types/Workout";
 import { Badge } from "@/components/ui/badge";
 import GlowingCard from "@/components/ui/glowingCard";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
