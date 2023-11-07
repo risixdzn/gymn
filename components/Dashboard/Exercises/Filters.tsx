@@ -1,27 +1,6 @@
 import FilterDrawer from "./FilterDrawer";
 import { useSearchParams } from "next/navigation";
-
-export const muscles = [
-    "Abdominais",
-    "Abdutores",
-    "Adutores",
-    "Antebraços",
-    "Biceps",
-    "Cardio",
-    "Costas superiores",
-    "Dorsais",
-    "Quadríceps",
-    "Glúteos",
-    "Posterior",
-    "Lombar",
-    "Ombros",
-    "Panturrilhas",
-    "Peito",
-    "Trapézio",
-    "Tríceps",
-];
-
-export const levels = ["Iniciante", "Intermediário", "Avançado"];
+import { muscles } from "@/lib/filters";
 
 export default function Filters({ className }: { className: string }) {
     const searchParams = useSearchParams();
