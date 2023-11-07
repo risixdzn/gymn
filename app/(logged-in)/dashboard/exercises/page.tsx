@@ -97,7 +97,7 @@ export default function Exercises() {
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: index * 0.075 }}
                                 >
-                                    <ExerciseCard key={exercise.id} exercise={exercise} />
+                                    <ExerciseCard seeMore key={exercise.id} exercise={exercise} />
                                 </motion.div>
                             </Link>
                         ))}

@@ -17,6 +17,7 @@ type Props = {
     className?: string;
     closeVisible?: boolean;
     asChild?: boolean;
+    desktopClassname?: string;
 };
 
 const Drawer = ({
@@ -49,7 +50,14 @@ const DrawerTrigger = ({ screenWidth, children, asChild }: Props) => {
     );
 };
 
-const DrawerContent = ({ screenWidth, children, scrollable, className, closeVisible }: Props) => {
+const DrawerContent = ({
+    screenWidth,
+    children,
+    scrollable,
+    className,
+    closeVisible,
+    desktopClassname,
+}: Props) => {
     return screenWidth < 1024 ? (
         <VaulDrawer.Portal>
             <VaulDrawer.Overlay className='fixed inset-0 bg-black/40 z-[48]' />
@@ -71,7 +79,11 @@ const DrawerContent = ({ screenWidth, children, scrollable, className, closeVisi
         </VaulDrawer.Portal>
     ) : (
         <SheetContent
-            className={cn(`w-[400px] sm:w-[540px] ${scrollable ? "overflow-auto" : ""}`, className)}
+            className={cn(
+                `sm:w-[400px] sm:max-w-full ${scrollable ? "overflow-auto" : ""}`,
+                desktopClassname,
+                className
+            )}
         >
             {children}
         </SheetContent>

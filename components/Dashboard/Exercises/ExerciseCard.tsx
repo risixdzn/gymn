@@ -4,7 +4,13 @@ import GlowingCard from "@/components/ui/glowingCard";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { ArrowRight } from "lucide-react";
 
-export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
+export default function ExerciseCard({
+    exercise,
+    seeMore,
+}: {
+    exercise: Exercise;
+    seeMore?: boolean;
+}) {
     type DifficultiesMap = {
         [key: string]: string;
     };
@@ -20,11 +26,15 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
     const { screenWidth } = useGetScreenWidth();
 
     return (
-        <GlowingCard className='relative w-full h-[150px] md:h-[250px] lg:h-[300px] group'>
+        <GlowingCard
+            className={`${
+                seeMore ? "h-[150px]" : "h-auto"
+            } relative w-full  md:h-[250px] lg:h-[300px] group`}
+        >
             <div
                 id='difficulty_indicator'
                 className={`hidden md:block w-full h-2 rounded-full`}
-                style={{ backgroundColor: difficultyColor({ level: exercise.level }) }}
+                style={{ backgroundColor: difficultyColor({ level: exercise.level[0] }) }}
             ></div>
             <Badge
                 variant={exercise.level}
@@ -75,9 +85,11 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
                     </>
                 )}
             </div>
-            <span className='group-hover:underline absolute bottom-0 right-0 mb-3 mr-3 md:right-auto md:mb-4 text-xs flex items-center gap-[0.15rem]'>
-                Ver mais <ArrowRight className='scale-[0.65] inline-block' />
-            </span>
+            {seeMore && (
+                <span className='group-hover:underline absolute bottom-0 right-0 mb-3 mr-3 md:right-auto md:mb-4 text-xs flex items-center gap-[0.15rem]'>
+                    Ver mais <ArrowRight className='scale-[0.65] inline-block' />
+                </span>
+            )}
         </GlowingCard>
     );
 }
