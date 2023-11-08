@@ -1,10 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Plus } from "lucide-react";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
 import Filters from "@/components/Dashboard/Exercises/Filters";
@@ -12,15 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import AddExercise from "@/components/Dashboard/Exercises/AddExercise/AddExercise";
 import { useSearchParams } from "next/navigation";
-
-export type Exercise = {
-    id: string;
-    muscles: string[];
-    name: string;
-    equipment: string[];
-    level: ["Iniciante" | "Intermediário" | "Avançado"];
-    description: string;
-};
+import { type Exercise } from "@/types/Workout";
 
 //TODO: Add 'remove filter' button, animating x to right, text to left
 export default function Exercises() {

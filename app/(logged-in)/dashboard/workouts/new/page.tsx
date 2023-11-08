@@ -1,12 +1,11 @@
 "use client";
 
-import { UseFormSetValue, UseFormWatch, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
     Form,
-    FormControl,
     FormDescription,
     FormField,
     FormItem,
@@ -14,42 +13,13 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-    Drawer,
-    DrawerContent,
-    DrawerDescription,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/DrawerOrVaul";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/DrawerOrVaul";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
-import { ChevronDown, Dumbbell, Plus } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Dumbbell, Plus } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import ExerciseDisplay from "@/components/Dashboard/Workouts/Exercise";
 import ExerciseSelector from "@/components/Dashboard/Workouts/ExerciseSelector";
-
-export const set = z.object({
-    variant: z.enum(["Aquecimento", "Normal", "Falha"]),
-    load: z.number(),
-    reps: z.number(),
-});
-
-export const Exercise = z.object({
-    id: z.string(),
-    name: z.string(),
-    muscles: z.array(z.string()),
-    equipment: z.array(z.string()),
-    level: z.array(z.string()),
-    sets: z.array(set),
-    description: z.string(),
-});
-
-export const Workout = z.object({
-    title: z.string().max(50, "O nome deve ser menor.").optional(),
-    muscle_group: z.array(z.string()),
-    description: z.string().max(400, "A descrição deve ser menor.").optional(),
-    exercises: z.array(Exercise),
-});
+import { Workout } from "@/types/Workout";
 
 export default function NewWorkout() {
     const form = useForm<z.infer<typeof Workout>>({

@@ -1,4 +1,3 @@
-import { Exercise } from "@/app/(logged-in)/dashboard/exercises/page";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +8,9 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Info, MoreVertical, Plus } from "lucide-react";
-import { WorkoutExercise } from "./ExerciseSelector";
+import { type Exercise } from "@/types/Workout";
 
-const ExerciseInfo = ({ exercise }: { exercise: WorkoutExercise }) => {
+const ExerciseInfo = ({ exercise }: { exercise: Exercise }) => {
     return (
         <>
             <DialogTitle>{exercise.name}</DialogTitle>
@@ -36,7 +35,7 @@ const ExerciseInfo = ({ exercise }: { exercise: WorkoutExercise }) => {
     );
 };
 
-export default function ExerciseDisplay({ exercise }: { exercise: WorkoutExercise }) {
+export default function ExerciseDisplay({ exercise }: { exercise: Exercise }) {
     return (
         <div className='w-full h-auto rounded-md'>
             <div id='header' className='w-full h-auto flex justify-between items-center'>
@@ -85,7 +84,7 @@ export default function ExerciseDisplay({ exercise }: { exercise: WorkoutExercis
                     </tr>
                 </thead>
                 <tbody>
-                    {exercise.sets.map((set, index) => (
+                    {exercise.sets?.map((set, index) => (
                         <tr
                             key={index}
                             className='text-sm text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'

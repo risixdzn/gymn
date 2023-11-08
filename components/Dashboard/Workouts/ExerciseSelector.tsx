@@ -13,12 +13,12 @@ import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { equipments, levels, muscles } from "@/lib/filters";
 import { Button } from "@/components/ui/button";
-import { Exercise } from "@/app/(logged-in)/dashboard/exercises/page";
+import { type Exercise } from "@/types/Workout";
 import { Skeleton } from "@/components/ui/skeleton";
 import ExerciseCard from "../Exercises/ExerciseCard";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UseFormSetValue } from "react-hook-form";
-import { Workout } from "@/app/(logged-in)/dashboard/workouts/new/page";
+import { Workout } from "@/types/Workout";
 import * as z from "zod";
 
 const Filter = ({
