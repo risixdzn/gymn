@@ -35,9 +35,13 @@ export const set = z.object({
 });
 
 export const Exercise = z.object({
+    id: z.string(),
     name: z.string(),
     muscles: z.array(z.string()),
+    equipment: z.array(z.string()),
+    level: z.array(z.string()),
     sets: z.array(set),
+    description: z.string(),
 });
 
 export const Workout = z.object({
@@ -152,11 +156,12 @@ export default function NewWorkout() {
                                                 id='exercisescontainer'
                                                 className='h-auto lg:max-h-[calc(100vh-7rem)] w-full overflow-y-auto flex flex-col gap-10 scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-background scrollbar-rounded-full'
                                             >
-                                                <ExerciseDisplay />
-                                                <ExerciseDisplay />
-                                                <ExerciseDisplay />
-                                                <ExerciseDisplay />
-                                                <ExerciseDisplay />
+                                                {watch("exercises").map((exercise, index) => (
+                                                    <ExerciseDisplay
+                                                        exercise={exercise}
+                                                        key={index}
+                                                    />
+                                                ))}
                                             </div>
                                         </>
                                     ) : (
@@ -181,7 +186,10 @@ export default function NewWorkout() {
                                                     screenWidth={screenWidth}
                                                     className=''
                                                 >
-                                                    <ExerciseSelector screenWidth={screenWidth} />
+                                                    <ExerciseSelector
+                                                        screenWidth={screenWidth}
+                                                        setterFn={setValue}
+                                                    />
                                                 </DrawerContent>
                                             </Drawer>
                                         </div>

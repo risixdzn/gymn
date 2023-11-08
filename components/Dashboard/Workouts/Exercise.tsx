@@ -1,3 +1,4 @@
+import { Exercise } from "@/app/(logged-in)/dashboard/exercises/page";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,36 +9,34 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Info, MoreVertical, Plus } from "lucide-react";
+import { WorkoutExercise } from "./ExerciseSelector";
 
-const ExerciseInfo = () => {
+const ExerciseInfo = ({ exercise }: { exercise: WorkoutExercise }) => {
     return (
         <>
-            <DialogTitle>Título do exercício</DialogTitle>
+            <DialogTitle>{exercise.name}</DialogTitle>
             <DialogDescription className='-mt-2'>
                 <span className='flex gap-2 max-w-screen flex-wrap'>
-                    <Badge className='rounded-md'>Abdominais</Badge>
-                    <Badge className='rounded-md'>Abdominais</Badge>
-                    <Badge className='rounded-md'>Abdominais</Badge>
-                    <Badge className='rounded-md'>Abdominais</Badge>
+                    {exercise.muscles.map((muscle, index) => (
+                        <Badge key={index} className='rounded-md'>
+                            {muscle}
+                        </Badge>
+                    ))}
                 </span>
             </DialogDescription>
             <hr></hr>
             <h3 className='font-semibold'>Execução</h3>
-            <p className='text-muted-foreground text-xs'>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam minima consequuntur
-                beatae autem fugit officia cumque ducimus hic nemo veniam eum impedit dolorum,
-                explicabo eaque mollitia illo in maiores laboriosam?
-            </p>
+            <p className='text-muted-foreground text-xs'>{exercise.description}</p>
             <span className='w-full relative h-4'>
-                <Badge variant={"Iniciante"} className='absolute rounded-md right-0'>
-                    Iniciante
+                <Badge variant={exercise.level[0] as any} className='absolute rounded-md right-0'>
+                    {exercise.level[0]}
                 </Badge>
             </span>
         </>
     );
 };
 
-export default function ExerciseDisplay() {
+export default function ExerciseDisplay({ exercise }: { exercise: WorkoutExercise }) {
     return (
         <div className='w-full h-auto rounded-md'>
             <div id='header' className='w-full h-auto flex justify-between items-center'>
@@ -50,7 +49,7 @@ export default function ExerciseDisplay() {
                         id='exerciseinfo'
                         className='ml-4 text-sm lg:text-base lg:font-medium inline-block'
                     >
-                        <h2>Remada curvada</h2>
+                        <h2>{exercise.name}</h2>
                         <Dialog>
                             <DialogTrigger>
                                 <Info className='scale-50 text-muted-foreground inline-block -ml-1' />
@@ -59,7 +58,7 @@ export default function ExerciseDisplay() {
                                 </span>
                             </DialogTrigger>
                             <DialogContent>
-                                <ExerciseInfo />
+                                <ExerciseInfo exercise={exercise} />
                             </DialogContent>
                         </Dialog>
                     </div>
@@ -67,10 +66,10 @@ export default function ExerciseDisplay() {
                 </div>
                 <div id='options' className='flex items-center'>
                     <Badge
-                        variant={"Iniciante"}
+                        variant={exercise.level[0] as any}
                         className='mr-4 rounded-md block lg:hidden xl:block'
                     >
-                        Iniciante
+                        {exercise.level[0]}
                     </Badge>
                     <Button size={"icon"} variant={"ghost"}>
                         <MoreVertical className='' />
@@ -86,21 +85,18 @@ export default function ExerciseDisplay() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className='text-sm text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'>
-                        <th className='p-3 '>1</th>
-                        <th className='p-3'>-</th>
-                        <th className='p-3'>-</th>
-                    </tr>
-                    <tr className='text-sm text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'>
-                        <th className='p-3 '>2</th>
-                        <th className='p-3'>-</th>
-                        <th className='p-3'>-</th>
-                    </tr>
-                    <tr className='text-sm text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'>
-                        <th className='p-3 '>3 </th>
-                        <th className='p-3'>-</th>
-                        <th className='p-3'>-</th>
-                    </tr>
+                    {exercise.sets.map((set, index) => (
+                        <tr
+                            key={index}
+                            className='text-sm text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'
+                        >
+                            <th className='p-3 '>
+                                {set.variant == "Normal" ? index + 1 : set.variant}
+                            </th>
+                            <th className='p-3'>{set.load}</th>
+                            <th className='p-3'>{set.reps}</th>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
             <Button variant={"secondary"} className='w-full'>

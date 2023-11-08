@@ -15,10 +15,10 @@ import { useSearchParams } from "next/navigation";
 
 export type Exercise = {
     id: string;
-    muscle: string[];
+    muscles: string[];
     name: string;
     equipment: string[];
-    level: "Iniciante" | "Intermediário" | "Avançado";
+    level: ["Iniciante" | "Intermediário" | "Avançado"];
     description: string;
 };
 

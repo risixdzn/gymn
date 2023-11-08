@@ -7,18 +7,19 @@ import {
 } from "@/components/ui/DrawerOrVaul";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Dumbbell, ListFilter, Search } from "lucide-react";
+import { Dumbbell, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { equipments, levels, muscles } from "@/lib/filters";
 import { Button } from "@/components/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Exercise } from "@/app/(logged-in)/dashboard/exercises/page";
 import { Skeleton } from "@/components/ui/skeleton";
-import { motion } from "framer-motion";
 import ExerciseCard from "../Exercises/ExerciseCard";
 import { Checkbox } from "@/components/ui/checkbox";
+import { UseFormSetValue } from "react-hook-form";
+import { Workout } from "@/app/(logged-in)/dashboard/workouts/new/page";
+import * as z from "zod";
 
 const Filter = ({
     trigger,
@@ -94,11 +95,32 @@ const Filter = ({
     );
 };
 
-export default function ExerciseSelector({ screenWidth }: { screenWidth: number }) {
+export type WorkoutExercise = {
+    id: string;
+    muscles: string[];
+    name: string;
+    equipment: string[];
+    level: string[];
+    description: string;
+    sets: {
+        variant: "Aquecimento" | "Normal" | "Falha";
+        load: number;
+        reps: number;
+    }[];
+};
+
+export default function ExerciseSelector({
+    screenWidth,
+    setterFn,
+}: {
+    screenWidth: number;
+    setterFn: UseFormSetValue<z.infer<typeof Workout>>;
+}) {
     const [muscle, setMuscle] = useState<string | null>(null);
     const [equipment, setEquipment] = useState<string | null>(null);
     const [level, setLevel] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedExercises, setSelectedExercises] = useState<Exercise[] | null>([]);
 
     const filteredFilters = Object.entries({
         muscle,
@@ -125,10 +147,45 @@ export default function ExerciseSelector({ screenWidth }: { screenWidth: number 
 
     const skeletons = new Array(15).fill(null);
 
+    const handleSelectExercise = (exercise: Exercise) => {
+        if (selectedExercises?.includes(exercise)) {
+            // If the exercise is already selected, remove it from the array
+            setSelectedExercises(
+                selectedExercises.filter((selectedExercise) => selectedExercise !== exercise)
+            );
+        } else {
+            // If it's not selected, add it to the array, without removing the previous ones
+            setSelectedExercises([...(selectedExercises || []), exercise]);
+        }
+        console.log(selectedExercises);
+    };
+
+    const onSubmit = () => {
+        const workoutExercises: WorkoutExercise[] =
+            selectedExercises?.map((exercise) => ({
+                ...exercise,
+                muscles: exercise.muscles, // Map 'muscles' to 'muscle'
+                sets: [
+                    {
+                        variant: "Normal",
+                        load: 0,
+                        reps: 0,
+                    },
+                ],
+            })) || [];
+
+        console.log(selectedExercises);
+        setterFn("exercises", workoutExercises);
+    };
+
     return (
         <>
             {/* Add selected button */}
-            <Button className='absolute bottom-0 w-[calc(100%-4rem)] max-w-[calc(28rem-4rem)] lg:w-80 mb-6 z-10'>
+            <Button
+                disabled={selectedExercises?.length == 0}
+                onClick={() => onSubmit()}
+                className='absolute bottom-0 w-[calc(100%-4rem)] max-w-[calc(28rem-4rem)] lg:w-80 mb-6 z-10'
+            >
                 Adicionar
                 <Dumbbell className='ml-2 scale-75' />
             </Button>
@@ -208,11 +265,39 @@ export default function ExerciseSelector({ screenWidth }: { screenWidth: number 
                 {!isLoading ? (
                     <>
                         {data?.data
-                            .filter((exercise: Exercise) =>
-                                exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
+                            .filter(
+                                (exercise: Exercise) =>
+                                    exercise.name
+                                        .toLowerCase()
+                                        .includes(searchTerm.toLowerCase()) ||
+                                    exercise.muscles
+                                        .toString()
+                                        .toLowerCase()
+                                        .includes(searchTerm.toLowerCase()) ||
+                                    exercise.equipment
+                                        .toString()
+                                        .toLowerCase()
+                                        .includes(searchTerm.toLowerCase())
                             )
                             .map((exercise: Exercise, index: number) => (
-                                <ExerciseCard key={exercise.id} exercise={exercise} />
+                                <div key={exercise.id} className='relative'>
+                                    <Checkbox
+                                        checked={selectedExercises?.includes(exercise)}
+                                        onCheckedChange={() => handleSelectExercise(exercise)}
+                                        className='scale-150 absolute right-5 top-14 lg:top-10 z-10'
+                                    />
+                                    <div onClick={() => handleSelectExercise(exercise)}>
+                                        <ExerciseCard
+                                            className={
+                                                selectedExercises?.includes(exercise)
+                                                    ? "dark:bg-accent/60 bg-accent"
+                                                    : ""
+                                            }
+                                            key={exercise.id}
+                                            exercise={exercise}
+                                        />
+                                    </div>
+                                </div>
                             ))}
                     </>
                 ) : (
