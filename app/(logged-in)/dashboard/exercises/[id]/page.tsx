@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { Exercise } from "../page";
+import { type Exercise } from "@/types/Workout";
 import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";

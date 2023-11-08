@@ -1,10 +1,19 @@
-import { Exercise } from "@/app/(logged-in)/dashboard/exercises/page";
+import { type Exercise } from "@/types/Workout";
 import { Badge } from "@/components/ui/badge";
 import GlowingCard from "@/components/ui/glowingCard";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
+import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 
-export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
+export default function ExerciseCard({
+    exercise,
+    className,
+    seeMore,
+}: {
+    exercise: Exercise;
+    seeMore?: boolean;
+    className?: string;
+}) {
     type DifficultiesMap = {
         [key: string]: string;
     };
@@ -20,14 +29,21 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
     const { screenWidth } = useGetScreenWidth();
 
     return (
-        <GlowingCard className='relative w-full h-[150px] md:h-[250px] lg:h-[300px] group'>
+        <GlowingCard
+            className={cn(
+                `${
+                    seeMore ? "h-[150px]" : "h-auto"
+                } relative w-full  md:h-[250px] lg:h-[300px] group`,
+                className
+            )}
+        >
             <div
                 id='difficulty_indicator'
                 className={`hidden md:block w-full h-2 rounded-full`}
-                style={{ backgroundColor: difficultyColor({ level: exercise.level }) }}
+                style={{ backgroundColor: difficultyColor({ level: exercise.level[0] }) }}
             ></div>
             <Badge
-                variant={exercise.level}
+                variant={exercise.level[0] as any}
                 className='rounded-md absolute bottom-100 md:bottom-0 right-0 mb-4 mr-4'
             >
                 {exercise.level}
@@ -40,7 +56,7 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
                     {exercise.name}
                 </h2>
                 <span className='flex gap-2 mt-1 w-full flex-wrap'>
-                    {exercise.muscle.map((muscle) => (
+                    {exercise?.muscles?.map((muscle) => (
                         <Badge key={muscle} className='rounded-md'>
                             {muscle}
                         </Badge>
@@ -75,9 +91,11 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
                     </>
                 )}
             </div>
-            <span className='group-hover:underline absolute bottom-0 right-0 mb-3 mr-3 md:right-auto md:mb-4 text-xs flex items-center gap-[0.15rem]'>
-                Ver mais <ArrowRight className='scale-[0.65] inline-block' />
-            </span>
+            {seeMore && (
+                <span className='group-hover:underline absolute bottom-0 right-0 mb-3 mr-3 md:right-auto md:mb-4 text-xs flex items-center gap-[0.15rem]'>
+                    Ver mais <ArrowRight className='scale-[0.65] inline-block' />
+                </span>
+            )}
         </GlowingCard>
     );
 }
