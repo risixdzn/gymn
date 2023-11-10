@@ -69,11 +69,11 @@ export default function ExerciseCard({
                     ) : (
                         exercise.equipment.map((equipment, index) => (
                             <span key={equipment}>
-                                {index === exercise.equipment.length - 1 ? ( //se o indice for igual ao ultimo
-                                    equipment //apenas equipamento
-                                ) : (
-                                    <>{equipment} ou </> //equipamento, ou
-                                )}
+                                {index === exercise.equipment.length - 1 //se o indice for igual ao ultimo
+                                    ? equipment //apenas equipamento
+                                    : equipment !== "Máquina" && ( //se o texto for diferente de 'Maquina' (equipamentos sao registrados como maquina, [maquina especifica])
+                                          <>{equipment} ou </>
+                                      )}
                             </span>
                         ))
                     )}

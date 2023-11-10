@@ -20,6 +20,9 @@ import { Textarea } from "@/components/ui/textarea";
 import ExerciseDisplay from "@/components/Dashboard/Workouts/Exercise";
 import ExerciseSelector from "@/components/Dashboard/Workouts/ExerciseSelector";
 import { Workout } from "@/types/Workout";
+import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { AnimatePresence } from "framer-motion";
 
 export default function NewWorkout() {
     const form = useForm<z.infer<typeof Workout>>({
@@ -46,6 +49,7 @@ export default function NewWorkout() {
     const { watch, setValue } = form;
     const formValues = watch();
     const { screenWidth } = useGetScreenWidth();
+    const [exerciseSelectorOpen, setExerciseSelectorOpen] = useState(false);
 
     return (
         <>
@@ -121,27 +125,73 @@ export default function NewWorkout() {
                                                     Exercícios
                                                 </h2>
                                             </span>
-
                                             <div
                                                 id='exercisescontainer'
-                                                className='h-auto lg:max-h-[calc(100vh-7rem)] w-full overflow-y-auto flex flex-col gap-10 scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-background scrollbar-rounded-full'
+                                                className='h-auto lg:max-h-[calc(100vh-7rem)] w-full overflow-y-auto overflow-x-hidden
+                                                 flex flex-col gap-10 pb-24 lg:pb-0
+                                                 scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-background scrollbar-rounded-full '
                                             >
                                                 {watch("exercises").map((exercise, index) => (
                                                     <ExerciseDisplay
+                                                        setterFn={setValue}
+                                                        watch={watch}
+                                                        index={index}
                                                         exercise={exercise}
                                                         key={index}
                                                     />
                                                 ))}
+                                                <Drawer
+                                                    screenWidth={screenWidth}
+                                                    open={exerciseSelectorOpen}
+                                                    onOpenChange={setExerciseSelectorOpen}
+                                                >
+                                                    <DrawerTrigger
+                                                        screenWidth={screenWidth}
+                                                        asChild
+                                                    >
+                                                        <Button
+                                                            type='button'
+                                                            className='-mt-8 flex items-center gap-2 w-full'
+                                                        >
+                                                            <Plus className='scale-75' />
+                                                            Adicionar exercício
+                                                        </Button>
+                                                    </DrawerTrigger>
+                                                    <DrawerContent
+                                                        asChild
+                                                        desktopClassname='sm:w-[calc(100%-20rem)] max-w-full'
+                                                        screenWidth={screenWidth}
+                                                        className=''
+                                                    >
+                                                        <ExerciseSelector
+                                                            setExerciseSelectorOpen={
+                                                                setExerciseSelectorOpen
+                                                            }
+                                                            watch={watch}
+                                                            screenWidth={screenWidth}
+                                                            setterFn={setValue}
+                                                        />
+                                                    </DrawerContent>
+                                                </Drawer>
                                             </div>
                                         </>
                                     ) : (
-                                        <div className='text-center w-full lg:h-[calc(100vh-7rem)] mt-6 lg:mt-0 flex items-center justify-center flex-col gap-4 text-sm text-muted-foreground'>
+                                        <div
+                                            className='text-center mt-6 lg:mt-0 
+                                        w-full lg:h-[calc(100vh-7rem)] 
+                                        flex items-center justify-center flex-col gap-4 
+                                        text-sm text-muted-foreground'
+                                        >
                                             <Dumbbell className='text-g_purple' />
                                             <span className='text-foreground -mb-2 font-semibold'>
                                                 Sem exercícios
                                             </span>
                                             Comece adicionando um exercício ao seu treino
-                                            <Drawer screenWidth={screenWidth}>
+                                            <Drawer
+                                                screenWidth={screenWidth}
+                                                open={exerciseSelectorOpen}
+                                                onOpenChange={setExerciseSelectorOpen}
+                                            >
                                                 <DrawerTrigger screenWidth={screenWidth}>
                                                     <Button
                                                         type='button'
@@ -157,6 +207,10 @@ export default function NewWorkout() {
                                                     className=''
                                                 >
                                                     <ExerciseSelector
+                                                        setExerciseSelectorOpen={
+                                                            setExerciseSelectorOpen
+                                                        }
+                                                        watch={watch}
                                                         screenWidth={screenWidth}
                                                         setterFn={setValue}
                                                     />

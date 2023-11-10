@@ -26,7 +26,7 @@ export const Exercise = z.object({
     muscles: z.array(z.string()),
     equipment: z.array(z.string()),
     level: z.array(z.string()),
-    sets: z.array(Set),
+    sets: z.array(Set).optional(),
     description: z.string(),
 });
 

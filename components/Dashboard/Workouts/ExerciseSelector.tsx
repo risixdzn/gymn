@@ -17,7 +17,7 @@ import { type Exercise } from "@/types/Workout";
 import { Skeleton } from "@/components/ui/skeleton";
 import ExerciseCard from "../Exercises/ExerciseCard";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UseFormSetValue } from "react-hook-form";
+import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { Workout } from "@/types/Workout";
 import * as z from "zod";
 
@@ -95,26 +95,16 @@ const Filter = ({
     );
 };
 
-export type WorkoutExercise = {
-    id: string;
-    muscles: string[];
-    name: string;
-    equipment: string[];
-    level: string[];
-    description: string;
-    sets: {
-        variant: "Aquecimento" | "Normal" | "Falha";
-        load: number;
-        reps: number;
-    }[];
-};
-
 export default function ExerciseSelector({
     screenWidth,
     setterFn,
+    watch,
+    setExerciseSelectorOpen,
 }: {
     screenWidth: number;
     setterFn: UseFormSetValue<z.infer<typeof Workout>>;
+    watch: UseFormWatch<z.infer<typeof Workout>>;
+    setExerciseSelectorOpen: Dispatch<SetStateAction<boolean>>;
 }) {
     const [muscle, setMuscle] = useState<string | null>(null);
     const [equipment, setEquipment] = useState<string | null>(null);
@@ -161,11 +151,11 @@ export default function ExerciseSelector({
     };
 
     const onSubmit = () => {
-        const workoutExercises: WorkoutExercise[] =
+        const workoutExercises =
             selectedExercises?.map((exercise) => ({
                 ...exercise,
-                muscles: exercise.muscles, // Map 'muscles' to 'muscle'
-                sets: [
+                muscles: exercise.muscles,
+                sets: exercise.sets || [
                     {
                         variant: "Normal",
                         load: 0,
@@ -175,20 +165,31 @@ export default function ExerciseSelector({
             })) || [];
 
         console.log(selectedExercises);
-        setterFn("exercises", workoutExercises);
+
+        const previousExercises: Exercise[] = watch("exercises");
+        // Merge the previous exercises with the new ones
+        const mergedExercises: Exercise[] = [...previousExercises, ...workoutExercises];
+
+        setterFn("exercises", mergedExercises);
+        setExerciseSelectorOpen(false);
     };
+
+    // results div scroll position
+    const [scrollPosition, setScrollPosition] = useState(0);
 
     return (
         <>
             {/* Add selected button */}
-            <Button
-                disabled={selectedExercises?.length == 0}
-                onClick={() => onSubmit()}
-                className='absolute bottom-0 w-[calc(100%-4rem)] max-w-[calc(28rem-4rem)] lg:w-80 mb-6 z-10'
-            >
-                Adicionar
-                <Dumbbell className='ml-2 scale-75' />
-            </Button>
+            <div className='bg-background absolute bottom-0 w-[calc(100%-4rem)] max-w-[calc(28rem-4rem)] z-10 '>
+                <Button
+                    disabled={selectedExercises?.length == 0}
+                    onClick={() => onSubmit()}
+                    className='w-full lg:w-80 mb-6 disabled:opacity-100 disabled:bg-primary/50'
+                >
+                    Adicionar
+                    <Dumbbell className='ml-2 scale-75' />
+                </Button>
+            </div>
             <DrawerTitle screenWidth={screenWidth}>Exercícios</DrawerTitle>
             <DrawerDescription screenWidth={screenWidth}>
                 Clique nos exercícios para selecioná-los, e em seguida, pressione
@@ -257,59 +258,59 @@ export default function ExerciseSelector({
                         }
                     />
                 </div>
-            </div>
-            <div
-                id='results'
-                className='mt-4 grid grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 max-h-[calc(100vh-14rem)] rounded-lg overflow-y-auto overflow-x-hidden scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-accent/50 scrollbar-rounded-full'
-            >
-                {!isLoading ? (
-                    <>
-                        {data?.data
-                            .filter(
-                                (exercise: Exercise) =>
-                                    exercise.name
-                                        .toLowerCase()
-                                        .includes(searchTerm.toLowerCase()) ||
-                                    exercise.muscles
-                                        .toString()
-                                        .toLowerCase()
-                                        .includes(searchTerm.toLowerCase()) ||
-                                    exercise.equipment
-                                        .toString()
-                                        .toLowerCase()
-                                        .includes(searchTerm.toLowerCase())
-                            )
-                            .map((exercise: Exercise, index: number) => (
-                                <div key={exercise.id} className='relative'>
-                                    <Checkbox
-                                        checked={selectedExercises?.includes(exercise)}
-                                        onCheckedChange={() => handleSelectExercise(exercise)}
-                                        className='scale-150 absolute right-5 top-14 lg:top-10 z-10'
-                                    />
-                                    <div onClick={() => handleSelectExercise(exercise)}>
-                                        <ExerciseCard
-                                            className={
-                                                selectedExercises?.includes(exercise)
-                                                    ? "dark:bg-accent/60 bg-accent"
-                                                    : ""
-                                            }
-                                            key={exercise.id}
-                                            exercise={exercise}
+                <div
+                    id='results'
+                    className='mt-4 lg:mt-0 w-full grid grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 max-h-[calc(100vh-14rem)] rounded-lg overflow-y-auto overflow-x-hidden scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-accent/50 scrollbar-rounded-full'
+                >
+                    {!isLoading ? (
+                        <>
+                            {data?.data
+                                .filter(
+                                    (exercise: Exercise) =>
+                                        exercise.name
+                                            .toLowerCase()
+                                            .includes(searchTerm.toLowerCase()) ||
+                                        exercise.muscles
+                                            .toString()
+                                            .toLowerCase()
+                                            .includes(searchTerm.toLowerCase()) ||
+                                        exercise.equipment
+                                            .toString()
+                                            .toLowerCase()
+                                            .includes(searchTerm.toLowerCase())
+                                )
+                                .map((exercise: Exercise, index: number) => (
+                                    <div key={exercise.id} className='relative'>
+                                        <Checkbox
+                                            checked={selectedExercises?.includes(exercise)}
+                                            onCheckedChange={() => handleSelectExercise(exercise)}
+                                            className='scale-150 absolute right-5 top-12 lg:top-10 z-[5]'
                                         />
+                                        <div onClick={() => handleSelectExercise(exercise)}>
+                                            <ExerciseCard
+                                                className={
+                                                    selectedExercises?.includes(exercise)
+                                                        ? "dark:bg-accent/60 bg-accent"
+                                                        : ""
+                                                }
+                                                key={exercise.id}
+                                                exercise={exercise}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
+                        </>
+                    ) : (
+                        <>
+                            {skeletons.map((_, index) => (
+                                <Skeleton
+                                    className='w-full h-[150px] md:h-[250px] lg:h-[300px] dark:opacity-50'
+                                    key={index}
+                                />
                             ))}
-                    </>
-                ) : (
-                    <>
-                        {skeletons.map((_, index) => (
-                            <Skeleton
-                                className='w-full h-[150px] md:h-[250px] lg:h-[300px] dark:opacity-50'
-                                key={index}
-                            />
-                        ))}
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
             </div>
         </>
     );
