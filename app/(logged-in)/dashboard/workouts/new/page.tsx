@@ -21,8 +21,7 @@ import ExerciseDisplay from "@/components/Dashboard/Workouts/Exercise";
 import ExerciseSelector from "@/components/Dashboard/Workouts/ExerciseSelector";
 import { Workout } from "@/types/Workout";
 import { useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, LayoutGroup, useIsPresent } from "framer-motion";
 
 export default function NewWorkout() {
     const form = useForm<z.infer<typeof Workout>>({
@@ -51,12 +50,66 @@ export default function NewWorkout() {
     const { screenWidth } = useGetScreenWidth();
     const [exerciseSelectorOpen, setExerciseSelectorOpen] = useState(false);
 
+    const exercises = watch("exercises");
+
+    const exerciseNumbersData = exercises.reduce(
+        (acc, exercise) => {
+            // Iterate through sets for each exercise
+            if (exercise.sets && exercise.sets.length > 0) {
+                exercise.sets.forEach((set) => {
+                    // Increment totalSets by 1
+                    acc.totalSets += 1;
+                    // Increment totalReps by the reps in this set
+                    acc.totalReps += set.reps;
+                    // Increment totalVolume by the load in this set
+                    acc.totalVolume += set.load;
+                });
+            }
+            // Increment totalExercises for each exercise in the workout
+            acc.totalExercises += 1;
+
+            return acc;
+        },
+        {
+            totalExercises: 0,
+            totalSets: 0,
+            totalReps: 0,
+            totalVolume: 0,
+        }
+    );
+
+    const isPresent = useIsPresent();
+
     return (
         <>
             <Form {...form}>
+                <div className='lg:hidden w-full h-20  z-20  fixed -translate-x-5 px-5 -translate-y-3 flex items-center justify-between bg-background'>
+                    <div id='exerciseNumbersData'>
+                        <h3 className='text-sm font-semibold mb-1'>Totais do treino</h3>
+                        <span className='flex gap-4'>
+                            <div>
+                                <h4 className='text-xs text-muted-foreground'>Exercícios</h4>
+                                <p className='text-sm'>{exerciseNumbersData.totalExercises}</p>
+                            </div>
+                            <div>
+                                <h4 className='text-xs text-muted-foreground'>Séries</h4>
+                                <p className='text-sm'>{exerciseNumbersData.totalSets}</p>
+                            </div>
+                            <div>
+                                <h4 className='text-xs text-muted-foreground'>Reps</h4>
+                                <p className='text-sm'>{exerciseNumbersData.totalReps}</p>
+                            </div>
+                            <div>
+                                <h4 className='text-xs text-muted-foreground'>Volume</h4>
+                                <p className='text-sm'>{exerciseNumbersData.totalVolume}</p>
+                            </div>
+                        </span>
+                    </div>
+                    <Button>Salvar</Button>
+                </div>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className='w-full grid lg:grid-cols-[20rem_minmax(0,_1fr)] xl:grid-cols-[25rem_minmax(0,_1fr)] gap-2'
+                    className='mt-20 lg:mt-0 w-full grid lg:grid-cols-[20rem_minmax(0,_1fr)] xl:grid-cols-[25rem_minmax(0,_1fr)] gap-2'
                 >
                     <div id='infoediting' className='border-border lg:border-r-[1px] lg:pr-8'>
                         <h2 className='text-lg lg:text-xl font-semibold'>Criar treino</h2>
@@ -128,18 +181,20 @@ export default function NewWorkout() {
                                             <div
                                                 id='exercisescontainer'
                                                 className='h-auto lg:max-h-[calc(100vh-7rem)] w-full overflow-y-auto overflow-x-hidden
-                                                 flex flex-col gap-10 pb-24 lg:pb-0
+                                                 flex flex-col pb-24 lg:pb-0
                                                  scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-background scrollbar-rounded-full '
                                             >
-                                                {watch("exercises").map((exercise, index) => (
-                                                    <ExerciseDisplay
-                                                        setterFn={setValue}
-                                                        watch={watch}
-                                                        index={index}
-                                                        exercise={exercise}
-                                                        key={index}
-                                                    />
-                                                ))}
+                                                <AnimatePresence>
+                                                    {watch("exercises").map((exercise, index) => (
+                                                        <ExerciseDisplay
+                                                            setterFn={setValue}
+                                                            watch={watch}
+                                                            index={index}
+                                                            exercise={exercise}
+                                                            key={exercise.id}
+                                                        />
+                                                    ))}
+                                                </AnimatePresence>
                                                 <Drawer
                                                     screenWidth={screenWidth}
                                                     open={exerciseSelectorOpen}
@@ -151,7 +206,7 @@ export default function NewWorkout() {
                                                     >
                                                         <Button
                                                             type='button'
-                                                            className='-mt-8 flex items-center gap-2 w-full'
+                                                            className='flex items-center gap-2 w-full'
                                                         >
                                                             <Plus className='scale-75' />
                                                             Adicionar exercício
