@@ -24,8 +24,8 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
         <>
             <HoverCard openDelay={100}>
                 <HoverCardTrigger>
-                    <Link href={"/dashboard/profile"}>
-                        <div className='flex items-center justify-between py-5 px-5'>
+                    <div className='flex items-center justify-between py-5 px-5'>
+                        <Link href={"/dashboard/profile"}>
                             <div className='flex flex-row items-center gap-4'>
                                 <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
                                     {displayUser && (
@@ -47,9 +47,9 @@ export default function UserProfileCard({ displayUser, screenWidth }: UserProfil
                                     </h3>
                                 </div>
                             </div>
-                            <ModeToggle side='top' />
-                        </div>
-                    </Link>
+                        </Link>
+                        <ModeToggle side='top' />
+                    </div>
                 </HoverCardTrigger>
                 <HoverCardContent
                     className='mx-2 mb-2 bg-background w-72 h-[17rem]'

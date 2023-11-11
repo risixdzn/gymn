@@ -75,10 +75,16 @@ export default function ExerciseDisplay({
 
     return (
         <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0, type: "" }}
+            initial={{ opacity: 0, x: -100, height: 0, marginTop: 0, marginBottom: 0 }}
+            animate={{
+                opacity: 1,
+                x: 0,
+                height: "auto",
+                marginTop: index == 0 ? "0" : "1.25rem",
+                marginBottom: "1.25rem",
+            }}
             transition={{ delay: index * 0.075 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, scale: 0, height: 0, marginTop: 0, marginBottom: 0 }}
             className='w-full h-auto rounded-md'
         >
             <div id='header' className='w-full h-auto flex justify-between items-center'>
@@ -144,10 +150,9 @@ export default function ExerciseDisplay({
                         <th className='p-1 '>Série</th>
                         <th className='p-1'>Carga</th>
                         <th className='p-1'>Repetições</th>
-                        <th className='p-1'></th>
                     </tr>
                 </thead>
-                <tbody className='transition-all'>
+                <tbody className='transition-all w-full'>
                     {exercise.sets?.map((set, index) => (
                         <motion.tr
                             key={index}
@@ -159,7 +164,7 @@ export default function ExerciseDisplay({
                                 transformOrigin: "top",
                             }}
                             transition={{ ease: "easeInOut" }}
-                            className='text-sm text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'
+                            className='text-sm w-full text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'
                         >
                             <th className='p-3 '>
                                 {set.variant == "Normal" ? index + 1 : set.variant}
