@@ -13,7 +13,7 @@ export async function GET(request: Request) {
             .select(
                 `
                 id,
-                muscle,
+                muscles,
                 name,
                 equipment,
                 level,

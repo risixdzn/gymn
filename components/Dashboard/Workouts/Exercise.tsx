@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Info, MoreVertical, Plus, Shuffle, Trash } from "lucide-react";
 import { type Workout, type Exercise } from "@/types/Workout";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 
 import {
     DropdownMenu,
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import * as z from "zod";
+import { Dispatch, SetStateAction } from "react";
 const ExerciseInfo = ({ exercise }: { exercise: Exercise }) => {
     return (
         <>
@@ -49,11 +50,13 @@ const ExerciseInfo = ({ exercise }: { exercise: Exercise }) => {
 };
 
 export default function ExerciseDisplay({
+    setExerciseReordererOpen,
     exercise,
     index,
     setterFn,
     watch,
 }: {
+    setExerciseReordererOpen: Dispatch<SetStateAction<boolean>>;
     exercise: Exercise;
     setterFn: UseFormSetValue<z.infer<typeof Workout>>;
     index: number;
@@ -129,7 +132,10 @@ export default function ExerciseDisplay({
                         <DropdownMenuContent align='end'>
                             <DropdownMenuLabel>Opções</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className='flex items-center gap-2'>
+                            <DropdownMenuItem
+                                className='flex items-center gap-2'
+                                onClick={() => setExerciseReordererOpen(true)}
+                            >
                                 <Shuffle className='scale-75' />
                                 Reordenar{" "}
                             </DropdownMenuItem>
@@ -153,26 +159,20 @@ export default function ExerciseDisplay({
                     </tr>
                 </thead>
                 <tbody className='transition-all w-full'>
-                    {exercise.sets?.map((set, index) => (
-                        <motion.tr
-                            key={index}
-                            initial={{ opacity: 0, scaleY: 0, height: 0, transformOrigin: "top" }}
-                            animate={{
-                                opacity: 1,
-                                scaleY: 1,
-                                height: "auto",
-                                transformOrigin: "top",
-                            }}
-                            transition={{ ease: "easeInOut" }}
-                            className='text-sm w-full text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'
-                        >
-                            <th className='p-3 '>
-                                {set.variant == "Normal" ? index + 1 : set.variant}
-                            </th>
-                            <th className='p-3'>{set.load}</th>
-                            <th className='p-3'>{set.reps}</th>{" "}
-                        </motion.tr>
-                    ))}
+                    <AnimatePresence>
+                        {exercise.sets?.map((set, index) => (
+                            <tr
+                                key={index}
+                                className='text-sm w-full text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'
+                            >
+                                <th className='p-3 '>
+                                    {set.variant == "Normal" ? index + 1 : set.variant}
+                                </th>
+                                <th className='p-3'>{set.load}</th>
+                                <th className='p-3'>{set.reps}</th>{" "}
+                            </tr>
+                        ))}
+                    </AnimatePresence>
                 </tbody>
             </table>
             <Button onClick={() => addSet(index)} variant={"secondary"} className='w-full'>

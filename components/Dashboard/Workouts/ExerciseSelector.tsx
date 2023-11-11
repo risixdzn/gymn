@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Dumbbell, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { equipments, levels, muscles } from "@/lib/filters";
 import { Button } from "@/components/ui/button";
@@ -177,6 +177,10 @@ export default function ExerciseSelector({
     // results div scroll position
     const [scrollPosition, setScrollPosition] = useState(0);
 
+    useEffect(() => {
+        console.log("data => ", data);
+    }, [data]);
+
     return (
         <>
             {/* Add selected button */}
@@ -271,7 +275,7 @@ export default function ExerciseSelector({
                                             .toLowerCase()
                                             .includes(searchTerm.toLowerCase()) ||
                                         exercise.muscles
-                                            .toString()
+                                            ?.toString()
                                             .toLowerCase()
                                             .includes(searchTerm.toLowerCase()) ||
                                         exercise.equipment
