@@ -16,7 +16,7 @@ export default function PagesContainer({ children }: { children: ReactNode }) {
 
     return (
         <section
-            className='w-full lg:w-[calc(100%-20rem)] h-auto overflow-y-auto
+            className='w-full lg:w-[calc(100%-20rem)] h-auto
             ml-0 lg:ml-80
             mt-16 lg:mt-14
             lg:flex lg:flex-col absolute

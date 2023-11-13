@@ -15,13 +15,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/DrawerOrVaul";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
-import { Dumbbell, Plus } from "lucide-react";
+import { Dumbbell, Grip, Plus } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import ExerciseDisplay from "@/components/Dashboard/Workouts/Exercise";
 import ExerciseSelector from "@/components/Dashboard/Workouts/ExerciseSelector";
 import { Workout } from "@/types/Workout";
-import { useState } from "react";
-import { AnimatePresence, LayoutGroup, useIsPresent } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, Reorder } from "framer-motion";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 export default function NewWorkout() {
     const form = useForm<z.infer<typeof Workout>>({
@@ -49,6 +50,7 @@ export default function NewWorkout() {
     const formValues = watch();
     const { screenWidth } = useGetScreenWidth();
     const [exerciseSelectorOpen, setExerciseSelectorOpen] = useState(false);
+    const [exerciseReordererOpen, setExerciseReordererOpen] = useState(false);
 
     const exercises = watch("exercises");
 
@@ -78,12 +80,15 @@ export default function NewWorkout() {
         }
     );
 
-    const isPresent = useIsPresent();
+    useEffect(() => {
+        console.log("exercises=> ", exercises);
+    }, [exercises]);
 
     return (
         <>
             <Form {...form}>
                 <div className='lg:hidden w-full h-20  z-20  fixed -translate-x-5 px-5 -translate-y-3 flex items-center justify-between bg-background'>
+                    {/* Dados numericos do treino (séries, volume, reps...) */}
                     <div id='exerciseNumbersData'>
                         <h3 className='text-sm font-semibold mb-1'>Totais do treino</h3>
                         <span className='flex gap-4'>
@@ -107,13 +112,15 @@ export default function NewWorkout() {
                     </div>
                     <Button>Salvar</Button>
                 </div>
+                {/* Form de edição do treino */}
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className='mt-20 lg:mt-0 w-full grid lg:grid-cols-[20rem_minmax(0,_1fr)] xl:grid-cols-[25rem_minmax(0,_1fr)] gap-2'
                 >
+                    {/* Edição das informações textuais (titulo, desc...) */}
                     <div id='infoediting' className='border-border lg:border-r-[1px] lg:pr-8'>
                         <h2 className='text-lg lg:text-xl font-semibold'>Criar treino</h2>
-                        {/* Workout title */}
+                        {/* Editar titulo */}
                         <FormField
                             control={form.control}
                             name='title'
@@ -131,7 +138,7 @@ export default function NewWorkout() {
                                 </FormItem>
                             )}
                         />
-                        {/* Muscle group selector */}
+                        {/* Selecionar grupo muscular */}
                         <FormField
                             control={form.control}
                             name='muscle_group'
@@ -145,7 +152,7 @@ export default function NewWorkout() {
                                 </FormItem>
                             )}
                         />
-                        {/* Workout description */}
+                        {/* Editar descrição */}
                         <FormField
                             control={form.control}
                             name='description'
@@ -164,20 +171,27 @@ export default function NewWorkout() {
                             {JSON.stringify(formValues, null, 4)}
                         </pre>{" "}
                     </div>
-                    <div className='w-full overflow-x-hidden lg:pl-8 flex items-center flex-col'>
+                    {/* Display exercicios selecionados */}
+                    <div className='w-full overflow-x-hidden lg:pl-8 flex items-center flex-col relative'>
                         <FormField
                             control={form.control}
                             name='exercises'
                             render={({ field }) => (
                                 <FormItem className='w-full'>
-                                    {watch("exercises")?.length ? (
+                                    {/* Se houver exercicios */}
+                                    {exercises?.length ? (
                                         <>
-                                            <span className='lg:hidden w-full mt-4'>
+                                            {/* Titulo da lista*/}
+                                            <span
+                                                id='exerciselisttitle'
+                                                className='lg:hidden w-full mt-4'
+                                            >
                                                 <hr></hr>
                                                 <h2 className='my-4 text-xl text-left font-semibold'>
                                                     Exercícios
                                                 </h2>
                                             </span>
+                                            {/* Container display dos exercicios */}
                                             <div
                                                 id='exercisescontainer'
                                                 className='h-auto lg:max-h-[calc(100vh-7rem)] w-full overflow-y-auto overflow-x-hidden
@@ -185,8 +199,11 @@ export default function NewWorkout() {
                                                  scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-background scrollbar-rounded-full '
                                             >
                                                 <AnimatePresence>
-                                                    {watch("exercises").map((exercise, index) => (
+                                                    {exercises.map((exercise, index) => (
                                                         <ExerciseDisplay
+                                                            setExerciseReordererOpen={
+                                                                setExerciseReordererOpen
+                                                            }
                                                             setterFn={setValue}
                                                             watch={watch}
                                                             index={index}
@@ -229,8 +246,41 @@ export default function NewWorkout() {
                                                     </DrawerContent>
                                                 </Drawer>
                                             </div>
+                                            {/* Reorganizador dos exercicios. */}
+                                            <Dialog
+                                                open={exerciseReordererOpen}
+                                                onOpenChange={setExerciseReordererOpen}
+                                            >
+                                                <DialogContent>
+                                                    <DialogTitle>Reordenar exercícios</DialogTitle>
+                                                    <DialogDescription>
+                                                        Arraste os exercícios para alterar as ordens
+                                                    </DialogDescription>
+                                                    <Reorder.Group
+                                                        className='w-full flex flex-col gap-2 max-h-96 overflow-y-auto overflow-x-hidden scrollbar-thin pr-2 scrollbar-thumb-accent scrollbar-track-background'
+                                                        axis='y'
+                                                        values={exercises}
+                                                        layoutScroll
+                                                        onReorder={(exercise) =>
+                                                            setValue("exercises", exercise)
+                                                        }
+                                                    >
+                                                        {exercises.map((exercise, index) => (
+                                                            <Reorder.Item
+                                                                className='w-full py-2 bg-card px-4 rounded-md text-sm flex justify-between items-center'
+                                                                key={exercise.id}
+                                                                value={exercise}
+                                                            >
+                                                                {exercise.name}
+                                                                <Grip className='text-muted-foreground' />
+                                                            </Reorder.Item>
+                                                        ))}
+                                                    </Reorder.Group>
+                                                </DialogContent>
+                                            </Dialog>
                                         </>
                                     ) : (
+                                        // /* Se não houver exercicios , mostrar o selecionador*/
                                         <div
                                             className='text-center mt-6 lg:mt-0 
                                         w-full lg:h-[calc(100vh-7rem)] 
