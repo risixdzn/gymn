@@ -7,9 +7,9 @@ import {
     DialogDescription,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Info, MoreVertical, Plus, Shuffle, Trash } from "lucide-react";
+import { Indent, Info, MoreVertical, Plus, Shuffle, Trash } from "lucide-react";
 import { type Workout, type Exercise } from "@/types/Workout";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, PanInfo, motion, useDragControls } from "framer-motion";
 
 import {
     DropdownMenu,
@@ -22,6 +22,8 @@ import {
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import * as z from "zod";
 import { Dispatch, SetStateAction } from "react";
+import { useTheme } from "next-themes";
+import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 const ExerciseInfo = ({ exercise }: { exercise: Exercise }) => {
     return (
         <>
@@ -76,6 +78,33 @@ export default function ExerciseDisplay({
         setterFn("exercises", previousExercises);
     }
 
+    function deleteSet(info: PanInfo, setIndex: number) {
+        const dragDistance = info.offset.x;
+        const deleteThreshold = 180;
+
+        if (Math.abs(dragDistance) >= deleteThreshold) {
+            // If the drag distance exceeds the threshold, delete the set
+            const previousExercises: Exercise[] = watch("exercises");
+            const updatedExercises = previousExercises.map((exercise, exerciseIndex) => {
+                if (index === exerciseIndex) {
+                    // Delete the set at the specified index
+                    if (exercise.sets && exercise.sets.length > 1) {
+                        const updatedSets = exercise.sets.filter((_, i) => i !== setIndex);
+                        return { ...exercise, sets: updatedSets };
+                    }
+                }
+                return exercise;
+            });
+            setterFn("exercises", updatedExercises);
+        }
+    }
+    const dragControls = useDragControls();
+
+    function startDrag(event: any) {
+        dragControls.start(event);
+    }
+
+    const { theme } = useTheme();
     return (
         <motion.div
             initial={{ opacity: 0, x: -100, height: 0, marginTop: 0, marginBottom: 0 }}
@@ -150,31 +179,56 @@ export default function ExerciseDisplay({
                     </DropdownMenu>{" "}
                 </div>
             </div>
-            <table className='w-full mt-4'>
-                <thead>
-                    <tr className='text-left text-muted-foreground text-xs uppercase'>
-                        <th className='p-1 '>Série</th>
-                        <th className='p-1'>Carga</th>
-                        <th className='p-1'>Repetições</th>
-                    </tr>
-                </thead>
-                <tbody className='transition-all w-full'>
+            <div id='table' className='w-full mt-4'>
+                <div id='head' className='w-full'>
+                    <div className='text-left font-semibold text-muted-foreground text-xs uppercase flex'>
+                        <div className='p-1 w-1/5'>Série</div>
+                        <div className='p-1 w-2/5'>Carga</div>
+                        <div className='p-1 w-2/5'>Repetições</div>
+                    </div>
+                </div>
+                <div id='body' className='transition-all w-full flex flex-col'>
                     <AnimatePresence>
                         {exercise.sets?.map((set, index) => (
-                            <tr
-                                key={index}
-                                className='text-sm w-full text-left odd:bg-transparent dark:even:bg-accent/20 even:bg-accent/60'
-                            >
-                                <th className='p-3 '>
-                                    {set.variant == "Normal" ? index + 1 : set.variant}
-                                </th>
-                                <th className='p-3'>{set.load}</th>
-                                <th className='p-3'>{set.reps}</th>{" "}
-                            </tr>
+                            <div key={index} className='relative'>
+                                <motion.div
+                                    {...(index !== 0 ? { drag: "x" } : {})}
+                                    dragDirectionLock
+                                    dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                                    whileTap={{ cursor: "grabbing" }}
+                                    key={index}
+                                    onPointerDown={startDrag}
+                                    className='relative text-sm z-[2] font-bold flex w-full text-left '
+                                    style={{
+                                        backgroundColor:
+                                            index % 2 == 0
+                                                ? theme == "dark"
+                                                    ? "hsl(0 0% 4%)"
+                                                    : "hsl(0 0% 100%)"
+                                                : theme == "dark"
+                                                ? "hsl(0 0% 5.5%)"
+                                                : "hsl(0 0% 97%)",
+                                    }}
+                                    onDragEnd={(event, info) => deleteSet(info, index)}
+                                >
+                                    <div className='p-3 w-1/5 '>
+                                        {set.variant == "Normal" ? index + 1 : set.variant}
+                                    </div>
+                                    <div className='p-3 w-2/5'>{set.load}</div>
+                                    <div className='p-3 w=2/5'>{set.reps}</div>
+                                </motion.div>
+                                <button
+                                    draggable={false}
+                                    className='absolute  flex justify-between px-4 text-destructive-foreground items-center text-sm font-semibold -translate-y-[43px] translate-x-[1px] z-[1] w-[calc(100%-2px)] h-[calc(100%-2px)] bg-destructive'
+                                >
+                                    <span>Deletar</span>
+                                    <span>Deletar</span>
+                                </button>
+                            </div>
                         ))}
                     </AnimatePresence>
-                </tbody>
-            </table>
+                </div>
+            </div>
             <Button onClick={() => addSet(index)} variant={"secondary"} className='w-full'>
                 <Plus className='scale-75' />
                 Adicionar série
