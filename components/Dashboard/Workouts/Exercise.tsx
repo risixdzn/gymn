@@ -24,6 +24,7 @@ import * as z from "zod";
 import { Dispatch, SetStateAction } from "react";
 import { useTheme } from "next-themes";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
+import { Input } from "@/components/ui/input";
 const ExerciseInfo = ({ exercise }: { exercise: Exercise }) => {
     return (
         <>
@@ -98,6 +99,41 @@ export default function ExerciseDisplay({
             setterFn("exercises", updatedExercises);
         }
     }
+
+    function setLoad(value: number, setIndex: number) {
+        const previousExercises: Exercise[] = watch("exercises");
+        const updatedExercises = previousExercises.map((exercise, exerciseIndex) => {
+            if (exerciseIndex === index) {
+                const updatedSets = exercise.sets?.map((set, innerSetIndex) => {
+                    if (innerSetIndex === setIndex) {
+                        return { ...set, load: value };
+                    }
+                    return set;
+                });
+                return { ...exercise, sets: updatedSets };
+            }
+            return exercise;
+        });
+        setterFn("exercises", updatedExercises);
+    }
+
+    function setReps(value: number, setIndex: number) {
+        const previousExercises: Exercise[] = watch("exercises");
+        const updatedExercises = previousExercises.map((exercise, exerciseIndex) => {
+            if (exerciseIndex === index) {
+                const updatedSets = exercise.sets?.map((set, innerSetIndex) => {
+                    if (innerSetIndex === setIndex) {
+                        return { ...set, reps: value };
+                    }
+                    return set;
+                });
+                return { ...exercise, sets: updatedSets };
+            }
+            return exercise;
+        });
+        setterFn("exercises", updatedExercises);
+    }
+
     const dragControls = useDragControls();
 
     function startDrag(event: any) {
@@ -183,7 +219,7 @@ export default function ExerciseDisplay({
                 <div id='head' className='w-full'>
                     <div className='text-left font-semibold text-muted-foreground text-xs uppercase flex'>
                         <div className='p-1 w-1/5'>Série</div>
-                        <div className='p-1 w-2/5'>Carga</div>
+                        <div className='p-1 w-2/5'>Carga (KG)</div>
                         <div className='p-1 w-2/5'>Repetições</div>
                     </div>
                 </div>
@@ -214,12 +250,42 @@ export default function ExerciseDisplay({
                                     <div className='p-3 w-1/5 '>
                                         {set.variant == "Normal" ? index + 1 : set.variant}
                                     </div>
-                                    <div className='p-3 w-2/5'>{set.load}</div>
-                                    <div className='p-3 w=2/5'>{set.reps}</div>
+                                    <div className='w-2/5 flex relative items-center'>
+                                        <Input
+                                            type='number'
+                                            value={set.load}
+                                            className='bg-transparent border-none w-20 lg:w-auto focus-visible:ring-0 
+                                            [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                                            placeholder='0'
+                                            onChange={(e) =>
+                                                setLoad(e.target.value as unknown as number, index)
+                                            }
+                                            onKeyDown={(evt) =>
+                                                ["e", "E", "+", "-"].includes(evt.key) &&
+                                                evt.preventDefault()
+                                            }
+                                        ></Input>
+                                    </div>
+                                    <div className='w=2/5 flex justify-between items-center'>
+                                        <Input
+                                            type='number'
+                                            value={set.reps}
+                                            className='bg-transparent border-none w-20 lg:w-auto focus-visible:ring-0 
+                                            [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                                            placeholder='0'
+                                            onChange={(e) =>
+                                                setReps(e.target.value as unknown as number, index)
+                                            }
+                                            onKeyDown={(evt) =>
+                                                ["e", "E", "+", "-"].includes(evt.key) &&
+                                                evt.preventDefault()
+                                            }
+                                        ></Input>
+                                    </div>
                                 </motion.div>
                                 <button
                                     draggable={false}
-                                    className='absolute  flex justify-between px-4 text-destructive-foreground items-center text-sm font-semibold -translate-y-[43px] translate-x-[1px] z-[1] w-[calc(100%-2px)] h-[calc(100%-2px)] bg-destructive'
+                                    className='absolute flex justify-between px-4 text-destructive-foreground items-center text-sm font-semibold -translate-y-[43px] translate-x-[1px] z-[1] w-[calc(100%-2px)] h-[calc(100%-2px)] bg-destructive'
                                 >
                                     <span>Deletar</span>
                                     <span>Deletar</span>
@@ -229,7 +295,12 @@ export default function ExerciseDisplay({
                     </AnimatePresence>
                 </div>
             </div>
-            <Button onClick={() => addSet(index)} variant={"secondary"} className='w-full'>
+            <Button
+                type='button'
+                onClick={() => addSet(index)}
+                variant={"secondary"}
+                className='w-full'
+            >
                 <Plus className='scale-75' />
                 Adicionar série
             </Button>

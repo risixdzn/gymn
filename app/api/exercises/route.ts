@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
         //para cada chave dos queryparams
         for (const key of queryParams) {
-            if (key === "muscle" || key === "equipment" || key === "level") {
+            if (key === "muscles" || key === "equipment" || key === "level") {
                 //filtra
                 const value = searchParams.get(key); //pega a chave, se nao for nula e nem vazia
                 if (value !== null && value !== "") {

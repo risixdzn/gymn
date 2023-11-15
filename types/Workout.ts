@@ -31,7 +31,7 @@ export const Exercise = z.object({
 });
 
 export const Workout = z.object({
-    title: z.string().max(50, "O nome deve ser menor.").optional(),
+    title: z.string().max(50, "O nome deve ser menor."),
     muscle_group: z.array(z.string()),
     description: z.string().max(400, "A descrição deve ser menor.").optional(),
     exercises: z.array(Exercise),

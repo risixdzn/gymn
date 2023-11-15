@@ -23,6 +23,48 @@ import { Workout } from "@/types/Workout";
 import { useEffect, useState } from "react";
 import { AnimatePresence, Reorder } from "framer-motion";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { muscles } from "@/lib/filters";
+
+const ExerciseNumbersData = ({
+    exerciseNumbersData,
+    className,
+}: {
+    exerciseNumbersData: {
+        totalExercises: number;
+        totalSets: number;
+        totalReps: number;
+        totalVolume: number;
+    };
+    className?: string;
+}) => {
+    return (
+        <div id='exerciseNumbersData' className={className}>
+            <h3 className='text-sm font-semibold mb-1'>Totais do treino</h3>
+            <span className='flex gap-4'>
+                <div>
+                    <h4 className='text-xs text-muted-foreground'>Exercícios</h4>
+                    <p className='text-sm'>{exerciseNumbersData.totalExercises}</p>
+                </div>
+                <div>
+                    <h4 className='text-xs text-muted-foreground'>Séries</h4>
+                    <p className='text-sm'>{exerciseNumbersData.totalSets}</p>
+                </div>
+                <div>
+                    <h4 className='text-xs text-muted-foreground'>Reps</h4>
+                    <p className='text-sm'>{exerciseNumbersData.totalReps}</p>
+                </div>
+                <div>
+                    <h4 className='text-xs text-muted-foreground'>Volume</h4>
+                    <p className='text-sm'>
+                        {exerciseNumbersData.totalVolume}
+                        <span className='text-xs ml-1 text-muted-foreground'>kg</span>
+                    </p>
+                </div>
+            </span>
+        </div>
+    );
+};
 
 export default function NewWorkout() {
     const form = useForm<z.infer<typeof Workout>>({
@@ -42,8 +84,60 @@ export default function NewWorkout() {
         mode: "all",
     });
 
+    const { toast } = useToast();
+
     function onSubmit(values: z.infer<typeof Workout>) {
-        console.log(values);
+        if (!values.exercises || values.exercises.length === 0) {
+            toast({
+                variant: "destructive",
+                title: "O treino deve ter pelo menos um exercício",
+                description: "Adicione um exercício e tente novamente.",
+            });
+            return;
+        }
+
+        // Validate each exercise
+        for (const exercise of values.exercises) {
+            // Validate if there is at least one set in each exercise
+            if (!exercise.sets || exercise.sets.length === 0) {
+                toast({
+                    variant: "destructive",
+                    title: "Todo exercício deve ter ao menos uma série",
+                    description: "Adicione uma série e tente novamente.",
+                });
+                return;
+            }
+        }
+
+        // Validate the title
+        if (!values.title || values.title.trim() === "") {
+            toast({
+                variant: "destructive",
+                title: "O treino deve ter um título",
+                description: "Dê um nome ao treino e tente novamente.",
+            });
+            return;
+        }
+
+        // If all validations pass, you can proceed with the submission
+
+        var muscleGroup: typeof muscles = [];
+        for (const exercise of values.exercises) {
+            if (exercise.muscles) {
+                for (const muscle of exercise.muscles) {
+                    if (!muscleGroup.includes(muscle)) {
+                        muscleGroup.push(muscle);
+                    }
+                }
+            }
+        }
+
+        const finalWorkout = {
+            ...values,
+            muscle_group: muscleGroup,
+        };
+
+        console.log(finalWorkout);
     }
 
     const { watch, setValue } = form;
@@ -62,9 +156,14 @@ export default function NewWorkout() {
                     // Increment totalSets by 1
                     acc.totalSets += 1;
                     // Increment totalReps by the reps in this set
-                    acc.totalReps += set.reps;
+                    acc.totalReps +=
+                        !isNaN(set.reps) && (set.reps as unknown as string) !== ""
+                            ? parseInt(set.reps as unknown as string, 10)
+                            : 0;
                     // Increment totalVolume by the load in this set
-                    acc.totalVolume += set.load;
+                    acc.totalVolume += !isNaN(set.load)
+                        ? parseInt((set.load * set.reps) as unknown as string, 10)
+                        : 0;
                 });
             }
             // Increment totalExercises for each exercise in the workout
@@ -87,36 +186,17 @@ export default function NewWorkout() {
     return (
         <>
             <Form {...form}>
-                <div className='lg:hidden w-full h-20  z-20  fixed -translate-x-5 px-5 -translate-y-3 flex items-center justify-between bg-background'>
-                    {/* Dados numericos do treino (séries, volume, reps...) */}
-                    <div id='exerciseNumbersData'>
-                        <h3 className='text-sm font-semibold mb-1'>Totais do treino</h3>
-                        <span className='flex gap-4'>
-                            <div>
-                                <h4 className='text-xs text-muted-foreground'>Exercícios</h4>
-                                <p className='text-sm'>{exerciseNumbersData.totalExercises}</p>
-                            </div>
-                            <div>
-                                <h4 className='text-xs text-muted-foreground'>Séries</h4>
-                                <p className='text-sm'>{exerciseNumbersData.totalSets}</p>
-                            </div>
-                            <div>
-                                <h4 className='text-xs text-muted-foreground'>Reps</h4>
-                                <p className='text-sm'>{exerciseNumbersData.totalReps}</p>
-                            </div>
-                            <div>
-                                <h4 className='text-xs text-muted-foreground'>Volume</h4>
-                                <p className='text-sm'>{exerciseNumbersData.totalVolume}</p>
-                            </div>
-                        </span>
-                    </div>
-                    <Button>Salvar</Button>
-                </div>
                 {/* Form de edição do treino */}
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className='mt-20 lg:mt-0 w-full grid lg:grid-cols-[20rem_minmax(0,_1fr)] xl:grid-cols-[25rem_minmax(0,_1fr)] gap-2'
                 >
+                    <div className='lg:hidden w-full h-20 z-20 fixed -translate-x-5 px-5 -translate-y-[5.75rem] flex items-center justify-between bg-background'>
+                        {/* Dados numericos do treino (séries, volume, reps...) */}
+                        <ExerciseNumbersData exerciseNumbersData={exerciseNumbersData} />
+                        {/* Botão de salvar */}
+                        <Button type='submit'>Salvar</Button>
+                    </div>
                     {/* Edição das informações textuais (titulo, desc...) */}
                     <div id='infoediting' className='border-border lg:border-r-[1px] lg:pr-8'>
                         <h2 className='text-lg lg:text-xl font-semibold'>Criar treino</h2>
@@ -138,20 +218,6 @@ export default function NewWorkout() {
                                 </FormItem>
                             )}
                         />
-                        {/* Selecionar grupo muscular */}
-                        <FormField
-                            control={form.control}
-                            name='muscle_group'
-                            render={({ field }) => (
-                                <FormItem className='mt-4'>
-                                    <FormLabel>Músculos</FormLabel>
-                                    <FormDescription className='-mt-2'>
-                                        Selecione os musculos alvo do exercício
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                         {/* Editar descrição */}
                         <FormField
                             control={form.control}
@@ -167,9 +233,11 @@ export default function NewWorkout() {
                                 </FormItem>
                             )}
                         />
-                        <pre className='bg-card overflow-hidden hidden lg:block'>
-                            {JSON.stringify(formValues, null, 4)}
-                        </pre>{" "}
+                        <Button className='w-full mt-4 hidden lg:block'>Salvar Treino</Button>
+                        <ExerciseNumbersData
+                            exerciseNumbersData={exerciseNumbersData}
+                            className='lg:block hidden mt-4'
+                        />
                     </div>
                     {/* Display exercicios selecionados */}
                     <div className='w-full overflow-x-hidden lg:pl-8 flex items-center flex-col relative'>
@@ -329,10 +397,6 @@ export default function NewWorkout() {
                     </div>
                 </form>
             </Form>
-
-            {/* <Button className='mt-10' onClick={() => setValue("muscle_group", ["Test"])}>
-                Add muscle
-            </Button> */}
         </>
     );
 }
