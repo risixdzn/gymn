@@ -43,7 +43,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
     return (
         <div
             id='bottomnav'
-            className='w-full h-20 fixed z-[2] bottom-0 bg-card rounded-t-3xl flex items-center justify-around px-5'
+            className='w-full h-20 fixed z-[20] bottom-0 bg-card rounded-t-3xl flex items-center justify-around px-5'
         >
             <NavLink pathname={pathname} href={"home"} text={"Home"} icon={<Home />} />
             <NavLink pathname={pathname} href={"explore"} text={"Explorar"} icon={<Search />} />
