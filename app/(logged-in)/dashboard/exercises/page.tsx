@@ -17,7 +17,7 @@ export default function Exercises() {
 
     //Defines query params
     const queryParams: Record<string, string | null> = {
-        muscle: searchParams.get("muscle"),
+        muscles: searchParams.get("muscles"),
         equipment: searchParams.get("equipment"),
         difficulty: searchParams.get("level"),
     };

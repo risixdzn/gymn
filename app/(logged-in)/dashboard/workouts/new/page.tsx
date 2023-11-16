@@ -25,6 +25,7 @@ import { AnimatePresence, Reorder } from "framer-motion";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { muscles } from "@/lib/filters";
+import axios from "axios";
 
 const ExerciseNumbersData = ({
     exerciseNumbersData,
@@ -86,7 +87,7 @@ export default function NewWorkout() {
 
     const { toast } = useToast();
 
-    function onSubmit(values: z.infer<typeof Workout>) {
+    async function onSubmit(values: z.infer<typeof Workout>) {
         if (!values.exercises || values.exercises.length === 0) {
             toast({
                 variant: "destructive",
@@ -132,12 +133,41 @@ export default function NewWorkout() {
             }
         }
 
+        //convert all the set reps and load to numbers (they can be strings if altered on the input)
+
+        const updatedExercises = values.exercises.map((exercise) => {
+            const updatedSets = exercise.sets?.map((set) => ({
+                ...set,
+                reps: parseInt(set.reps as unknown as string, 10),
+                load: parseFloat(set.load as unknown as string),
+            }));
+            return {
+                ...exercise,
+                sets: updatedSets,
+            };
+        });
+
         const finalWorkout = {
             ...values,
             muscle_group: muscleGroup,
+            exercises: updatedExercises,
         };
 
-        console.log(finalWorkout);
+        const { data } = await axios.post("/api/workouts", finalWorkout);
+        if (data.success === true) {
+            console.log(data);
+            toast({
+                variant: "success",
+                title: `Treino ${values.title} criado com sucesso!`,
+            });
+        } else {
+            console.log(data);
+            toast({
+                variant: "destructive",
+                title: "Ocorreu um erro ao criar o treino",
+                description: "Aguarde e tente novamente",
+            });
+        }
     }
 
     const { watch, setValue } = form;
@@ -195,7 +225,9 @@ export default function NewWorkout() {
                         {/* Dados numericos do treino (séries, volume, reps...) */}
                         <ExerciseNumbersData exerciseNumbersData={exerciseNumbersData} />
                         {/* Botão de salvar */}
-                        <Button type='submit'>Salvar</Button>
+                        <Button type='submit' onClick={() => onSubmit(formValues)}>
+                            Salvar
+                        </Button>
                     </div>
                     {/* Edição das informações textuais (titulo, desc...) */}
                     <div id='infoediting' className='border-border lg:border-r-[1px] lg:pr-8'>
@@ -233,7 +265,13 @@ export default function NewWorkout() {
                                 </FormItem>
                             )}
                         />
-                        <Button className='w-full mt-4 hidden lg:block'>Salvar Treino</Button>
+                        <Button
+                            className='w-full mt-4 hidden lg:block'
+                            onClick={() => onSubmit(formValues)}
+                            type='submit'
+                        >
+                            Salvar Treino
+                        </Button>
                         <ExerciseNumbersData
                             exerciseNumbersData={exerciseNumbersData}
                             className='lg:block hidden mt-4'

@@ -18,7 +18,7 @@ type FilterDrawerProps = {
     drawerDescription: string;
     allowAnyFilter?: boolean | true;
     options: string[];
-    filterKey: "muscle" | "level" | "equipment";
+    filterKey: "muscles" | "level" | "equipment";
     currentFilters: {
         muscle: string | null;
         equipment: string | null;
