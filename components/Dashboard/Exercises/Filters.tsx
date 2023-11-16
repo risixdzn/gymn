@@ -17,7 +17,7 @@ export default function Filters({ className }: { className: string }) {
                 drawerTitle='Grupos musculares'
                 drawerDescription='Selecione o grupo musculares para filtrar os exercícios.'
                 options={muscles}
-                filterKey={"muscle"}
+                filterKey={"muscles"}
                 allowAnyFilter={true}
                 currentFilters={currentFilters}
             />

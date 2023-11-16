@@ -11,7 +11,7 @@ import { Dumbbell, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
-import { equipments, levels, muscles } from "@/lib/filters";
+import { equipments, levels, muscles as musclesfilters } from "@/lib/filters";
 import { Button } from "@/components/ui/button";
 import { type Exercise } from "@/types/Workout";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -106,14 +106,14 @@ export default function ExerciseSelector({
     watch: UseFormWatch<z.infer<typeof Workout>>;
     setExerciseSelectorOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-    const [muscle, setMuscle] = useState<string | null>(null);
+    const [muscles, setMuscles] = useState<string | null>(null);
     const [equipment, setEquipment] = useState<string | null>(null);
     const [level, setLevel] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedExercises, setSelectedExercises] = useState<Exercise[] | null>([]);
 
     const filteredFilters = Object.entries({
-        muscle,
+        muscles,
         equipment,
         level,
     }).reduce((acc, [key, value]) => {
@@ -126,7 +126,7 @@ export default function ExerciseSelector({
     const queryString = new URLSearchParams(filteredFilters);
 
     const { data, isLoading } = useQuery({
-        queryKey: ["exercises", muscle, equipment, level], //key and params to define the query
+        queryKey: ["exercises", muscles, equipment, level], //key and params to define the query
         queryFn: () => {
             //function called on querying
             return axios
@@ -219,15 +219,15 @@ export default function ExerciseSelector({
                     <Filter
                         title='Músculo'
                         description='Selecione o músculo para filtrar os resultados.'
-                        setterFn={setMuscle}
-                        options={muscles}
-                        state={muscle}
+                        setterFn={setMuscles}
+                        options={musclesfilters}
+                        state={muscles}
                         trigger={
                             <Button
                                 className='lg:w-auto w-full text-xs h-6 lg:h-10 lg:text-sm'
-                                variant={muscle ? "default" : "secondary"}
+                                variant={muscles ? "default" : "secondary"}
                             >
-                                {muscle ? muscle : "Selecionar músculo"}
+                                {muscles ? muscles : "Selecionar músculo"}
                             </Button>
                         }
                     />
