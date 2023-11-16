@@ -9,7 +9,8 @@ type ProfilePageProps = {
 };
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = cookies();
+    const supabase = createServerComponentClient({ cookies: () => cookieStore });
 
     const {
         data: { session },
