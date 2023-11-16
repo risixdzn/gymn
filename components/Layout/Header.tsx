@@ -4,7 +4,8 @@ import Navbar from "./Navbar";
 import CTABanner from "../Layout/CTABanner";
 
 export default async function Header() {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = cookies();
+    const supabase = createServerComponentClient({ cookies: () => cookieStore });
 
     const {
         data: { session },

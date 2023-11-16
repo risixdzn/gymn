@@ -7,7 +7,8 @@ import MobileLayout from "./Others/MobileLayout";
 import { cookies } from "next/headers";
 
 export default async function DashUi() {
-    const supabase = createServerComponentClient({ cookies });
+    const cookieStore = cookies();
+    const supabase = createServerComponentClient({ cookies: () => cookieStore });
     const {
         data: { session },
         error,
