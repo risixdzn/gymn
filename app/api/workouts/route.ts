@@ -19,7 +19,8 @@ export async function POST(request: Request) {
     }
 
     try {
-        const workout = bodyParser.parse(await request.json());
+        const workout: z.infer<typeof Workout> = bodyParser.parse(await request.json());
+
         const { error } = await supabase
             .from("workouts")
             .insert({ owner: session?.user.id, workout: workout });
@@ -46,5 +47,38 @@ export async function POST(request: Request) {
                 { status: 500 }
             );
         }
+    }
+}
+
+export async function GET(request: Request) {
+    const cookieStore = cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+
+    const {
+        data: { session },
+        error,
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    try {
+        const { data, error } = await supabase
+            .from("workouts")
+            .select("*")
+            .eq("owner", session?.user.id);
+        if (error) {
+            return NextResponse.json({ success: false, error });
+        }
+        return NextResponse.json({ success: true, data });
+    } catch (error) {
+        return NextResponse.json(
+            {
+                success: false,
+                error: "unknown",
+            },
+            { status: 500 }
+        );
     }
 }
