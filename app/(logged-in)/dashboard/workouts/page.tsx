@@ -27,7 +27,7 @@ export default function Workouts() {
             </p>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 mt-4 mb-20 lg:mb-0'>
                 {data?.data.map((workout: z.infer<typeof Workout>, index: number) => (
-                    <div>{workout.title}</div>
+                    <div key={index}>{workout.title}</div>
                 ))}
             </div>
         </>
