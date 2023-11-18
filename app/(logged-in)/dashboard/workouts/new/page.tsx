@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import ExerciseDisplay from "@/components/Dashboard/Workouts/Exercise";
 import ExerciseSelector from "@/components/Dashboard/Workouts/ExerciseSelector";
 import { Workout } from "@/types/Workout";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { AnimatePresence, Reorder } from "framer-motion";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
@@ -87,7 +87,9 @@ export default function NewWorkout() {
 
     const { toast } = useToast();
 
-    async function onSubmit(values: z.infer<typeof Workout>) {
+    async function onSubmit(event: FormEvent, values: z.infer<typeof Workout>) {
+        event.preventDefault();
+        //Validade if the workout has exercises
         if (!values.exercises || values.exercises.length === 0) {
             toast({
                 variant: "destructive",
@@ -120,7 +122,7 @@ export default function NewWorkout() {
             return;
         }
 
-        // If all validations pass, you can proceed with the submission
+        // If all validations pass, proceed with the submission
 
         var muscleGroup: typeof muscles = [];
         for (const exercise of values.exercises) {
@@ -138,14 +140,22 @@ export default function NewWorkout() {
         const updatedExercises = values.exercises.map((exercise) => {
             const updatedSets = exercise.sets?.map((set) => ({
                 ...set,
-                reps: parseInt(set.reps as unknown as string, 10),
-                load: parseFloat(set.load as unknown as string),
+                reps:
+                    (set.reps as unknown as string) !== ""
+                        ? parseInt(set.reps as unknown as string, 10)
+                        : 0,
+                load:
+                    (set.load as unknown as string) !== ""
+                        ? parseFloat(set.load as unknown as string)
+                        : 0,
             }));
             return {
                 ...exercise,
                 sets: updatedSets,
             };
         });
+
+        console.log(updatedExercises);
 
         const finalWorkout = {
             ...values,
@@ -217,15 +227,12 @@ export default function NewWorkout() {
         <>
             <Form {...form}>
                 {/* Form de edição do treino */}
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className='mt-20 lg:mt-0 w-full grid lg:grid-cols-[20rem_minmax(0,_1fr)] xl:grid-cols-[25rem_minmax(0,_1fr)] gap-2'
-                >
+                <form className='mt-20 lg:mt-0 w-full grid lg:grid-cols-[20rem_minmax(0,_1fr)] xl:grid-cols-[25rem_minmax(0,_1fr)] gap-2'>
                     <div className='lg:hidden w-full h-20 z-20 fixed -translate-x-5 px-5 -translate-y-[5.75rem] flex items-center justify-between bg-background'>
                         {/* Dados numericos do treino (séries, volume, reps...) */}
                         <ExerciseNumbersData exerciseNumbersData={exerciseNumbersData} />
                         {/* Botão de salvar */}
-                        <Button type='submit' onClick={() => onSubmit(formValues)}>
+                        <Button type='submit' onClick={(event) => onSubmit(event, formValues)}>
                             Salvar
                         </Button>
                     </div>
@@ -267,7 +274,7 @@ export default function NewWorkout() {
                         />
                         <Button
                             className='w-full mt-4 hidden lg:block'
-                            onClick={() => onSubmit(formValues)}
+                            onClick={(event) => onSubmit(event, formValues)}
                             type='submit'
                         >
                             Salvar Treino
