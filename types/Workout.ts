@@ -14,6 +14,13 @@ export type Exercise = {
     }[];
 };
 
+export type DBWorkout = {
+    created_at: string;
+    owner: string;
+    id: string;
+    workout: z.infer<typeof Workout>;
+};
+
 export const Set = z.object({
     variant: z.enum(["Aquecimento", "Normal", "Falha"]),
     load: z.number(),
