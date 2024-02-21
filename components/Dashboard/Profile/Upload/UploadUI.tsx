@@ -12,12 +12,12 @@ import { ReviewPic } from "./ReviewPic";
 export type UploadStages = "selectpic" | "reviewpic";
 
 export default function UploadUI({
-    displayUser,
+    user,
     setDialogOpen,
     refetchUser,
     uploadingTo,
 }: {
-    displayUser: UserProfile | null;
+    user: UserProfile | null;
     setDialogOpen: Dispatch<SetStateAction<boolean>>;
     refetchUser: Function;
     uploadingTo: "avatars" | "banners";
@@ -51,8 +51,8 @@ export default function UploadUI({
                         onClick={() =>
                             uploadPicture({
                                 files: files,
-                                username: displayUser?.username,
-                                userId: displayUser?.id,
+                                username: user?.username,
+                                userId: user?.id,
                                 setFiles: setFiles,
                                 setDialogOpen: setDialogOpen,
                                 setLoading: setLoading,
@@ -83,7 +83,7 @@ export default function UploadUI({
                 uploadStage == "selectpic" ? (
                     <DropArea setFiles={setFiles} setUploadStage={setUploadStage} />
                 ) : (
-                    <ReviewPic files={files} displayUser={displayUser} uploadingTo={uploadingTo} />
+                    <ReviewPic files={files} user={user} uploadingTo={uploadingTo} />
                 )
             ) : (
                 //loader ui

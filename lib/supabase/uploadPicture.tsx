@@ -2,6 +2,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import imageCompression from "browser-image-compression";
+import { toast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 
 type uploadPictureProps = {
     files: any; //arqvuios
@@ -50,6 +53,16 @@ export const uploadPicture = async ({
             } else {
                 console.log("Foto nova criada, sem nenhuma pré-existente", data);
                 setDialogOpen(false);
+                toast({
+                    variant: "success",
+                    title: "Imagem atualizada",
+                    description: "Atualize a pagina para exibir as alterações.",
+                    action: (
+                        <ToastAction onClick={() => window.location.reload()} altText='Atualizar'>
+                            Atualizar
+                        </ToastAction>
+                    ),
+                });
             }
             setFiles([]);
             refetchUser();
@@ -64,6 +77,16 @@ export const uploadPicture = async ({
             } else {
                 console.log("Foto atualizada", data);
                 setDialogOpen(false);
+                toast({
+                    variant: "success",
+                    title: "Imagem atualizada",
+                    description: "Atualize a pagina para exibir as alterações.",
+                    action: (
+                        <ToastAction onClick={() => window.location.reload()} altText='Atualizar'>
+                            Atualizar
+                        </ToastAction>
+                    ),
+                });
             }
             setFiles([]);
             refetchUser();

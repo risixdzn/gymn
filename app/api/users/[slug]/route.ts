@@ -3,23 +3,30 @@ import * as z from "zod";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-const uuidParser = z.object({
-    username: z
+const paramsParser = z.object({
+    slug: z
         .string()
         .min(2)
-        .max(30)
-        .refine((x) => /^[a-zA-Z0-9]*$/.test(x)),
+        .max(36)
+        .refine((x) => /^[a-zA-Z0-9-]*$/.test(x)),
 });
 
-export async function GET(req: Request, { params }: { params: { username: string } }) {
-    const username = params.username;
+export async function GET(req: Request, { params }: { params: { slug: string } }) {
+    const slug = params.slug;
     const cookieStore = cookies();
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-    if (username === null) return new NextResponse("Missing username parameter.", { status: 400 });
+    if (slug === null) return new NextResponse("Missing username/uuid parameter.", { status: 400 });
 
     try {
-        uuidParser.parse({ username });
+        paramsParser.parse({ slug });
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
+
+        const isUuid = uuidRegex.test(slug);
+
+        let where = isUuid ? "id" : "username";
+
         const { data, error } = await supabase
             .from("users")
             .select(
@@ -28,16 +35,17 @@ export async function GET(req: Request, { params }: { params: { username: string
                 username,
                 profile,
                 display_name,
-                avatars!users_avatar_id_fkey(avatar_url),
-                banners!users_banner_id_fkey(banner_url),
+                avatar_id,
+                banner_id,
                 bio,
                 location`
             )
-            .eq("username", username)
+            .eq(where, slug)
             .single();
         if (error) {
-            return NextResponse.json(error, { status: 406 });
+            return NextResponse.json("Unexistent user", { status: 404 });
         }
+
         return NextResponse.json(data);
     } catch (error) {
         // Handle validation error

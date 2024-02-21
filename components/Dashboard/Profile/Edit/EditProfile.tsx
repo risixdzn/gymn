@@ -15,20 +15,14 @@ import { EditProfileForm } from "./EditForm";
 import { cn } from "@/lib/utils";
 
 type EditProfileProps = {
-    displayUser: UserProfile | null;
+    user: UserProfile | null;
     refetchUser: () => void;
     className?: string;
     width?: "full" | "auto";
 };
 
-export default function EditProfile({
-    displayUser,
-    refetchUser,
-    className,
-    width,
-}: EditProfileProps) {
+export default function EditProfile({ user, refetchUser, className, width }: EditProfileProps) {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const { screenWidth } = useGetScreenWidth();
 
     return (
         <>
@@ -41,7 +35,7 @@ export default function EditProfile({
                 <SheetContent className='w-[calc(100%-4rem)] pt-4' closeButtonVisible={false}>
                     <div className='h-full overflow-scroll scrollbar scrollbar-w-[4px] scrollbar-thumb-gray-300/30 scrollbar-track-transparent '>
                         <EditProfileForm
-                            displayUser={displayUser}
+                            user={user}
                             setDrawerOpen={setDrawerOpen}
                             refetchUser={refetchUser}
                         />

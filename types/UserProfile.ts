@@ -7,8 +7,8 @@ export type UserProfile = {
     display_name: string;
     profile: string;
     email: string;
-    avatar_url: string | StaticImageData;
-    banner_url: string | StaticImageData | null;
+    avatar_id: string;
+    banner_id: string;
     bio: string;
     location: string;
 };

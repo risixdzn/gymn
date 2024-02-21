@@ -1,17 +1,27 @@
-import { ProfilePictureBannerProps } from "../PersonalProfile";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Edit, X } from "lucide-react";
 import UploadUI from "../Upload/UploadUI";
 import Image from "next/image";
+import { UserProfile } from "@/types/UserProfile";
+import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 export function ProfilePicture({
     className,
     dialogOpen,
     setDialogOpen,
-    displayUser,
+    user,
     refetchUser,
     ableToEdit,
-}: ProfilePictureBannerProps) {
+}: {
+    className?: string;
+    dialogOpen: boolean;
+    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    user: UserProfile;
+    refetchUser: () => void;
+    ableToEdit: boolean;
+}) {
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger className='absolute'>
@@ -24,31 +34,26 @@ export function ProfilePicture({
                     )}
                 >
                     {ableToEdit && (
-                        <div className='hover:opacity-100 opacity-0 w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center text-white'>
+                        <div className='hover:opacity-100 opacity-0 z-[2] w-full h-full bg-black/70 rounded-2xl transition-all absolute flex flex-col gap-2 items-center justify-center text-white'>
                             <Edit className='xl:scale-150 drop-shadow-lg pointer-events-none' />
                             <p className='text-sm drop-shadow-lg  pointer-events-none'>Alterar</p>
                         </div>
                     )}
-                    {displayUser && (
-                        <Image
-                            width={300}
-                            height={300}
-                            alt=''
+                    <Avatar className='w-full h-full object-cover z-[]'>
+                        <AvatarImage
                             className='w-full h-full object-cover z-[1]'
-                            key={1}
-                            src={displayUser.avatar_url}
+                            src={`/api/users/${user.username}/avatar`}
+                            alt={`@${user?.username}`}
                         />
-                    )}
-                    <div className='w-full h-full absolute flex items-center justify-center'>
-                        <h2 className='text-4xl'>
-                            {displayUser?.username.slice(0, 2).toUpperCase()}
-                        </h2>
-                    </div>
+                        <AvatarFallback className='text-4xl'>
+                            {user?.username?.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                    </Avatar>
                 </div>
             </DialogTrigger>
             <DialogContent>
                 <UploadUI
-                    displayUser={displayUser}
+                    user={user}
                     setDialogOpen={setDialogOpen}
                     refetchUser={refetchUser}
                     uploadingTo='avatars'
