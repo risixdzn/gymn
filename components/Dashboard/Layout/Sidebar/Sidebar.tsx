@@ -4,7 +4,6 @@ import {
     Bell,
     Compass,
     Layers,
-    Menu,
     User,
     Activity,
     Dumbbell,
@@ -13,24 +12,33 @@ import {
     BadgeHelp,
 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import GymnIcon from "../../../../public/g_SquareIcon.png";
 import Image from "next/image";
 import LinkButton from "./ui/LinkButton";
 import SearchCommand from "./ui/SearchCommand";
 import { Session } from "@supabase/auth-helpers-nextjs";
-import { useGetCurrentProfile } from "@/lib/supabase/getProfile";
-import UserProfileCard from "./ui/UserProfileCard";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useGetRouteName } from "@/lib/hooks/useGetRouteName";
-import { useTranslateAppRoutes } from "@/lib/hooks/useTranslateAppRoutes";
-import BottomNav from "../Others/BottomNav";
-import Breadcrumbs from "../Others/Breadcrumbs";
-import Header from "../Others/Header";
+import { useSearchParams } from "next/navigation";
 import { SidebarData } from "./SidebarContext";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import ProfileHoverCard from "../../Profile/ProfileHoverCard";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserProfile } from "@/types/UserProfile";
+import { ModeToggle } from "@/components/ModeToggle";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Sidebar({ session }: { session: Session | null }) {
-    const { displayUser } = useGetCurrentProfile({ session });
+    const [user, setUser] = useState<UserProfile | null>(null);
+
+    const { data } = useQuery({
+        queryKey: ["sidebarprofile"], //key and params to define the query
+        queryFn: () => {
+            return axios
+                .get(`/api/users/${session?.user?.id}`)
+                .then((res) => res.data && setUser(res.data));
+        },
+        retry: false,
+    });
     const { isClient, screenWidth, setSidebarOpen, sidebarOpen, pathname } =
         useContext(SidebarData);
     const searchParams = useSearchParams();
@@ -115,8 +123,45 @@ flex justify-between flex-col ${screenWidth >= 1024 ? "" : sidebarOpen ? "" : "-
                     </div>
                 </div>
 
-                <div id='bottomsection' className='w-full h-auto border-t-[1px] border-border'>
-                    <UserProfileCard displayUser={displayUser} screenWidth={screenWidth} />
+                <div
+                    id='bottomsection'
+                    className='w-full h-[7.5rem] border-t-[1px] border-border py-5 px-5'
+                >
+                    {user ? (
+                        <ProfileHoverCard user={user} className='mb-8'>
+                            <div className='flex flex-row items-center gap-4'>
+                                <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
+                                    <Avatar className='rounded-md w-11 h-11'>
+                                        <AvatarImage
+                                            className='rounded-md'
+                                            src={`/api/users/${user.username}/avatar`}
+                                        ></AvatarImage>
+                                        <AvatarFallback>{user.username.slice(0, 2)}</AvatarFallback>
+                                    </Avatar>
+                                </div>
+                                <div>
+                                    <h3 className='text-sm font-semibold'>{user.display_name}</h3>
+                                    <h3 className='relative text-sm text-muted-foreground w-[10rem] truncate'>
+                                        {user.username}
+                                    </h3>
+                                </div>
+                                <ModeToggle side='top' />
+                            </div>
+                        </ProfileHoverCard>
+                    ) : (
+                        <div className='flex flex-row items-center justify-between gap-4'>
+                            <div className='flex flex-row items-center gap-4'>
+                                <div className='w-11 h-11 bg-card rounded-md overflow-hidden'>
+                                    <Skeleton className='w-11 h-11' />
+                                </div>
+                                <div className='space-y-2'>
+                                    <Skeleton className='w-20 h-4' />
+                                    <Skeleton className='w-10 h-3' />
+                                </div>
+                            </div>
+                            <Skeleton className='w-10 h-10' />
+                        </div>
+                    )}
                 </div>
             </div>
         </>

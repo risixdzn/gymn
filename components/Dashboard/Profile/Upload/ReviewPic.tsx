@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 
 interface ReviewPicProps {
     files: File[];
-    displayUser: UserProfile | null;
+    user: UserProfile | null;
     uploadingTo: "avatars" | "banners";
 }
 
-export function ReviewPic({ files, displayUser, uploadingTo }: ReviewPicProps) {
+export function ReviewPic({ files, user, uploadingTo }: ReviewPicProps) {
     return (
         <>
             <div className='relative p-4 border-border border-[1px] rounded-lg bg-gradient-to-b from-transparent to-border/20'>
@@ -27,12 +27,11 @@ export function ReviewPic({ files, displayUser, uploadingTo }: ReviewPicProps) {
                                   className='w-full h-full object-cover rounded-t-2xl'
                               />
                           ))
-                        : displayUser &&
-                          displayUser.banner_url !== null && (
+                        : user && (
                               <Image
                                   width={1500}
                                   height={700}
-                                  src={displayUser.banner_url as string}
+                                  src={`/api/users/${user.username}/banner`}
                                   alt=''
                                   key={1}
                                   className='w-full h-full object-cover rounded-t-2xl'
@@ -56,11 +55,11 @@ export function ReviewPic({ files, displayUser, uploadingTo }: ReviewPicProps) {
                                   className='w-full h-full object-cover'
                               />
                           ))
-                        : displayUser && (
+                        : user && (
                               <Image
                                   width={300}
                                   height={300}
-                                  src={displayUser?.avatar_url}
+                                  src={`/api/users/${user.username}/avatar`}
                                   alt=''
                                   key={1}
                                   className='w-full h-full object-cover'
@@ -78,14 +77,14 @@ export function ReviewPic({ files, displayUser, uploadingTo }: ReviewPicProps) {
                 </div>
                 <div id='topinfo' className='w-full h-auto flex flex-col pl-2 mt-12 py-5  gap-1'>
                     <h1 className='text-2xl tracking-tight font-semibold flex items-center'>
-                        {displayUser?.display_name}
+                        {user?.display_name}
                         <span className='text-muted-foreground inline-block pl-2 text-sm'>
-                            {"@" + displayUser?.username}
+                            {"@" + user?.username}
                         </span>
                     </h1>
                     <span>
                         <Badge className='w-auto'>
-                            {displayUser?.profile == "Member" ? "Membro" : "Dono de .academia."}
+                            {user?.profile == "Member" ? "Membro" : "Dono de .academia."}
                         </Badge>
                     </span>
                 </div>

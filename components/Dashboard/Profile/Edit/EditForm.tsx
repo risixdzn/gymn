@@ -30,18 +30,18 @@ export type UserCanEdit = {
     location: string | undefined;
 };
 type EditProfileFormProps = {
-    displayUser: UserProfile | null;
+    user: UserProfile | null;
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     refetchUser: () => void;
 };
 
-export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: EditProfileFormProps) {
+export function EditProfileForm({ user, setDrawerOpen, refetchUser }: EditProfileFormProps) {
     const form = useForm<z.infer<typeof EditProfileFormSchema>>({
         resolver: zodResolver(EditProfileFormSchema),
         defaultValues: {
-            display_name: displayUser?.display_name,
-            bio: displayUser?.bio !== null ? displayUser?.bio : "",
-            location: displayUser?.location !== null ? displayUser?.location : "",
+            display_name: user?.display_name,
+            bio: user?.bio !== null ? user?.bio : "",
+            location: user?.location !== null ? user?.location : "",
         },
         mode: "all",
     });
@@ -51,9 +51,9 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
 
     async function onSubmit(values: z.infer<typeof EditProfileFormSchema>) {
         const currentUser: UserCanEdit = {
-            display_name: displayUser?.display_name,
-            bio: displayUser?.bio,
-            location: displayUser?.location,
+            display_name: user?.display_name,
+            bio: user?.bio,
+            location: user?.location,
         };
         const newUser: UserCanEdit = {
             display_name: values.display_name,
@@ -82,7 +82,7 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
         console.log("Valores editados", editedValues);
         await editProfile({
             editedData: editedValues,
-            userId: displayUser?.id as string,
+            userId: user?.id as string,
             setLoading: setLoading,
             toast: toast,
         });
@@ -112,7 +112,7 @@ export function EditProfileForm({ displayUser, setDrawerOpen, refetchUser }: Edi
                     </div>
                     {/* actual form with profile preview */}
                     <div className='max-h-full h-auto overflow-y-scrol'>
-                        <ProfilePreview displayUser={displayUser} />
+                        <ProfilePreview user={user} />
                         <div className='mt-12'>
                             <FormField
                                 control={form.control}
