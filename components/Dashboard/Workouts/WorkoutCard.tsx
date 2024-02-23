@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +12,16 @@ import {
 import GlowingCard from "@/components/ui/glowingCard";
 import { cn } from "@/lib/utils";
 import { DBWorkout } from "@/types/Workout";
-import { Dumbbell, Edit, Menu, MoreVertical, Trash } from "lucide-react";
-import { ReactNode } from "react";
+import { Dumbbell, Edit, MoreVertical, Trash } from "lucide-react";
+import Link from "next/link";
+import {
+    TableHead,
+    TableRow,
+    TableHeader,
+    TableCell,
+    TableBody,
+    Table,
+} from "@/components/ui/table";
 
 export default function WorkoutCard({
     workout,
@@ -36,7 +45,7 @@ export default function WorkoutCard({
     return (
         <GlowingCard
             className={cn(
-                "dark:hover:bg-card group w-full h-auto bg-card space-y-1 relative",
+                "dark:hover:bg-card relative group w-full h-[30rem] bg-card space-y-1 p-6",
                 className
             )}
         >
@@ -44,7 +53,7 @@ export default function WorkoutCard({
                 <DropdownMenuTrigger asChild>
                     <Button
                         size={"icon"}
-                        className='absolute right-0 mr-4 bg-card'
+                        className='absolute right-0 mr-6 bg-card'
                         variant={"outline"}
                     >
                         <MoreVertical className='' />
@@ -68,26 +77,66 @@ export default function WorkoutCard({
             </h2>
             <span className='flex gap-2 w-full flex-wrap  -translate-y-1'>
                 {workout.workout.muscle_group.map((muscle) => (
-                    <Badge key={muscle} className='rounded-md'>
+                    <Badge key={muscle} variant={"secondary"} className='rounded-md'>
                         {muscle}
                     </Badge>
                 ))}
             </span>
-            <section className='max-h-[11rem] overflow-clip relative'>
-                <h3 className='font-semibold'>Exercícios:</h3>
-                <div className=' mb-1 min-h-[2.5rem] flex items-center'>
-                    <span className='text-sm line-clamp-2 text-muted-foreground'>
-                        {workout.workout.exercises.map((exercise, index) => (
-                            <a className='' key={index}>
-                                {`${exercise.name}${
-                                    index !== workout.workout.exercises.length - 1 ? ", " : ""
-                                }`}
-                            </a>
-                        ))}
-                    </span>
+            <div className='flex items-start space-x-4 pt-2'>
+                <Avatar>
+                    <AvatarImage src={`/api/users/${workout.owner}/avatar?cache=1`} />
+                    <AvatarFallback>?</AvatarFallback>
+                </Avatar>
+                <div className='space-y-1'>
+                    <h4 className='text-sm font-semibold w-full overflow-clip truncate'>
+                        Criado por{" "}
+                        <Link
+                            href={`/dashboard/profile/${workout.users.username}`}
+                            className='truncate overflow-clip underline'
+                        >
+                            {workout.users.username}
+                        </Link>
+                    </h4>
+                    <p className='text-xs text-gray-500 dark:text-gray-400'>
+                        Created on: 25th Dec, 2023
+                    </p>
+                </div>
+            </div>
+            <section className=' overflow-clip relative'>
+                <h3 className='font-semibold mt-4'>Exercícios:</h3>
+                <div className=' mb-1 min-h-[2.5rem] flex items-center overflow-hidden '>
+                    <Table className='w-full font-sm mt-2 overflow-hidden'>
+                        <TableHeader>
+                            <TableRow className=''>
+                                <TableHead className='text-xs'>Nome</TableHead>
+                                <TableHead className='text-xs'>Séries</TableHead>
+                                <TableHead className='text-xs'>Nível</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody className='relative'>
+                            <div className='absolute w-full h-full bg-gradient-to-b from-transparent to-card z-[1]'></div>
+                            {workout.workout.exercises.slice(0, 3).map((exercise, index) => (
+                                <>
+                                    <TableRow key={index}>
+                                        <TableCell className='text-xs'>{exercise.name}</TableCell>
+                                        <TableCell className='text-xs'>
+                                            <Badge variant={"secondary"}>
+                                                {exercise.muscles[0]}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className='text-xs'>
+                                            <Badge variant={exercise.level[0] as any}>
+                                                {exercise.level[0]}
+                                            </Badge>
+                                        </TableCell>
+                                    </TableRow>
+                                </>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </div>
             </section>
-            <Button className='w-full'>
+            <Button className='w-[calc(100%-(2*1.5rem))] absolute z-[1] bottom-0 -translate-y-6'>
                 Iniciar treino
                 <Dumbbell className='scale-75 ml-2' />
             </Button>

@@ -14,12 +14,39 @@ export type Exercise = {
     }[];
 };
 
-export type DBWorkout = {
-    created_at: string;
-    owner: string;
+export interface DBWorkout {
     id: string;
-    workout: z.infer<typeof Workout>;
-};
+    owner: string;
+    created_at: string;
+    workout: Workout;
+    users: Users;
+}
+
+export interface Workout {
+    title: string;
+    exercises: z.infer<typeof Exercise>[];
+    description: string;
+    muscle_group: string[];
+}
+
+export interface Set {
+    load: number;
+    reps: number;
+    variant: string;
+}
+
+export interface Users {
+    id: string;
+    created_at: string;
+    username: string;
+    display_name: string;
+    profile: string;
+    email: string;
+    avatar_id: string;
+    banner_id: string;
+    bio: string;
+    location: string;
+}
 
 export const Set = z.object({
     variant: z.enum(["Aquecimento", "Normal", "Falha"]),
