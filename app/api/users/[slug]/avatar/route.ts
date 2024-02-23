@@ -47,11 +47,15 @@ export async function GET(req: NextRequest) {
                 // Get the image buffer
                 const imageBuffer = await imageResponse.arrayBuffer();
 
+                const cache = req.nextUrl.searchParams.get("cache");
+
                 // Return the image with appropriate headers
                 return new NextResponse(Buffer.from(imageBuffer), {
                     headers: {
                         "Content-Type": "image/webp",
-                        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+                        "Cache-Control": cache
+                            ? "public, max-age=86400"
+                            : "no-store, no-cache, must-revalidate, max-age=0",
                         Expires: "0",
                     },
                 });

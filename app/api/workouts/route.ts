@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
         const { error } = await supabase
             .from("workouts")
-            .insert({ owner: session?.user.id, workout: workout });
+            .insert({ owner: session?.user?.id, workout: workout });
         if (error) {
             return NextResponse.json({ success: false, error });
         }
@@ -66,8 +66,8 @@ export async function GET(request: Request) {
     try {
         const { data, error } = await supabase
             .from("workouts")
-            .select("*")
-            .eq("owner", session?.user.id);
+            .select("*, users(*)")
+            .eq("owner", session?.user?.id);
         if (error) {
             return NextResponse.json({ success: false, error });
         }

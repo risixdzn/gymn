@@ -7,8 +7,8 @@ import {
     DialogDescription,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Indent, Info, MoreVertical, Plus, Shuffle, Trash } from "lucide-react";
-import { type Workout, type Exercise } from "@/types/Workout";
+import { Info, MoreVertical, Plus, Shuffle, Trash } from "lucide-react";
+import { type Workout, Workout as ZodWorkout, type Exercise } from "@/types/Workout";
 import { AnimatePresence, LayoutGroup, PanInfo, motion, useDragControls } from "framer-motion";
 
 import {
@@ -25,6 +25,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useTheme } from "next-themes";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { Input } from "@/components/ui/input";
+
 const ExerciseInfo = ({ exercise }: { exercise: Exercise }) => {
     return (
         <>
@@ -61,9 +62,9 @@ export default function ExerciseDisplay({
 }: {
     setExerciseReordererOpen: Dispatch<SetStateAction<boolean>>;
     exercise: Exercise;
-    setterFn: UseFormSetValue<z.infer<typeof Workout>>;
+    setterFn: UseFormSetValue<z.infer<typeof ZodWorkout>>;
     index: number;
-    watch: UseFormWatch<z.infer<typeof Workout>>;
+    watch: UseFormWatch<z.infer<typeof ZodWorkout>>;
 }) {
     function deleteExercise(index: number) {
         const previousExercises: Exercise[] = watch("exercises");
@@ -234,14 +235,14 @@ export default function ExerciseDisplay({
                                     whileTap={{ cursor: "grabbing" }}
                                     key={index}
                                     onPointerDown={startDrag}
-                                    className='relative text-sm z-[2] font-bold flex w-full text-left '
+                                    className='relative text-sm z-[2] font-bold flex w-full text-left bg-background'
                                     style={{
                                         backgroundColor:
                                             index % 2 == 0
-                                                ? theme == "dark"
+                                                ? theme == "dark" || "system"
                                                     ? "hsl(0 0% 4%)"
                                                     : "hsl(0 0% 100%)"
-                                                : theme == "dark"
+                                                : theme == "dark" || "system"
                                                 ? "hsl(0 0% 5.5%)"
                                                 : "hsl(0 0% 97%)",
                                     }}

@@ -26,6 +26,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { useToast } from "@/components/ui/use-toast";
 import { muscles } from "@/lib/filters";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const ExerciseNumbersData = ({
     exerciseNumbersData,
@@ -86,6 +87,7 @@ export default function NewWorkout() {
     });
 
     const { toast } = useToast();
+    const router = useRouter();
 
     async function onSubmit(event: FormEvent, values: z.infer<typeof Workout>) {
         event.preventDefault();
@@ -169,7 +171,9 @@ export default function NewWorkout() {
             toast({
                 variant: "success",
                 title: `Treino ${values.title} criado com sucesso!`,
+                description: `Você pode visualizá-lo na sua página de treinos.`,
             });
+            router.push("/dashboard/workouts");
         } else {
             console.log(data);
             toast({
