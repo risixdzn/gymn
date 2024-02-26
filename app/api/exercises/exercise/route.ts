@@ -5,7 +5,16 @@ import { cookies } from "next/headers";
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const exerciseId = searchParams.get("id");
-    const supabase = createRouteHandlerClient({ cookies });
+
+    const cookieStore = cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
 
     try {
         if (exerciseId == null || exerciseId == "") {
@@ -20,19 +29,21 @@ export async function GET(request: Request) {
             );
         }
 
+        const admin_uuid = "da89627e-3917-4e7c-a583-dab21d5ef726";
+
         let query = supabase
             .from("exercises")
             .select(
                 `
                 id,
-                muscle,
+                muscles,
                 name,
                 equipment,
                 level,
                 description`
             )
             .eq("visibility", "public")
-            .eq("created_by", "da89627e-3917-4e7c-a583-dab21d5ef726") //admin id
+            .or(`created_by.eq.${admin_uuid},created_by.eq.${session.user.id}`)
             .eq("id", exerciseId);
 
         let { data, error } = await query; //query stuff here

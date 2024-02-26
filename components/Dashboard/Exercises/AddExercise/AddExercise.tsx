@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronsUpDown, Plus } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -23,9 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { levels, muscles } from "@/lib/filters";
+import { equipments, levels, muscles } from "@/lib/filters";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 
 import {
@@ -37,11 +36,16 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 function VaulCheckboxSelect({
     field,
     options,
     form,
+    name,
+    text,
 }: {
     field: any;
     options: {
@@ -59,6 +63,12 @@ function VaulCheckboxSelect({
         any,
         undefined
     >;
+    name: "muscles" | "equipment"; //not intended
+    text: {
+        title: string;
+        description: string;
+        placeholder: string;
+    };
 }) {
     const { screenWidth } = useGetScreenWidth();
     const [open, setOpen] = useState(false);
@@ -68,7 +78,7 @@ function VaulCheckboxSelect({
             <Drawer screenWidth={screenWidth} open={open} onOpenChange={setOpen}>
                 <DrawerTrigger screenWidth={screenWidth} asChild>
                     <button className='relative w-full px-3 py-2 text-sm rounded-md border-border border-[1px] text-left text-muted-foreground'>
-                        {field.value.length == 0 && "Selecionar músculo"}
+                        {field.value.length == 0 && text.placeholder}
                         <a className='absolute right-0 mr-2'>
                             <ChevronDown className='scale-75 text-muted-foreground' />
                         </a>
@@ -84,9 +94,9 @@ function VaulCheckboxSelect({
                     </button>
                 </DrawerTrigger>
                 <DrawerContent screenWidth={screenWidth} scrollable>
-                    <DrawerTitle screenWidth={screenWidth}>Selecionar músculos</DrawerTitle>
+                    <DrawerTitle screenWidth={screenWidth}>{text.title}</DrawerTitle>
                     <DrawerDescription screenWidth={screenWidth}>
-                        Selecione os músculos alvo do exercício
+                        {text.description}
                         <Button
                             variant={"secondary"}
                             className='mt-2 w-full'
@@ -100,7 +110,7 @@ function VaulCheckboxSelect({
                             <FormField
                                 key={option.id}
                                 control={form.control}
-                                name='muscles'
+                                name={name}
                                 render={({ field }) => {
                                     return (
                                         <FormItem
@@ -165,7 +175,9 @@ export const formSchema = z.object({
     muscles: z.array(z.string()).refine((value) => value.some((item) => item), {
         message: "Você deve selecionar pelo menos um músculo.",
     }),
-    equipment: z.array(z.string()),
+    equipment: z.array(z.string()).refine((value) => value.some((item) => item), {
+        message: "Você deve selecionar pelo menos um equipamento.",
+    }),
     level: z.string(),
     description: z
         .string()
@@ -187,13 +199,34 @@ export default function AddExercise() {
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+    const router = useRouter();
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
+
+        const formattedExercise = { ...values, level: [values.level] };
+
+        const { data } = await axios.post("/api/exercises", formattedExercise);
+        if (data.success === true) {
+            console.log(data);
+            toast({
+                variant: "success",
+                title: `Exercício ${values.name} criado com sucesso!`,
+                description: `Você pode visualizá-lo na pagina de exercícios`,
+            });
+            router.push("/dashboard/exercises");
+        } else {
+            console.log(data);
+            toast({
+                variant: "destructive",
+                title: "Ocorreu um erro ao criar o exercício",
+                description: "Aguarde e tente novamente",
+            });
+        }
     }
 
     const musclesWithLabels = muscles.map((muscle) => ({ id: muscle, label: muscle }));
+    const equipmentsWithLabels = equipments.map((muscle) => ({ id: muscle, label: muscle }));
 
     return (
         <Drawer screenWidth={screenWidth}>
@@ -237,8 +270,42 @@ export default function AddExercise() {
                                             Selecione os musculos alvo do exercício
                                         </FormDescription>
                                         <VaulCheckboxSelect
+                                            name={field.name}
+                                            text={{
+                                                title: "Selecionar músculos",
+                                                description:
+                                                    "Selecione os músculos alvo do exercício",
+                                                placeholder: "Selecionar músculo",
+                                            }}
+                                            key={1}
                                             field={field}
                                             options={musclesWithLabels}
+                                            form={form}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name='equipment'
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Equipamento</FormLabel>
+                                        <FormDescription className='-mt-2'>
+                                            Selecione o equipamento utilizado no exercício.
+                                        </FormDescription>
+                                        <VaulCheckboxSelect
+                                            name={field.name}
+                                            text={{
+                                                title: "Selecionar equipamento",
+                                                description:
+                                                    "Selecione o equipamento necessário para o exercício",
+                                                placeholder: "Selecionar equipamento",
+                                            }}
+                                            key={2}
+                                            field={field}
+                                            options={equipmentsWithLabels}
                                             form={form}
                                         />
                                         <FormMessage />

@@ -1,7 +1,7 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
 import { ReactNode, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function PagesContainer({ children }: { children: ReactNode }) {
     const [isClient, setIsClient] = useState(false);
