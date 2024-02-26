@@ -75,7 +75,7 @@ export async function GET(request: Request) {
 
 import { z } from "zod";
 
-export const CreatingExercise = z.object({
+const CreatingExercise = z.object({
     name: z.string(),
     muscles: z.array(z.string()),
     equipment: z.array(z.string()),
