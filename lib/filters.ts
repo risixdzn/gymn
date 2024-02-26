@@ -20,4 +20,18 @@ export const muscles = [
 
 export const levels = ["Iniciante", "Intermediário", "Avançado"];
 
-export const equipments = ["Livre", "Anilha", "Halteres", "Banco", "Polia", "Máquina", "Barra"];
+export const equipments = [
+    "Livre",
+    "Anilha",
+    "Halteres",
+    "Banco",
+    "Polia",
+    "Máquina",
+    "Barra",
+    "Bicicleta",
+    "Esteira",
+    "Triângulo",
+    "Corda",
+    "Step",
+    "Elásticos",
+];

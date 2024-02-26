@@ -4,13 +4,21 @@ import GlowingCard from "@/components/ui/glowingCard";
 import { useGetScreenWidth } from "@/lib/hooks/useGetScreenWidth";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import GymnLogo from "@/public/gymn_BlackGLogo.svg";
+
+export interface APIExercise extends Exercise {
+    created_by: string;
+}
 
 export default function ExerciseCard({
     exercise,
     className,
     seeMore,
 }: {
-    exercise: Exercise;
+    exercise: APIExercise;
     seeMore?: boolean;
     className?: string;
 }) {
@@ -26,7 +34,8 @@ export default function ExerciseCard({
         return difficulties[level] || "#8a2be2";
     };
 
-    const { screenWidth } = useGetScreenWidth();
+    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const admin_uuid = "da89627e-3917-4e7c-a583-dab21d5ef726";
 
     return (
         <GlowingCard
@@ -48,7 +57,29 @@ export default function ExerciseCard({
             >
                 {exercise.level}
             </Badge>
-            <div id='info' className='mt-0 md:mt-2  h-full'>
+
+            <Avatar
+                id='creatoravatar'
+                className={`absolute w-8 h-8 mt-3 ${
+                    isDesktop ? "right-0 mr-4" : "bottom-0 mb-4"
+                } rounded-full ${exercise.created_by === admin_uuid ? "" : "border-[1px]"}`}
+            >
+                <AvatarImage
+                    className={
+                        exercise.created_by === admin_uuid
+                            ? "h-6 grid place-items-center dark:invert"
+                            : "border-[1px]"
+                    }
+                    src={
+                        exercise.created_by !== admin_uuid
+                            ? `/api/users/${exercise.created_by}/avatar?cache=true`
+                            : GymnLogo.src
+                    }
+                />
+                <AvatarFallback>?</AvatarFallback>
+            </Avatar>
+
+            <div id='info' className='mt-0 md:mt-2 h-full'>
                 <h2
                     id='nome'
                     className='text-base md:text-lg font font-semibold max-w-[200px] md:max-w-none'
@@ -78,7 +109,7 @@ export default function ExerciseCard({
                         ))
                     )}
                 </span>
-                {screenWidth >= 768 && (
+                {isDesktop && (
                     <>
                         <hr className='md:my-2 lg:my-4'></hr>
                         <h4 className='font-semibold '>Execução:</h4>

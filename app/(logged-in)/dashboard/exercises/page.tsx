@@ -3,13 +3,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { motion } from "framer-motion";
-import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
+import ExerciseCard, { APIExercise } from "@/components/Dashboard/Exercises/ExerciseCard";
 import Filters from "@/components/Dashboard/Exercises/Filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import AddExercise from "@/components/Dashboard/Exercises/AddExercise/AddExercise";
 import { useSearchParams } from "next/navigation";
-import { type Exercise } from "@/types/Workout";
 
 //TODO: Add 'remove filter' button, animating x to right, text to left
 export default function Exercises() {
@@ -75,7 +74,7 @@ export default function Exercises() {
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 mt-4 mb-20 lg:mb-0'>
                 {!isLoading ? (
                     <>
-                        {data?.data?.map((exercise: Exercise, index: number) => (
+                        {data?.data?.map((exercise: APIExercise, index: number) => (
                             <Link href={`/dashboard/exercises/${exercise.id}`} key={index}>
                                 <motion.div
                                     initial={
