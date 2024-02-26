@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { type Exercise } from "@/types/Workout";
-import ExerciseCard from "@/components/Dashboard/Exercises/ExerciseCard";
+import ExerciseCard, { APIExercise } from "@/components/Dashboard/Exercises/ExerciseCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -33,7 +33,7 @@ export default function ExercisePage({ params }: ExercisePageProps) {
             </Button>
             {!isLoading ? (
                 <>
-                    {data?.data.map((exercise: Exercise, index: number) => (
+                    {data?.data?.map((exercise: APIExercise, index: number) => (
                         <ExerciseCard key={exercise.id} exercise={exercise} />
                     ))}
                 </>

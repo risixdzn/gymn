@@ -15,7 +15,7 @@ import { equipments, levels, muscles as musclesfilters } from "@/lib/filters";
 import { Button } from "@/components/ui/button";
 import { type Exercise } from "@/types/Workout";
 import { Skeleton } from "@/components/ui/skeleton";
-import ExerciseCard from "../Exercises/ExerciseCard";
+import ExerciseCard, { APIExercise } from "../Exercises/ExerciseCard";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { Workout } from "@/types/Workout";
@@ -269,7 +269,7 @@ export default function ExerciseSelector({
                     {!isLoading ? (
                         <>
                             {data?.data
-                                .filter(
+                                ?.filter(
                                     (exercise: Exercise) =>
                                         exercise.name
                                             .toLowerCase()
@@ -283,7 +283,7 @@ export default function ExerciseSelector({
                                             .toLowerCase()
                                             .includes(searchTerm.toLowerCase())
                                 )
-                                .map((exercise: Exercise, index: number) => (
+                                .map((exercise: APIExercise, index: number) => (
                                     <div key={exercise.id} className='relative'>
                                         <Checkbox
                                             checked={selectedExercises?.includes(exercise)}
