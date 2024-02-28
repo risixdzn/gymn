@@ -11,6 +11,7 @@ import GymnLogo from "@/public/gymn_BlackGLogo.svg";
 
 export interface APIExercise extends Exercise {
     created_by: string;
+    created_at: string;
 }
 
 export default function ExerciseCard({

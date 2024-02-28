@@ -30,7 +30,8 @@ export async function GET(request: Request) {
                 equipment,
                 level,
                 description,
-                created_by`
+                created_by,
+                created_at`
             )
             .eq("visibility", "public")
             .or(`created_by.eq.${admin_uuid},created_by.eq.${session.user.id}`);
