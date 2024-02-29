@@ -39,6 +39,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 function VaulCheckboxSelect({
     field,
@@ -185,7 +186,11 @@ export const formSchema = z.object({
         .max(350, "A descrição deve ser menor"),
 });
 
-export default function AddExercise() {
+export default function AddExercise({
+    variant,
+}: {
+    variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "highlight";
+}) {
     const { screenWidth } = useGetScreenWidth();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -200,6 +205,7 @@ export default function AddExercise() {
     });
 
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
@@ -215,6 +221,7 @@ export default function AddExercise() {
                 description: `Você pode visualizá-lo na pagina de exercícios`,
             });
             router.push("/dashboard/exercises");
+            queryClient.invalidateQueries(["exercises"]);
         } else {
             console.log(data);
             toast({
@@ -232,7 +239,7 @@ export default function AddExercise() {
         <Drawer screenWidth={screenWidth}>
             <DrawerTrigger screenWidth={screenWidth}>
                 {/* Add button triggering drawer */}
-                <Button>
+                <Button variant={variant ?? "default"}>
                     <Plus className='scale-75' /> Adicionar
                 </Button>
             </DrawerTrigger>

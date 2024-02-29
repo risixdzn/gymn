@@ -8,7 +8,12 @@ import Filters from "@/components/Dashboard/Exercises/Filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import AddExercise from "@/components/Dashboard/Exercises/AddExercise/AddExercise";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import ExerciseListDisplay, {
+    ExerciseListFilter,
+} from "@/components/Dashboard/Exercises/ExerciseListDisplay";
 
 //TODO: Add 'remove filter' button, animating x to right, text to left
 export default function Exercises() {
@@ -16,37 +21,26 @@ export default function Exercises() {
 
     //Defines query params
     const queryParams: Record<string, string | null> = {
-        muscles: searchParams.get("muscles"),
+        muscle: searchParams.get("muscle"),
         equipment: searchParams.get("equipment"),
         difficulty: searchParams.get("level"),
     };
 
-    // Filter out keys with null values
-    const filteredQueryParams = Object.entries(queryParams).reduce((acc, [key, value]) => {
-        if (value !== null) {
-            acc[key] = value;
-        }
-        return acc;
-    }, {} as { [key: string]: string });
-
-    const queryString = new URLSearchParams(filteredQueryParams);
-
     const { data, isLoading } = useQuery({
-        queryKey: ["exercises", queryParams.muscle, queryParams.equipment, queryParams.difficulty], //key and params to define the query
+        queryKey: ["exercises"], //key and params to define the query
         queryFn: () => {
             //function called on querying
-            return axios
-                .get(`/api/exercises?${queryString && queryString}`)
-                .then((res) => res.data);
+            return axios.get(`/api/exercises`).then((res) => res.data);
         },
     });
 
     const renderTitle = () => {
+        if (queryParams.muscle && queryParams.equipment) {
+            return `Exercicios para ${queryParams.muscle} usando ${queryParams.equipment}`;
+        }
         if (queryParams.muscle) return `Exercícios para ${queryParams.muscle}.`;
         if (queryParams.equipment) return `Exercícios com ${queryParams.equipment}`;
-        if (queryParams.muscle && queryParams.equipment) {
-            return `Exercicios para ${queryParams.muscle} com ${queryParams.equipment}`;
-        } else {
+        else {
             return "Todos exercícios";
         }
     };
@@ -66,30 +60,17 @@ export default function Exercises() {
                         Exercícios para todos grupos musculares
                     </p>
                 </div>
-                <p className='hidden'>{`/api/exercises?${queryString}`}</p>
             </div>
 
-            <Filters className='mt-4' />
+            {!isLoading && (
+                <div className='mt-4'>
+                    <ExerciseListFilter />
+                </div>
+            )}
 
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4 mt-4 mb-20 lg:mb-0'>
                 {!isLoading ? (
-                    <>
-                        {data?.data?.map((exercise: APIExercise, index: number) => (
-                            <Link href={`/dashboard/exercises/${exercise.id}`} key={index}>
-                                <motion.div
-                                    initial={
-                                        index < 35
-                                            ? { opacity: 0, scale: 0.8 }
-                                            : { opacity: 1, scale: 1 }
-                                    }
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: index * 0.075 }}
-                                >
-                                    <ExerciseCard seeMore key={exercise.id} exercise={exercise} />
-                                </motion.div>
-                            </Link>
-                        ))}
-                    </>
+                    <ExerciseListDisplay exercises={data?.data} />
                 ) : (
                     <>
                         {skeletons.map((_, index) => (

@@ -33,7 +33,7 @@ export default function ProfileHoverCard({
                         <Image
                             width={300}
                             height={100}
-                            src={`/api/users/${user.username}/banner`}
+                            src={`/api/users/${user.username}/banner?cache=true`}
                             alt=''
                             key={1}
                             className='w-full h-full object-cover rounded-t-md'
@@ -86,7 +86,7 @@ export default function ProfileHoverCard({
                 >
                     <Avatar className='w-full h-full object-cover rounded-xl'>
                         <AvatarImage
-                            src={`/api/users/${user.username}/avatar`}
+                            src={`/api/users/${user.username}/avatar?cache=true`}
                             className=''
                         ></AvatarImage>
                         <AvatarFallback className='w-full h-full object-cover rounded-xl'>
