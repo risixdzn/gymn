@@ -86,7 +86,7 @@ export default function GymPage() {
             {session?.user?.id === gym?.owner?.id && (
                 <Card className='lg:bg-card p-0 bg-transparent border-none lg:border-solid border-border lg:p-8'>
                     <h1 className='text-2xl font-semibold tracking-tight flex items-center'>
-                        <User className='w-6 h-6 inline-block mr-2' />
+                        <User className='w-6 h-6 inline-block mr-2 text-purple-600' />
                         Alunos afiliados
                     </h1>
                     <p className='text-sm text-muted-foreground mt-3 lg:mt-1'>

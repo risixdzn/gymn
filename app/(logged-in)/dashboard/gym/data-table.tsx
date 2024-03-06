@@ -49,7 +49,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <>
             <div className='flex w-full justify-between items-center py-4 gap-2'>
                 <Input
-                    placeholder='Procurar por nomes...'
+                    placeholder='Procurar aluno'
                     value={
                         (table
                             .getColumn("affiliate_info_display_name")
