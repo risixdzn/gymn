@@ -1,3 +1,4 @@
+import { Affiliate } from "./../affiliates/route";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
@@ -47,6 +48,7 @@ export async function GET(request: Request) {
 
     const { data } = await supabase.from("users").select("profile").eq("id", session?.user?.id);
 
+    //if the member is a gym owner, select his gym
     if (data![0].profile === "GymOwner") {
         try {
             const { data, error } = await supabase
@@ -54,7 +56,16 @@ export async function GET(request: Request) {
                 .select(
                     `
                     *,
-                    users!gym_owner_fkey(*)
+                    users!gym_owner_fkey(
+                        id,
+                        created_at,
+                        username,
+                        profile,
+                        display_name,
+                        avatar_id,
+                        banner_id,
+                        bio,
+                        location)
                     `
                 )
                 .eq("owner", session?.user?.id);
@@ -82,5 +93,43 @@ export async function GET(request: Request) {
             );
         }
     }
-    return NextResponse.json({ success: false, error: "Unfinished" }, { status: 401 });
+    //else, select the affiliate data
+    const affiliate = await supabase
+        .from("affiliates")
+        .select("*")
+        .eq("user_id", session?.user?.id);
+
+    if (affiliate.data) {
+        const gym = await supabase
+            .from("gym")
+            .select(
+                `
+                    *,
+                    users!gym_owner_fkey(
+                        id,
+                        created_at,
+                        username,
+                        profile,
+                        display_name,
+                        avatar_id,
+                        banner_id,
+                        bio,
+                        location)
+                    `
+            )
+            .eq("id", affiliate.data[0].belongs_to);
+
+        const gymData = gym.data!.map((gym) => {
+            return {
+                id: gym.id,
+                created_at: gym.created_at,
+                name: gym.name,
+                address: gym.address,
+                owner: gym.users,
+            };
+        });
+
+        return NextResponse.json({ success: true, data: gymData[0] });
+    }
+    return NextResponse.json({ success: false, error: "no_gym" }, { status: 404 });
 }

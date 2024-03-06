@@ -4,10 +4,35 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Root as GymResponse } from "@/app/api/gym/route";
-import { MapPin } from "lucide-react";
+import { Crown, MapPin, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useSession } from "@/lib/supabase/useSession";
+import { Card } from "@/components/ui/card";
+import GymAffiliates from "@/components/Dashboard/Gym/GymAffiliates";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const SkeletonGymPage = () => {
+    return (
+        <section className='min-h-screen space-y-6'>
+            <Skeleton className='w-full rounded-md bg-accent h-28 lg:h-52'></Skeleton>
+            <div className='flex items-center gap-6 lg:gap-8'>
+                <Skeleton className='w-20 h-20 lg:w-36 lg:h-36 rounded-md' />
+                <div className='lg:space-y-1'>
+                    <Skeleton className='w-40 h-6 lg:w-80 lg:h-8 rounded-md'></Skeleton>
+                    <Skeleton className='w-28 h-4 lg:w-56 lg:h-6 rounded-md'></Skeleton>
+                    <div className='flex gap-2 items-center text-xs'>
+                        <Skeleton className='w-8 h-8 rounded-md' />
+                        <Skeleton className='w-20 h-4 lg:w-32 lg:h-6 rounded-md'></Skeleton>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
 
 export default function GymPage() {
+    const session = useSession();
+
     const { data, isLoading } = useQuery<GymResponse>({
         queryKey: ["gym"], //key and params to define the query
         queryFn: () => {
@@ -18,21 +43,23 @@ export default function GymPage() {
 
     const gym = data?.data;
 
-    return (
-        <section className='min-h-screen space-y-4'>
-            <div className='w-full rounded-md bg-accent h-52'></div>
+    if (isLoading) return <SkeletonGymPage />;
 
-            <div className='flex items-center gap-8'>
-                <Avatar className=' w-36 h-36 rounded-md'>
-                    <AvatarFallback className='rounded-md text-4xl '>
+    return (
+        <section className='min-h-screen space-y-6'>
+            <div className='w-full rounded-md bg-accent h-28 lg:h-52'></div>
+
+            <div className='flex items-center gap-6 lg:gap-8'>
+                <Avatar className=' w-20 h-20 lg:w-36 lg:h-36 rounded-md'>
+                    <AvatarFallback className='rounded-md text-2xl lg:text-4xl '>
                         {gym?.name?.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                 </Avatar>
-                <div className='space-y-2'>
-                    <h1 className='text-2xl xl:text-3xl tracking-tight font-semibold'>
+                <div className='lg:space-y-1'>
+                    <h1 className='text-xl xl:text-3xl tracking-tight font-semibold '>
                         {gym?.name}
                     </h1>
-                    <span className=' text-muted-foreground text-sm flex gap-1 items-center '>
+                    <span className='text-muted-foreground text-sm flex gap-1 items-center '>
                         <MapPin className='inline-block scale-75' />
                         <span className='text-sm text-muted-foreground'>{gym?.address}</span>
                     </span>
@@ -45,10 +72,29 @@ export default function GymPage() {
                                 {gym?.owner?.username?.slice(0, 2).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
-                        Responsável: <b>{gym?.owner?.display_name}</b>
+                        Responsável:
+                        {session?.user?.id === gym?.owner?.id ? (
+                            <Badge>Você</Badge>
+                        ) : (
+                            <b>{gym?.owner?.display_name}</b>
+                        )}
+                        <Crown className='w-4 h-4 text-amber-400 inline-block' />
                     </div>
                 </div>
             </div>
+            <hr className='block lg:hidden' />
+            {session?.user?.id === gym?.owner?.id && (
+                <Card className='lg:bg-card p-0 bg-transparent border-none lg:border-solid border-border lg:p-8'>
+                    <h1 className='text-2xl font-semibold tracking-tight flex items-center'>
+                        <User className='w-6 h-6 inline-block mr-2' />
+                        Alunos afiliados
+                    </h1>
+                    <p className='text-sm text-muted-foreground mt-3 lg:mt-1'>
+                        Veja e gerencie todos os alunos afiliados a <b>{gym?.name}</b>.
+                    </p>
+                    <GymAffiliates />
+                </Card>
+            )}
         </section>
     );
 }

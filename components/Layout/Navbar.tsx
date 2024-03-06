@@ -8,12 +8,14 @@ import GymnLogo from "../ui/Icons/GymnLogo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Session } from "@supabase/auth-helpers-nextjs";
 import GymnIcon from "../ui/Icons/GymnIcon";
+import { useSession } from "@/lib/supabase/useSession";
 
-export default function Navbar({ session }: { session: Session | null }) {
+export default function Navbar() {
     const [navOpen, setNavOpen] = useState<boolean>(false);
     const pathname = usePathname();
+
+    const session = useSession();
 
     useEffect(() => {
         setNavOpen(false);
