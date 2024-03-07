@@ -38,6 +38,7 @@ export default function Sidebar({ session }: { session: Session | null }) {
                 .then((res) => res.data && setUser(res.data));
         },
         retry: false,
+        refetchOnWindowFocus: false,
     });
     const { isClient, screenWidth, setSidebarOpen, sidebarOpen, pathname } =
         useContext(SidebarData);

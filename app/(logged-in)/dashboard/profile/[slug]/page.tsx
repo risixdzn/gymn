@@ -24,6 +24,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             return axios.get(`/api/users/${params.slug}`).then((res) => res.data);
         },
         retry: false,
+        refetchOnWindowFocus: false,
     });
 
     if (!isLoading) {

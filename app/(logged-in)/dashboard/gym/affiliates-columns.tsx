@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Affiliation>[] = [
     {
@@ -27,6 +28,43 @@ export const columns: ColumnDef<Affiliation>[] = [
     {
         accessorKey: "affiliate_info.email",
         header: "Email",
+    },
+    {
+        accessorKey: "affiliate_info.verified",
+        header: "Status de verificação",
+        cell: ({ row }) => {
+            type returns =
+                | "default"
+                | "secondary"
+                | "destructive"
+                | "outline"
+                | "Iniciante"
+                | "Intermediário"
+                | "Avançado";
+
+            const lookup: { [key: string]: returns } = {
+                true: "Iniciante",
+                false: "Intermediário",
+            };
+            const colorLookup: { [key: string]: string } = {
+                Iniciante: "#22c55e",
+                Intermediário: "#f59e0b",
+            };
+
+            const root = row.original;
+            // @ts-ignore: Unreachable code error
+            const verified = root.verified;
+
+            return (
+                <Badge variant={lookup[verified as string]}>
+                    <div
+                        className='w-2 h-2 rounded-full mr-1'
+                        style={{ backgroundColor: colorLookup[lookup[verified as string]] }}
+                    ></div>
+                    {verified ? "Verificado" : "Pendente"}
+                </Badge>
+            );
+        },
     },
     {
         id: "actions",
