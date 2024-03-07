@@ -32,6 +32,9 @@ export default function Exercises() {
             //function called on querying
             return axios.get(`/api/exercises`).then((res) => res.data);
         },
+
+        retry: false,
+        refetchOnWindowFocus: false,
     });
 
     const renderTitle = () => {

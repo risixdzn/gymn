@@ -39,6 +39,7 @@ export default function GymPage() {
             return axios.get(`/api/gym`).then((res) => res.data);
         },
         retry: false,
+        refetchOnWindowFocus: false,
     });
 
     const gym = data?.data;

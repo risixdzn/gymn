@@ -10,6 +10,7 @@ export interface Affiliate {
     id: string;
     user_id: string;
     belongs_to: string;
+    verified: boolean;
     affiliate_info: UserProfile;
 }
 
@@ -50,6 +51,7 @@ export async function GET(req: Request) {
                 id: aff.id,
                 user_id: aff.user_id,
                 belongs_to: aff.belongs_to,
+                verified: aff.verified,
                 affiliate_info: aff.users,
             };
         });

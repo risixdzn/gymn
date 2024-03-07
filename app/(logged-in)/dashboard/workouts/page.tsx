@@ -18,6 +18,8 @@ export default function Workouts() {
             //function called on querying
             return axios.get(`/api/workouts`).then((res) => res.data);
         },
+        retry: false,
+        refetchOnWindowFocus: false,
     });
 
     return (

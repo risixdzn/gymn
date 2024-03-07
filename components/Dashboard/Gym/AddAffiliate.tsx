@@ -27,6 +27,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/lib/supabase/useSession";
 import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 const addAffiliateFormSchema = z.object({
     display_name: z
@@ -55,6 +56,7 @@ export default function AddAffiliate() {
     const { formState } = form;
 
     const session = useSession();
+    const queryClient = useQueryClient();
 
     async function onSubmit(values: z.infer<typeof addAffiliateFormSchema>) {
         setLoading(true);
@@ -89,6 +91,7 @@ export default function AddAffiliate() {
                 });
                 setOpen(false);
                 setLoading(false);
+                queryClient.refetchQueries(["affiliates"]);
             }
         } else {
             toast({
@@ -153,7 +156,13 @@ export default function AddAffiliate() {
                         />
                     </form>
                 </Form>
-                <DialogFooter>
+
+                <DialogFooter className='gap-4 items-center'>
+                    {loading && (
+                        <span className='text-xs text-muted-foreground/50 text-right max-w-[15rem]'>
+                            Psst... Adicionar um usuário pode demorar um pouco, mas nada demais.
+                        </span>
+                    )}
                     <Button
                         disabled={loading || !formState.isValid}
                         type='submit'

@@ -221,7 +221,7 @@ export default function AddExercise({
                 description: `Você pode visualizá-lo na pagina de exercícios`,
             });
             router.push("/dashboard/exercises");
-            queryClient.invalidateQueries(["exercises"]);
+            queryClient.refetchQueries(["exercises"]);
         } else {
             console.log(data);
             toast({

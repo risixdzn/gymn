@@ -22,6 +22,9 @@ export default function ExercisePage({ params }: ExercisePageProps) {
             //function called on querying
             return axios.get(`/api/exercises/exercise?id=${params.id}`).then((res) => res.data);
         },
+
+        retry: false,
+        refetchOnWindowFocus: false,
     });
 
     const router = useRouter();

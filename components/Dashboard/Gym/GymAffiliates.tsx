@@ -23,6 +23,7 @@ export default function GymAffiliates() {
             //function called on querying
             return axios.get(`/api/affiliates`).then((res) => res.data);
         },
+        retry: false,
     });
     if (!data) {
         return <SkeletonGymAffiliates />;

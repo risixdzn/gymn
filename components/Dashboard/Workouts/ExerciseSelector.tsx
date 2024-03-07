@@ -133,6 +133,8 @@ export default function ExerciseSelector({
                 .get(`/api/exercises?${queryString && queryString}`)
                 .then((res) => res.data);
         },
+        retry: false,
+        refetchOnWindowFocus: false,
     });
 
     const skeletons = new Array(15).fill(null);
