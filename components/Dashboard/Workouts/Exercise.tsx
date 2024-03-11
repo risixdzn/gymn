@@ -235,17 +235,11 @@ export default function ExerciseDisplay({
                                     whileTap={{ cursor: "grabbing" }}
                                     key={index}
                                     onPointerDown={startDrag}
-                                    className='relative text-sm z-[2] font-bold flex w-full text-left bg-background'
-                                    style={{
-                                        backgroundColor:
-                                            index % 2 == 0
-                                                ? theme == "dark" || "system"
-                                                    ? "hsl(0 0% 4%)"
-                                                    : "hsl(0 0% 100%)"
-                                                : theme == "dark" || "system"
-                                                ? "hsl(0 0% 5.5%)"
-                                                : "hsl(0 0% 97%)",
-                                    }}
+                                    className={`relative text-sm z-[2] font-bold flex w-full text-left bg-background ${
+                                        index % 2 == 0
+                                            ? "bg-[hsl(0 0% 100%)] dark:bg-[hsl(0 0% 5.5%)]"
+                                            : "bg-[hsl(0 0% 97%)] dark:bg-[hsl(0 0% 4%)]"
+                                    }`}
                                     onDragEnd={(event, info) => deleteSet(info, index)}
                                 >
                                     <div className='p-3 w-1/5 '>

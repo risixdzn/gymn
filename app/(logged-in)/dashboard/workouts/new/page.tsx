@@ -89,8 +89,11 @@ export default function NewWorkout() {
     const { toast } = useToast();
     const router = useRouter();
 
+    const [loading, setLoading] = useState(false);
+
     async function onSubmit(event: FormEvent, values: z.infer<typeof Workout>) {
         event.preventDefault();
+        setLoading(true);
         //Validade if the workout has exercises
         if (!values.exercises || values.exercises.length === 0) {
             toast({
@@ -98,6 +101,7 @@ export default function NewWorkout() {
                 title: "O treino deve ter pelo menos um exercício",
                 description: "Adicione um exercício e tente novamente.",
             });
+            setLoading(false);
             return;
         }
 
@@ -110,6 +114,7 @@ export default function NewWorkout() {
                     title: "Todo exercício deve ter ao menos uma série",
                     description: "Adicione uma série e tente novamente.",
                 });
+                setLoading(false);
                 return;
             }
         }
@@ -121,6 +126,7 @@ export default function NewWorkout() {
                 title: "O treino deve ter um título",
                 description: "Dê um nome ao treino e tente novamente.",
             });
+            setLoading(false);
             return;
         }
 
@@ -174,6 +180,7 @@ export default function NewWorkout() {
                 description: `Você pode visualizá-lo na sua página de treinos.`,
             });
             router.push("/dashboard/workouts");
+            setLoading(false);
         } else {
             console.log(data);
             toast({
@@ -181,7 +188,9 @@ export default function NewWorkout() {
                 title: "Ocorreu um erro ao criar o treino",
                 description: "Aguarde e tente novamente",
             });
+            setLoading(false);
         }
+        setLoading(false);
     }
 
     const { watch, setValue } = form;

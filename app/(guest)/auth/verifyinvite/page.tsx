@@ -28,6 +28,7 @@ import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "@/components/ui/input";
 
 const verifyInviteSchema = z.object({
     username: z
@@ -63,6 +64,16 @@ export default function VerifyInvite() {
     const searchParams = useSearchParams();
 
     const router = useRouter();
+    const fragment = Object.fromEntries(new URLSearchParams(window.location.hash.slice(1)));
+    const accessToken = fragment.access_token;
+    if (!accessToken) {
+        router.push("/auth");
+        toast({
+            title: "Você não pode acessar esta área.",
+            description: "Se você acha que isso foi um erro, tente novamente.",
+            variant: "destructive",
+        });
+    }
 
     const onSubmit = async (values: z.infer<typeof verifyInviteSchema>) => {
         setLoading(true);
@@ -101,7 +112,7 @@ export default function VerifyInvite() {
         const fragment = Object.fromEntries(new URLSearchParams(window.location.hash.slice(1)));
         const accessToken = fragment.access_token;
         access_token.current = accessToken;
-    }, []);
+    }, [router]);
 
     return (
         <main className='flex min-h-screen flex-col justify-center items-center bg-loginBGWhite dark:bg-loginBGDark bg-cover bg-center'>
@@ -143,8 +154,8 @@ export default function VerifyInvite() {
                                     <FormItem>
                                         <FormLabel>Senha</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type='password'
+                                            <PasswordInput
+                                                className='mt-2'
                                                 placeholder='••••••••'
                                                 {...field}
                                             />

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Input, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { LogIn } from "@/lib/auth/signIn";
@@ -61,12 +61,11 @@ export default function LoginForm() {
                 )}
                 <div className='mt-2'>
                     <Label htmlFor='password'>Senha</Label>
-                    <Input
+                    <PasswordInput
                         disabled={loading}
                         key={2}
                         placeholder='••••••••'
                         id='password'
-                        type='password'
                         className='mt-2'
                         {...register("password", {
                             required: "Preencha este campo.",
@@ -75,7 +74,7 @@ export default function LoginForm() {
                                 message: "A senha deve ser menor.",
                             },
                         })}
-                    ></Input>
+                    />
                 </div>
             </>
         );
