@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { type RegisterMemberForm } from "../RegisterMemberForm";
 import { type RegisterGymOwnerForm } from "../RegisterGymOwnerForm";
+import { PasswordInput } from "@/components/ui/input";
 
 // usando discriminated unions para atribuir tipos condicionais
 // veja mais em: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-func.html#discriminated-unions
@@ -50,12 +51,11 @@ export default function RegisterStep3({ register, errors, watch, loading }: Step
                 <TooltipProvider delayDuration={0}>
                     <Tooltip defaultOpen>
                         <TooltipTrigger asChild>
-                            <Input
+                            <PasswordInput
                                 disabled={loading}
                                 key={4}
                                 placeholder='••••••••'
                                 id='password'
-                                type='password'
                                 className='mt-2'
                                 {...typedRegister("password", {
                                     required: "Preencha este campo.",
@@ -79,7 +79,7 @@ export default function RegisterStep3({ register, errors, watch, loading }: Step
                                             "A senha deve conter um número.",
                                     },
                                 })}
-                            ></Input>
+                            ></PasswordInput>
                         </TooltipTrigger>
                         <TooltipContent side='bottom'>
                             <h4>Sua senha deve conter, ao menos:</h4>
@@ -98,12 +98,11 @@ export default function RegisterStep3({ register, errors, watch, loading }: Step
 
             <div className='mt-2'>
                 <Label htmlFor='confirmPassword'>Confirme a senha</Label>
-                <Input
+                <PasswordInput
                     disabled={loading}
                     key={5}
                     placeholder='••••••••'
                     id='confirmPassword'
-                    type='password'
                     className='mt-2'
                     {...typedRegister("confirmPassword", {
                         required: "Preencha este campo.",
@@ -113,7 +112,7 @@ export default function RegisterStep3({ register, errors, watch, loading }: Step
                             }
                         },
                     })}
-                ></Input>
+                ></PasswordInput>
                 {errors.confirmPassword && (
                     <p className='text-xs text-destructive mt-2'>
                         {errors.confirmPassword.message}
