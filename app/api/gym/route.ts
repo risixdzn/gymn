@@ -8,7 +8,8 @@ import { UserProfile } from "@/types/UserProfile";
 
 export interface Root {
     success: boolean;
-    data: Data;
+    data?: Data;
+    error?: string;
 }
 
 export interface Data {
@@ -17,6 +18,7 @@ export interface Data {
     name: string;
     address: string;
     owner: Owner;
+    referral_code: string;
 }
 
 export interface Owner {
@@ -79,6 +81,7 @@ export async function GET(request: Request) {
                     name: gym.name,
                     address: gym.address,
                     owner: gym.users,
+                    referral_code: gym.referral_code,
                 };
             });
 
@@ -99,12 +102,20 @@ export async function GET(request: Request) {
         .select("*")
         .eq("user_id", session?.user?.id);
 
+    if (affiliate.data?.length == 0) {
+        return NextResponse.json({ success: false, error: "no_gym" }, { status: 404 });
+    }
+
     if (affiliate.data) {
         const gym = await supabase
             .from("gym")
             .select(
                 `
-                    *,
+                    id,
+                    created_at,
+                    name,
+                    address,
+                    owner,
                     users!gym_owner_fkey(
                         id,
                         created_at,

@@ -1,30 +1,22 @@
 "use client";
 
 import {
-    AlertDialog,
     AlertDialogAction,
-    AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Check from "./Check";
+import Check from "@/components/Auth/Register/ui/Check";
 import GymnLogo from "@/components/ui/Icons/GymnLogo";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CookieBasedAlert from "@/components/CookieBasedAlert";
 
-export default function VerficationSuccessAlert() {
+export default function JoinGymSuccessAlert() {
     const [open, setOpen] = useState<boolean>(false);
 
     return (
-        <CookieBasedAlert
-            cookieName={"VerificationSuccessAlertOpen"}
-            open={open}
-            onOpenChange={setOpen}
-        >
+        <CookieBasedAlert cookieName={"JoinGymSuccess"} open={open} onOpenChange={setOpen}>
             <div className='w-full h-28 rounded-lg bg-purple-600/20 mx-auto flex items-center justify-center'>
                 <Check className='w-20 h-20' />
             </div>
@@ -38,7 +30,7 @@ export default function VerficationSuccessAlert() {
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                     <h3 className='text-center text-card-foreground/80'>
-                        🎉 Parabéns! Sua conta foi verificada com sucesso! 🎉
+                        🎉 Parabéns! Você foi afiliado a uma academia! 🎉
                     </h3>
                     <span className='flex items-center justify-center flex-col'>
                         {" "}
@@ -51,11 +43,12 @@ export default function VerficationSuccessAlert() {
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-                <Link href='/dashboard/profile' className='w-full' onClick={() => setOpen(false)}>
-                    <AlertDialogAction className='w-full mt-3 bg-purple-600 hover:bg-purple-600/70 text-white'>
-                        Começar
-                    </AlertDialogAction>
-                </Link>
+                <AlertDialogAction
+                    onClick={() => setOpen(false)}
+                    className='w-full mt-3 bg-purple-600 hover:bg-purple-600/70 text-white'
+                >
+                    Começar
+                </AlertDialogAction>
             </AlertDialogFooter>
         </CookieBasedAlert>
     );
