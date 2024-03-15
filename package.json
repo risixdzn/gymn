@@ -41,7 +41,7 @@
         "@types/react-dom": "18.2.6",
         "@vercel/analytics": "^1.0.1",
         "autoprefixer": "10.4.14",
-        "axios": "^1.5.0",
+        "axios": "^1.6.0",
         "browser-image-compression": "^2.0.2",
         "class-variance-authority": "^0.6.0",
         "clsx": "^1.2.1",
