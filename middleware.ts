@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
@@ -32,11 +33,15 @@ export async function middleware(req: NextRequest) {
     //HANDLER PROTECTED ROUTES
     if (!session) {
         const callbackUrl = encodeURIComponent(req.url); // Encode the URL that the user tried to access unauthenticated
-        const authURL = `/auth?callbackUrl=${callbackUrl}`;
-        const response = NextResponse.redirect(new URL(authURL, req.url)); //redirect to /auth, with the callback being the requrl
+        const authURL = `/auth?redirectUrl=${callbackUrl}`;
+        const response = NextResponse.redirect(new URL(authURL, req.url)); //redirect to /auth, with the redirecturl being the requrl
         response.headers.set(
             "Set-Cookie",
             `UnauthorizedAction=true; Max-Age=${60 * 6 * 24}; Path=/`
+        );
+        response.headers.append(
+            "Set-Cookie",
+            `redirectUrl=${callbackUrl}; Max-Age=${60 * 6 * 24}; Path=/`
         );
         // By adding Path=/ to the cookie definition, you ensure that
         //the "UnauthorizedAction" cookie is available for all subpaths under the root path.
