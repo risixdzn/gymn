@@ -68,16 +68,17 @@ const PrintedQrCode = ({
     );
 };
 
-import { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export const GymRefferal = ({
     className,
     gym,
+    url,
 }: {
     className?: string;
     gym: Omit<GymResponse, "success" | "error">;
+    url: string;
 }) => {
     return (
         <Dialog>
@@ -125,11 +126,11 @@ export const GymRefferal = ({
                     </div>
                     <div className='p-3 mx-auto bg-white rounded-lg border-border border-[1px]'>
                         <QRCodeCanvas
-                            value={`${appUrl}/api/gym/join/${gym.data?.referral_code}`}
+                            value={new URL(`/api/gym/join/${gym.data?.referral_code}`, url).href}
                             size={128}
                             bgColor={"#ffffff"}
                             fgColor={"#000000"}
-                            level={"L"}
+                            level={"Q"}
                             includeMargin={false}
                             imageSettings={{
                                 src: GIcon.src,

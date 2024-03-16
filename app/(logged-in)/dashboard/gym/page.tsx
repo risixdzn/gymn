@@ -45,6 +45,7 @@ export default function GymPage() {
     });
 
     const gym = data?.data;
+    const url = window.location.href;
 
     if (isLoading) return <SkeletonGymPage />;
 
@@ -58,6 +59,7 @@ export default function GymPage() {
                             <GymRefferal
                                 className='absolute right-0 bottom-0 mb-2 mr-2'
                                 gym={data}
+                                url={url}
                             />
                         )}
                     </div>
