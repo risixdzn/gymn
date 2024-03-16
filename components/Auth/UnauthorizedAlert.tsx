@@ -16,7 +16,7 @@ export default function UnauthorizedAlert() {
             toast({
                 variant: "destructive",
                 title: "Acesso negado.",
-                description: "Você não pode acessar essa seção sem fazer login.",
+                description: "Crie uma conta ou faça login para acessar esta página.",
             });
         }
 

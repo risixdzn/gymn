@@ -15,9 +15,19 @@ import GymnLogo from "@/components/ui/Icons/GymnLogo";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import CookieBasedAlert from "@/components/CookieBasedAlert";
+import { getCookie } from "@/lib/cookies";
 
 export default function VerficationSuccessAlert() {
     const [open, setOpen] = useState<boolean>(false);
+    const [redirectUrl, setRedirectUrl] = useState<string | undefined>();
+
+    useEffect(() => {
+        async function fetchRedirectUrl() {
+            const url = await getCookie("redirectUrl");
+            setRedirectUrl(url?.value);
+        }
+        fetchRedirectUrl();
+    }, []);
 
     return (
         <CookieBasedAlert
@@ -51,7 +61,11 @@ export default function VerficationSuccessAlert() {
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-                <Link href='/dashboard/profile' className='w-full' onClick={() => setOpen(false)}>
+                <Link
+                    href={redirectUrl ?? "/dashboard/profile"}
+                    className='w-full'
+                    onClick={() => setOpen(false)}
+                >
                     <AlertDialogAction className='w-full mt-3 bg-purple-600 hover:bg-purple-600/70 text-white'>
                         Começar
                     </AlertDialogAction>

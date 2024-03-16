@@ -5,17 +5,19 @@ import { Dispatch, SetStateAction } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "@/components/ui/use-toast";
 import { translatedErrors } from "../supabase/errors";
+import { getCookie, deleteCookie } from "../cookies";
 
 type LoginProps = {
     userData: LoginForm;
     setLoading: Dispatch<SetStateAction<boolean>>;
     router: any;
-    callbackUrl: string | null;
 };
-export async function LogIn({ userData, setLoading, router, callbackUrl }: LoginProps) {
+export async function LogIn({ userData, setLoading, router }: LoginProps) {
     setLoading(true);
 
     const supabase = createClientComponentClient();
+
+    const redirectUrl = await getCookie("redirectUrl");
 
     const { data, error } = await supabase.auth.signInWithPassword({
         email: userData.email,
@@ -40,8 +42,9 @@ export async function LogIn({ userData, setLoading, router, callbackUrl }: Login
             description: "Aguarde o redirecionamento.",
             variant: "success",
         });
-        if (callbackUrl) {
-            router.push(callbackUrl);
+        if (redirectUrl?.value && redirectUrl?.value !== "undefined") {
+            router.push(redirectUrl.value);
+            await deleteCookie("redirectUrl");
         } else {
             router.push("/dashboard/profile");
         }
