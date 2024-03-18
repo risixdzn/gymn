@@ -4,18 +4,19 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Root as GymResponse } from "@/app/api/gym/route";
-import { ArrowRight, Crown, MapPin, Printer, QrCode, User } from "lucide-react";
+import { ArrowRight, Crown, Info, MapPin, Printer, QrCode, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "@/lib/supabase/useSession";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import GymAffiliates from "@/components/Dashboard/Gym/GymAffiliates";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GymRefferal } from "@/components/Dashboard/Gym/ReferralCode";
 import JoinGymSuccessAlert from "@/components/Dashboard/Gym/JoinGymSuccessAlert";
+import NoGym from "@/components/Dashboard/Gym/NoGym";
 
-const SkeletonGymPage = () => {
+export const SkeletonGymPage = () => {
     return (
-        <section className='min-h-screen space-y-6'>
+        <section className='space-y-6'>
             <Skeleton className='w-full rounded-md bg-accent h-28 lg:h-52'></Skeleton>
             <div className='flex items-center gap-6 lg:gap-8'>
                 <Skeleton className='w-20 h-20 lg:w-36 lg:h-36 rounded-md' />
@@ -114,7 +115,7 @@ export default function GymPage() {
                     )}
                 </>
             ) : (
-                <div>no gym</div>
+                <NoGym />
             )}
         </section>
     );

@@ -6,6 +6,7 @@ import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 export async function middleware(req: NextRequest) {
     const res = NextResponse.next();
 
+    //o usuário deve poder acessar o path de verificação de conta mesmo sem estar logado
     if (req.nextUrl.pathname === "/api/affiliates/verify") {
         return res;
     }
@@ -47,6 +48,10 @@ export async function middleware(req: NextRequest) {
         //the "UnauthorizedAction" cookie is available for all subpaths under the root path.
         // This should make the unauthorized alert work correctly on nested protected routes.
         if (new URL(req.url).pathname.startsWith("/api")) {
+            //se o usuário tentar acessar o path de entrar na academia, ele deve ser redirecionado ao login.
+            if (new URL(req.url).pathname.startsWith("/api/gym/join")) {
+                return response;
+            }
             return NextResponse.json("Unauthorized", { status: 401 });
         }
         return response;
