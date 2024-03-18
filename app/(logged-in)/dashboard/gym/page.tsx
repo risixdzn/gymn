@@ -4,33 +4,16 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Root as GymResponse } from "@/app/api/gym/route";
-import { ArrowRight, Crown, MapPin, Printer, QrCode, User } from "lucide-react";
+import { ArrowRight, Crown, Info, MapPin, Printer, QrCode, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "@/lib/supabase/useSession";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import GymAffiliates from "@/components/Dashboard/Gym/GymAffiliates";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GymRefferal } from "@/components/Dashboard/Gym/ReferralCode";
 import JoinGymSuccessAlert from "@/components/Dashboard/Gym/JoinGymSuccessAlert";
-
-const SkeletonGymPage = () => {
-    return (
-        <section className='min-h-screen space-y-6'>
-            <Skeleton className='w-full rounded-md bg-accent h-28 lg:h-52'></Skeleton>
-            <div className='flex items-center gap-6 lg:gap-8'>
-                <Skeleton className='w-20 h-20 lg:w-36 lg:h-36 rounded-md' />
-                <div className='lg:space-y-1'>
-                    <Skeleton className='w-40 h-6 lg:w-80 lg:h-8 rounded-md'></Skeleton>
-                    <Skeleton className='w-28 h-4 lg:w-56 lg:h-6 rounded-md'></Skeleton>
-                    <div className='flex gap-2 items-center text-xs'>
-                        <Skeleton className='w-8 h-8 rounded-md' />
-                        <Skeleton className='w-20 h-4 lg:w-32 lg:h-6 rounded-md'></Skeleton>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-};
+import NoGym from "@/components/Dashboard/Gym/NoGym";
+import { SkeletonGymPage } from "@/components/Dashboard/Gym/SkeletonGymPage";
 
 export default function GymPage() {
     const session = useSession();
@@ -114,7 +97,7 @@ export default function GymPage() {
                     )}
                 </>
             ) : (
-                <div>no gym</div>
+                <NoGym />
             )}
         </section>
     );
