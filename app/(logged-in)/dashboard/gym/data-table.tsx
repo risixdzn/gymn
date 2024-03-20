@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import AddAffiliate from "@/components/Dashboard/Gym/AddAffiliate";
+import InviteAffiliate from "@/components/Dashboard/Gym/InviteAffiliate";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -47,7 +48,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
     return (
         <>
-            <div className='flex w-full justify-between items-center py-4 gap-2'>
+            <div className='flex w-full md:justify-between flex-wrap items-center py-4 gap-2'>
                 <Input
                     placeholder='Procurar aluno'
                     value={
@@ -60,9 +61,12 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                             .getColumn("affiliate_info_display_name")
                             ?.setFilterValue(event.target.value)
                     }
-                    className='max-w-sm'
+                    className='w-full md:max-w-xs'
                 />
-                <AddAffiliate />
+                <div className='w-full md:w-auto gap-2 flex justify-end'>
+                    <InviteAffiliate />
+                    <AddAffiliate />
+                </div>
             </div>
             <div className='rounded-md border'>
                 <Table>
