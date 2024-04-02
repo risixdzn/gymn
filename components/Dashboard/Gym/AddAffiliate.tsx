@@ -106,7 +106,7 @@ export default function AddAffiliate() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className='whitespace-nowrap'>
+                <Button className='whitespace-nowrap w-full md:w-auto'>
                     <Plus className='w-4 h-4 inline-block mr-1' /> Cadastrar aluno
                 </Button>
             </DialogTrigger>
@@ -114,8 +114,8 @@ export default function AddAffiliate() {
                 <DialogHeader>
                     <DialogTitle>Cadastrar aluno</DialogTitle>
                     <DialogDescription>
-                        Preencha as informações abaixo para cadastrar um aluno e afiliá-lo a sua
-                        academia.
+                        Preencha as informações abaixo para <b>cadastrar</b> um aluno no Gymn e{" "}
+                        <b>afiliá-lo</b> a sua academia.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
