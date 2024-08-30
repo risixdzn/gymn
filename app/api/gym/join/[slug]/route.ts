@@ -45,7 +45,7 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
             .from("affiliates")
             .select("*")
             .eq("user_id", session?.user?.id);
-        if (afilliateStatus.data?.length !== 0) {
+        if (afilliateStatus.data?.length !== 0 && afilliateStatus.data![0].verified) {
             return NextResponse.json("Unauthorized", { status: 401 });
         }
         //3. if both pass, affiliate the user to the gym.
@@ -55,6 +55,53 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
                 { success: false, error: "Gym doesnt exist" },
                 { status: 404 }
             );
+        }
+
+        console.log(afilliateStatus.data![0]);
+
+        //5. If the user has an active unverified affiliation, update the table, else, insert.
+        if (!afilliateStatus.data![0].verified) {
+            console.log("UNVERIFIED VERIFYING");
+
+            console.log(session.user.id);
+            const updatedAffiliation = await supabase
+                .from("affiliates")
+                .update({
+                    verified: true,
+                })
+                .eq("user_id", session.user.id)
+                .select();
+
+            if (updatedAffiliation.error) {
+                return NextResponse.json(
+                    { success: false, error: updatedAffiliation.error },
+                    { status: 400 }
+                );
+            }
+
+            console.log(updatedAffiliation.data);
+            //+ Delete any gym invite notification assigned to the user
+            const deleteNotifications = await supabase
+                .from("notifications")
+                .delete()
+                .eq("notified_user_id", session.user.id)
+                .eq("source_gym_id", gymId.data![0].id)
+                .eq("event", "gym_invite");
+
+            if (deleteNotifications.error) {
+                return NextResponse.json(
+                    { success: false, error: deleteNotifications.error },
+                    { status: 400 }
+                );
+            }
+
+            //return res
+            const response = NextResponse.redirect(new URL("/dashboard/gym", req.url));
+            response.headers.set(
+                "Set-Cookie",
+                `JoinGymSuccess=true; Max-Age=${60 * 6 * 24}; Path=/`
+            );
+            return response;
         }
 
         const createdAffiliation = await supabase.from("affiliates").insert({
@@ -69,6 +116,8 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
                 { status: 400 }
             );
         }
+
+        //return res
         const response = NextResponse.redirect(new URL("/dashboard/gym", req.url));
         response.headers.set("Set-Cookie", `JoinGymSuccess=true; Max-Age=${60 * 6 * 24}; Path=/`);
         return response;
@@ -135,6 +184,7 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
                 { status: 400 }
             );
         }
+
         const response = NextResponse.redirect(new URL("/dashboard/gym", req.url));
         return response;
     } catch (error) {

@@ -14,7 +14,7 @@ type Props = {
 export default function VerifyYourEmail({ values, setSignUpSuccess }: Props) {
     const { setAuthState } = useContext<AuthCardContextType>(AuthCardContext);
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col w-full'>
             <div className='w-full h-32 bg-purple-600/20 flex items-center justify-center rounded-lg'>
                 <MailCheck className='text-purple-600 inline-block' width={60} height={60} />
             </div>

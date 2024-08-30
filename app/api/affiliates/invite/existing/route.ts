@@ -140,9 +140,10 @@ export async function POST(req: Request) {
             }
 
             const createdAffiliation = await supabase.from("affiliates").insert({
-                user_id: session.user.id,
+                user_id: userProfile.data![0].id,
                 belongs_to: gymId.data![0].id,
                 verified: false,
+                invite_type: "existing",
             });
             return NextResponse.json(
                 { success: true, data: createdAffiliation.data },
@@ -245,9 +246,10 @@ export async function POST(req: Request) {
             }
 
             const createdAffiliation = await supabase.from("affiliates").insert({
-                user_id: session.user.id,
+                user_id: userProfile.data![0].id,
                 belongs_to: gymId.data![0].id,
                 verified: false,
+                invite_type: "existing",
             });
             return NextResponse.json(
                 { success: true, data: createdAffiliation.data },

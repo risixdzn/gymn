@@ -106,7 +106,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ success: false, error: "no_gym" }, { status: 404 });
     }
 
-    if (affiliate.data) {
+    if (affiliate.data![0].verified) {
         const gym = await supabase
             .from("gym")
             .select(
@@ -128,7 +128,7 @@ export async function GET(request: Request) {
                         location)
                     `
             )
-            .eq("id", affiliate.data[0].belongs_to);
+            .eq("id", affiliate.data![0].belongs_to);
 
         const gymData = gym.data!.map((gym) => {
             return {

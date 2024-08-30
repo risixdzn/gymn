@@ -10,6 +10,7 @@ const translatedRoutes: TranslatedRoutesIndex = {
     workouts: "Treinos",
     exercises: "Exercícios",
     gym: "Academia",
+    notifications: "Notificações",
     new: "Novo",
 };
 
