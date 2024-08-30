@@ -40,7 +40,7 @@ export default function RegisterStep4({ register, errors, loading }: StepProps) 
     const typedErrors = errors as TypedErrors;
 
     return (
-        <>
+        <div>
             <div>
                 <Label htmlFor='gymName'>Nome da academia</Label>
                 <Input
@@ -105,6 +105,6 @@ export default function RegisterStep4({ register, errors, loading }: StepProps) 
                     </p>
                 )}
             </div>
-        </>
+        </div>
     );
 }

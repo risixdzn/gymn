@@ -33,7 +33,7 @@ export default function RegisterStep2({ register, errors, loading }: StepProps) 
     const typedRegister = register as TypedRegister;
 
     return (
-        <>
+        <div>
             <Label htmlFor='email'>Email</Label>
             <Input
                 disabled={loading}
@@ -53,6 +53,6 @@ export default function RegisterStep2({ register, errors, loading }: StepProps) 
             {errors.email && (
                 <p className='text-xs text-destructive mt-2'>{errors.email.message}</p>
             )}
-        </>
+        </div>
     );
 }

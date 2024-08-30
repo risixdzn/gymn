@@ -45,7 +45,7 @@ export default function RegisterStep3({ register, errors, watch, loading }: Step
     const typedWatch = watch as TypedWatch;
 
     return (
-        <>
+        <div>
             <div>
                 <Label htmlFor='password'>Senha</Label>
                 <TooltipProvider delayDuration={0}>
@@ -119,6 +119,6 @@ export default function RegisterStep3({ register, errors, watch, loading }: Step
                     </p>
                 )}
             </div>
-        </>
+        </div>
     );
 }

@@ -25,9 +25,9 @@ export default function RegistrationFormProvider() {
     };
 
     return (
-        <>
+        <div>
             {!showForm && (
-                <>
+                <div>
                     <h3 className='text-xl font-semibold leading-none tracking-tight'>
                         Tipo de conta:
                     </h3>
@@ -93,7 +93,7 @@ export default function RegistrationFormProvider() {
                     <Button className='w-full mt-2' onClick={handleRadioSubmit}>
                         Continuar
                     </Button>
-                </>
+                </div>
             )}
             {showForm && accountType === "gymOwner" && (
                 <RegisterGymOwnerForm setShowForm={setShowForm} />
@@ -101,6 +101,6 @@ export default function RegistrationFormProvider() {
             {showForm && accountType === "member" && (
                 <RegisterMemberForm setShowForm={setShowForm} />
             )}
-        </>
+        </div>
     );
 }

@@ -37,7 +37,7 @@ export default function LoginForm() {
 
     const renderForm = () => {
         return (
-            <>
+            <div>
                 <Label htmlFor='email'>Email</Label>
                 <Input
                     disabled={loading}
@@ -74,7 +74,7 @@ export default function LoginForm() {
                         })}
                     />
                 </div>
-            </>
+            </div>
         );
     };
 

@@ -37,7 +37,7 @@ export default function SubmitButton({
             ) : signUpSuccess ? (
                 <Check className='absolute' />
             ) : (
-                <>{text}</>
+                <span>{text}</span>
             )}
         </button>
     );
