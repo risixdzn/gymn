@@ -33,7 +33,7 @@ export default function RegisterStep1({ register, errors, loading }: StepProps) 
     const typedRegister = register as TypedRegister;
 
     return (
-        <>
+        <div>
             <div>
                 <Label htmlFor='displayName'>Nome de exibição</Label>
                 <Input
@@ -97,6 +97,6 @@ export default function RegisterStep1({ register, errors, loading }: StepProps) 
                     <p className='text-xs text-destructive mt-2'>{errors.username.message}</p>
                 )}
             </div>
-        </>
+        </div>
     );
 }
